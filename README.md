@@ -61,13 +61,13 @@ source deactivate
 ### Step 4: Clone the git repository
 
 ```bash
-git clone https://git.scicore.unibas.ch/Polyadenylation/A-seq-processing.git
+git clone https://git@git.scicore.unibas.ch:2222/zavolan_public/TECtool.git
 ```
 
 or
 
 ```bash
-git clone ssh://git@git.scicore.unibas.ch:2222/Polyadenylation/TECtool.git
+git clone ssh://git@git.scicore.unibas.ch:2222/zavolan_public/TECtool.git
 ```
 
 ## Run TECtool
