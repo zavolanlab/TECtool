@@ -15,7 +15,7 @@ Types of Contributions
 Report Bugs
 ~~~~~~~~~~~
 
-Report bugs at https://git@git.scicore.unibas.ch:2222/zavolan_public/TECtool/issues
+Report bugs at https://git.scicore.unibas.ch/zavolan_public/TECtool/issues
 
 If you are reporting a bug, please include:
 
@@ -45,7 +45,7 @@ articles, and such.
 Submit Feedback
 ~~~~~~~~~~~~~~~
 
-The best way to send feedback is to file an issue at https://github.com/fgypas/tectool/issues.
+The best way to send feedback is to file an issue at https://git.scicore.unibas.ch/zavolan_public/TECtool/issues.
 
 If you are proposing a feature:
 
@@ -62,7 +62,7 @@ Ready to contribute? Here's how to set up `tectool` for local development.
 1. Fork the `tectool` repo on GitLab.
 2. Clone your fork locally::
 
-    $ git clone git@git.scicore.unibas.ch:your_name_here/tectool.git
+    $ git clone https://git.scicore.unibas.ch/zavolan_public/TECtool.git
 
 3. Install your local copy into a virtualenv. Assuming you have virtualenvwrapper installed, this is how you set up your fork for local development::
 

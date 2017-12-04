@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from setuptools import setup
+import os
 
 with open('README.rst') as readme_file:
     readme = readme_file.read()
@@ -22,10 +23,10 @@ setup(
     name='tectool',
     version='0.1.0',
     description="Terminal exon characterization",
-    long_description=readme + '\n\n' + history,
-    author="Andreas Gruber",
-    author_email='andreas.j.gruber@gmail.com',
-      url='https://git@git.scicore.unibas.ch:2222/zavolan_public/TECtool',
+    long_description=readme + os.linesep + os.linesep + history,
+    author="Foivos Gypas",
+    author_email='foivos.gypas@unibas.ch',
+      url='https://git.scicore.unibas.ch/zavolan_public/TECtool.git',
     packages=[
         'tectool',
     ],
@@ -42,11 +43,11 @@ setup(
     zip_safe=False,
     keywords='tectool',
     classifiers=[
-        'Development Status :: 2 - Pre-Alpha',
+        'Development Status :: Beta',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Natural Language :: English',
-        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3.6',
     ],
     test_suite='tests',
     tests_require=test_requirements

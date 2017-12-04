@@ -20,55 +20,6 @@ Output files
 * An augmented annotation file (in GTF format)
 * A file containing the novel terminal exons
 
-## Installation instructions
-
-
-### Step 1: Download Miniconda3
-
-
-On Linux:
-
-```bash
-wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
-bash Miniconda3-latest-Linux-x86_64.sh
-```
-
-On MacOS X:
-
-```bash
-wget https://repo.continuum.io/miniconda/Miniconda3-latest-MacOSX-x86_64.sh
-bash Miniconda3-latest-MacOSX-x86_64.sh
-```
-
-### Step 2: Create a new environment with all required packages/software
-
-```bash
-conda create -n TECtool python=2.7 -c bioconda --file requirements.txt
-```
-
-
-### Step 3: Activate the virtual environment
-
-```bash
-source activate TECtool
-```
-
-To exit the environment (after finishing the usage of the pipeline), just execute
-```bash
-source deactivate
-```
-
-### Step 4: Clone the git repository
-
-```bash
-git clone https://git@git.scicore.unibas.ch:2222/zavolan_public/TECtool.git
-```
-
-or
-
-```bash
-git clone ssh://git@git.scicore.unibas.ch:2222/zavolan_public/TECtool.git
-```
 
 ## Run TECtool
 
@@ -107,6 +58,57 @@ The output of TECtool:
 * A file containing the novel terminal exons named classified_as_terminal_with_probabilities.tsv: The table contains the terminal exon region, the gene id, the features that were used, the probability that this region is terminal (terminal_probability), the probability that this region is intermediate (intermediate_probability), the probability that the region is background (background_probability), the type that was selected (terminal/intermediate/background) and the genomic coordinates of the region (chromosome, start, end, strand).
 
 
-## Licence
+## Licence and documentation
 
 * Free software: MIT license
+
+
+## INSTALLATION FOR PYTHON 3 WITH CONDA
+
+### Step 1: Download Miniconda3
+
+On Linux:
+
+```bash
+wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
+bash Miniconda3-latest-Linux-x86_64.sh
+```
+
+On MacOS X:
+
+```bash
+wget https://repo.continuum.io/miniconda/Miniconda3-latest-MacOSX-x86_64.sh
+bash Miniconda3-latest-MacOSX-x86_64.sh
+```
+
+### Step 2: Create a new conda environment
+
+```bash
+conda create --name TECtool --channel bioconda python=3.6.2
+```
+
+### Step 3: Activate the virtual environment
+
+```bash
+source activate TECtool
+```
+
+### Step 4: Install other packages
+
+```bash
+conda install --channel bioconda htseq==0.9.1
+conda install --channel bioconda pybedtools==0.7.10
+conda config --add channels conda-forge
+conda install --channel conda-forge bzip2
+conda install --channel bioconda pyfasta==0.5.2
+conda install --channel coda-forge scikit-learn==0.19.0
+# TEMP usage for checking the PEP8 score of our code
+conda install pylint
+conda install --channel anaconda jupyter
+```
+
+
+
+
+
+
