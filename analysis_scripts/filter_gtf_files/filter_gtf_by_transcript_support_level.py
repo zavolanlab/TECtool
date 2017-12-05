@@ -4,68 +4,90 @@
 # -----------------------------------------------------------------------------
 
 try:
-  import HTSeq
+    import sys
 except(Exception):
-  raise("[ERROR] HTSeq was not imported properly. Exiting.")
-  sys.exit(-1)
+    raise("[ERROR] sys was not imported properly. Exiting.")
+    sys.exit(-1)
 
 try:
-  from argparse import ArgumentParser, RawTextHelpFormatter, FileType
+    import os
 except(Exception):
-  raise("[ERROR] argparse was not imported properly. Exiting.")
-  sys.exit(-1)
+    raise("[ERROR] os was not imported properly. Exiting.")
+    sys.exit(-1)
+
 
 try:
-  import sys
+    import HTSeq
 except(Exception):
-  raise("[ERROR] sys was not imported properly. Exiting.")
-  sys.exit(-1)
+    raise("[ERROR] HTSeq was not imported properly. Exiting.")
+    sys.exit(-1)
+
+try:
+    from argparse import ArgumentParser, RawTextHelpFormatter
+except(Exception):
+    raise("[ERROR] argparse was not imported properly. Exiting.")
+    sys.exit(-1)
 
 # _____________________________________________________________________________
 # -----------------------------------------------------------------------------
 # Main function
 # -----------------------------------------------------------------------------
-def main():
 
+
+def main():
     """ Main function """
 
     __doc__ = "Filter gtf file based on the transcript support level."
 
-    parser = ArgumentParser(description=__doc__, formatter_class=RawTextHelpFormatter)
+    parser = ArgumentParser(
+        description=__doc__,
+        formatter_class=RawTextHelpFormatter
+    )
 
+    parser.add_argument(
+        "--gtf",
+        dest="gtf",
+        help="Annotation file in GTF format with transcript support " +
+             "level information",
+        required=True,
+        metavar="FILE"
+    )
 
-    parser.add_argument("--gtf",
-                      dest = "gtf",
-                      help = "Annotation file in GTF format with transcript support level information",
-                      required = True,
-                      metavar = "FILE")
+    parser.add_argument(
+        "--out",
+        dest="out",
+        help="GTF output file",
+        required=True,
+        metavar="FILE"
+    )
 
-    parser.add_argument("--out",
-                      dest = "out",
-                      help = "GTF output file",
-                      required = True,
-                      metavar="FILE")
+    parser.add_argument(
+        "--support_level",
+        dest="support_level",
+        help="Transcript support level to choose [1,2,3,4,5]",
+        required=True,
+        default="1"
+    )
 
-    parser.add_argument("--support_level",
-                      dest = "support_level",
-                      help = "Transcript support level to choose [1,2,3,4,5]",
-                      required = True,
-                      default = "1")
+    parser.add_argument(
+        "--fix_gene_coordinates",
+        dest="fix_gene_coordinates",
+        action="store_true",
+        default=False,
+        required=False,
+        help="Flag to change the gene borders according to the start " +
+             "and end of the transcripts"
+    )
 
-    parser.add_argument("--fix_gene_coordinates",
-                        dest="fix_gene_coordinates",
-                        action = "store_true",
-                        default = False,
-                        required = False,
-                        help = "Flag to change the gene borders according to the start and end of the transcripts")
-
-    parser.add_argument("-v",
-                      "--verbose",
-                      action = "store_true",
-                      dest = "verbose",
-                      default = False,
-                      required = False,
-                      help = "Verbose")
+    parser.add_argument(
+        "-v",
+        "--verbose",
+        action="store_true",
+        dest="verbose",
+        default=False,
+        required=False,
+        help="Verbose"
+    )
 
     # _________________________________________________________________________
     # -------------------------------------------------------------------------
@@ -81,7 +103,13 @@ def main():
         sys.exit(1)
 
     if options.verbose:
-        sys.stdout.write("Parsing gtf file and keep transcripts with support level <= %s\n" % (str(options.support_level)))
+        sys.stdout.write(
+            "Parsing gtf file and keep transcripts with \
+            support level <= {} {}".format(
+                str(options.support_level),
+                os.linesep
+            )
+        )
 
     # dictionary of accepted transcript ids
     transcripts_dict = dict()
@@ -132,19 +160,23 @@ def main():
                             if gene_id not in genes_dict_start:
                                 genes_dict_start[gene_id] = transcript_start
                             else:
-                                if transcript_start < genes_dict_start[gene_id]:
-                                    genes_dict_start[gene_id] =  transcript_start
+                                if (
+                                    transcript_start <
+                                    genes_dict_start[gene_id]
+                                ):
+                                    genes_dict_start[gene_id] \
+                                        = transcript_start
 
                             # define gene ends
                             if gene_id not in genes_dict_end:
                                 genes_dict_end[gene_id] = transcript_end
                             else:
                                 if transcript_end > genes_dict_end[gene_id]:
-                                    genes_dict_end[gene_id] =  transcript_end
-
+                                    genes_dict_end[gene_id] = transcript_end
 
     if options.verbose:
-        sys.stdout.write("Re-parse gtf file and write out selected genes and transcripts\n")
+        sys.stdout.write("Re-parse gtf file and write out selected genes and" +
+                         "transcripts" + os.linesep)
 
     w = open(options.out, 'w')
 
@@ -158,35 +190,52 @@ def main():
             if gtf_line.attr['gene_id'] in genes_dict:
 
                 if options.fix_gene_coordinates:
-                    gtf_line.iv.start = genes_dict_start[gtf_line.attr['gene_id']]
-                    gtf_line.iv.end = genes_dict_end[gtf_line.attr['gene_id']]
+                    gtf_line.iv.start \
+                        = genes_dict_start[gtf_line.attr['gene_id']]
+                    gtf_line.iv.end \
+                        = genes_dict_end[gtf_line.attr['gene_id']]
                     w.write(gtf_line.get_gff_line())
                 else:
                     w.write(gtf_line.get_gff_line())
 
         if gtf_line.type == 'transcript':
 
-            if gtf_line.attr['transcript_id'] in transcripts_dict and gtf_line.attr['gene_id'] in genes_dict:
+            if (
+                gtf_line.attr['transcript_id'] in transcripts_dict and
+                gtf_line.attr['gene_id'] in genes_dict
+            ):
                 w.write(gtf_line.get_gff_line())
 
         elif gtf_line.type == 'exon':
 
-            if gtf_line.attr['transcript_id'] in transcripts_dict and gtf_line.attr['gene_id'] in genes_dict:
+            if (
+                gtf_line.attr['transcript_id'] in transcripts_dict and
+                gtf_line.attr['gene_id'] in genes_dict
+            ):
                 w.write(gtf_line.get_gff_line())
 
         elif gtf_line.type == 'CDS':
 
-            if gtf_line.attr['transcript_id'] in transcripts_dict and gtf_line.attr['gene_id'] in genes_dict:
+            if (
+                gtf_line.attr['transcript_id'] in transcripts_dict and
+                gtf_line.attr['gene_id'] in genes_dict
+            ):
                 w.write(gtf_line.get_gff_line())
 
         elif gtf_line.type == 'start_codon':
 
-            if gtf_line.attr['transcript_id'] in transcripts_dict and gtf_line.attr['gene_id'] in genes_dict:
+            if (
+                gtf_line.attr['transcript_id'] in transcripts_dict and
+                gtf_line.attr['gene_id'] in genes_dict
+            ):
                 w.write(gtf_line.get_gff_line())
 
         elif gtf_line.type == 'stop_codon':
 
-            if gtf_line.attr['transcript_id'] in transcripts_dict and gtf_line.attr['gene_id'] in genes_dict:
+            if (
+                gtf_line.attr['transcript_id'] in transcripts_dict and
+                gtf_line.attr['gene_id'] in genes_dict
+            ):
                 w.write(gtf_line.get_gff_line())
 
     w.close()
@@ -195,6 +244,8 @@ def main():
 # -----------------------------------------------------------------------------
 # Call the Main function and catch Keyboard interrups
 # -----------------------------------------------------------------------------
+
+
 if __name__ == '__main__':
     try:
         main()

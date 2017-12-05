@@ -11,7 +11,7 @@ TECtool is a method that uses mRNA and 3’ end sequencing data to identify nove
 ## Input and output files
 
 Input files
-* A file containing all chromosomes in fasta format
+* A file containing all chromosomes in fasta format.
 * A file with the corresponding annotation in GTF format
 * A file with genome coordinates of 3’ end processing sites in BED format
 * A file containing spliced alignments of mRNA-seq reads to the corresponding genome (in BAM format, sorted by coordinates and indexed)
@@ -19,6 +19,10 @@ Input files
 Output files
 * An augmented annotation file (in GTF format)
 * A file containing the novel terminal exons
+
+## Recommended files for testing
+
+ToDo
 
 
 ## Run TECtool
