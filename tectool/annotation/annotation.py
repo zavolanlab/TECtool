@@ -670,18 +670,34 @@ class Annotation(object):
                    "score",
                    "strand"]
 
-        columns_custom_bed = ["chrom",
-                              "start",
-                              "end",
-                              "name_bad",
-                              "score",
-                              "strand",
-                              "chrom2",
-                              "start2",
-                              "end2",
-                              "name",
-                              "score2",
-                              "strand2"]
+        columns_custom_bed = [
+            "chrom",
+            "start",
+            "end",
+            "name_bad",
+            "score",
+            "strand",
+            "chrom2",
+            "start2",
+            "end2",
+            "name",
+            "score2",
+            "strand2"]
+
+        columns_custom_bed_dtype = {
+            "chrom": "object",
+            "start": "int64",
+            "end": "int64",
+            "name_bad": "object",
+            "score": "object",
+            "strand": "object",
+            "chrom2": "object",
+            "start2": "int64",
+            "end2": "int64",
+            "name": "object",
+            "score2": "object",
+            "strand2": "object"
+        }
 
         # read bedtools objects
         polyasites_bed = pybedtools.BedTool(polyasites)
@@ -706,10 +722,10 @@ class Annotation(object):
         intronic_polya_sites_df = pd.read_csv(
             tmp_intronic_polya_sites_bed,
             sep="\t",
-            header=None
+            header=None,
+            names=columns_custom_bed,
+            dtype=columns_custom_bed_dtype
         )
-
-        intronic_polya_sites_df.columns = columns_custom_bed
 
         intronic_polya_sites_df = intronic_polya_sites_df[columns]
 
@@ -860,6 +876,15 @@ class Annotation(object):
             "name"
         ]
 
+        columns_custom_bed_dtype = {
+            "chrom": "object",
+            "start": "int64",
+            "end": "int64",
+            "strand": "object",
+            "count": "int64",
+            "name": "object"
+        }
+
         # normal header
         columns = ["chrom",
                    "start",
@@ -881,9 +906,9 @@ class Annotation(object):
         # read file as a dataframe
         df = pd.read_csv(tmp_file,
                          sep="\t",
-                         header=None)
-
-        df.columns = columns_custom_bed
+                         header=None,
+                         names=columns_custom_bed,
+                         dtype=columns_custom_bed_dtype)
 
         selected_df = df[df["count"] == 1]
 
@@ -924,10 +949,20 @@ class Annotation(object):
                    "score",
                    "strand"]
 
+        columns_dtype = {
+            "chrom": "object",
+            "start": "int64",
+            "end": "int64",
+            "name": "object",
+            "score": "object",
+            "strand": "object"
+        }
+
         regions_df = pd.read_csv(bed_in,
                                  sep="\t",
-                                 header=None)
-        regions_df.columns = columns
+                                 header=None,
+                                 names=columns,
+                                 dtype=columns_dtype)
 
         regions_df[["start", "end"]] = \
             regions_df[["start", "end"]].apply(pd.to_numeric)
@@ -975,6 +1010,16 @@ class Annotation(object):
                               "strand",
                               "count"]
 
+        columns_custom_bed_dtype = {
+            "chrom": "object",
+            "start": "int64",
+            "end": "int64",
+            "name": "object",
+            "score": "object",
+            "strand": "object",
+            "count": "int64"
+        }
+
         tmp_file = non_ovelapping_bed + "_tmp"
 
         selected_regions = pybedtools.BedTool(selected_regions_bed)
@@ -990,9 +1035,9 @@ class Annotation(object):
 
         non_ovelapping_bed_df = pd.read_csv(tmp_file,
                                             sep="\t",
-                                            header=None)
-
-        non_ovelapping_bed_df.columns = columns_custom_bed
+                                            header=None,
+                                            names=columns_custom_bed,
+                                            dtype=columns_custom_bed_dtype)
 
         non_ovelapping_bed_df[["start", "end"]] = \
             non_ovelapping_bed_df[["start", "end"]].apply(pd.to_numeric)
@@ -1034,6 +1079,16 @@ class Annotation(object):
                               "strand",
                               "count"]
 
+        columns_custom_bed_dtype = {
+            "chrom": "object",
+            "start": "int64",
+            "end": "int64",
+            "name": "object",
+            "score": "object",
+            "strand": "object",
+            "count": "int64"
+        }
+
         tmp_file = non_overlapping_genes_bed + "_tmp"
 
         # load gene coordinates
@@ -1051,9 +1106,9 @@ class Annotation(object):
 
         non_overlapping_genes_df = pd.read_csv(tmp_file,
                                                sep="\t",
-                                               header=None)
-
-        non_overlapping_genes_df.columns = columns_custom_bed
+                                               header=None,
+                                               names=columns_custom_bed,
+                                               dtype=columns_custom_bed_dtype)
 
         non_overlapping_genes_df[non_overlapping_genes_df["count"] == 1][
             columns].to_csv(
