@@ -574,9 +574,21 @@ class Annotation(object):
                    "score",
                    "strand"]
 
+        columns_dtype = {
+            "chrom": "object",
+            "start": "int64",
+            "end": "int64",
+            "name": "object",
+            "score": "object",
+            "strand": "object"
+        }
+
         # read union exons in a pandas dataframe
-        union_exons_df = pd.read_csv(union_exons_bed, header=None, sep="\t")
-        union_exons_df.columns = columns
+        union_exons_df = pd.read_csv(union_exons_bed,
+                                     header=None,
+                                     sep="\t",
+                                     names=columns,
+                                     dtype=columns_dtype)
 
         all_union_introns = []
 

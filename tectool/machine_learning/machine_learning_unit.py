@@ -1044,8 +1044,6 @@ class MachineLearningUnit(object):
                                 nr_intermediate_exon_sets,
                                 nr_background_region_sets)
 
-        print("1" * 80)
-
         # check if we got a number of wished data sets
         if (training_data_set_size.isdigit()):
 
@@ -1169,8 +1167,6 @@ class MachineLearningUnit(object):
         Method that samples validation data from
         the training_df and stores it in validation_df.
         """
-
-        print("malakas")
 
         if verbose:
             sys.stdout.write(
