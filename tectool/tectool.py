@@ -867,7 +867,7 @@ def main():
         # give some feedback about the state of the script
         # (how many units have been analyzed so far?)
         if (unit_nr % 100) == 0:
-            sys.stderr.write("Regions processed:\t" +
+            sys.stdout.write("Regions processed:\t" +
                              str(unit_nr) +
                              os.linesep)
 
@@ -985,14 +985,15 @@ def main():
         verbose=False
     )
 
-    # novel_terminal_output_file \
-    #     = os.path.join(options.output_dir, "novel_terminal_exons.tsv")
+    # pre_novel_terminal_filtered_output_file \
+    #     = os.path.join(options.output_dir,
+    #                    "pre_novel_terminal_exons_filtered.tsv")
 
     # # filter potential novel terminal exons that
     # # might overlap with annotated exons
     # ml_train_unit.remove_terminal_exon_candidates_that_overlap_annotated_exons(
     #     annotation=annotation,
-    #     novel_terminal_output_file=novel_terminal_output_file,
+    #     novel_terminal_output_file=pre_novel_terminal_filtered_output_file,
     #     sequencing_direction=options.sequencing_direction,
     #     exons=exons_per_gene_bed_file,
     #     verbose=False

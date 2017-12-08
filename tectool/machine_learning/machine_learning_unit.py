@@ -629,6 +629,15 @@ class MachineLearningUnit(object):
                    "score",
                    "strand"]
 
+        columns_dtype = {
+            "chrom": "object",
+            "start": "int64",
+            "end": "int64",
+            "gene_id": "object",
+            "score": "object",
+            "strand": "object"
+        }
+
         #######################################################################
         # create bed file from dataframe of potential novel terminal exons
         #######################################################################
@@ -698,9 +707,9 @@ class MachineLearningUnit(object):
 
         selected_regions_df = pd.read_csv(tmp_file_2,
                                           sep='\t',
-                                          header=None)
-
-        selected_regions_df.columns = columns
+                                          header=None,
+                                          names=columns,
+                                          dtype=columns_dtype)
 
         selected_regions_df["start"] = selected_regions_df["start"] + 1
 
