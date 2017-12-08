@@ -1237,7 +1237,10 @@ class MachineLearningUnit(object):
                              "file: %s\n" % (training_df_file_path))
 
         self.training_df = \
-            pd.read_csv(training_df_file_path, index_col=0, sep="\t")
+            pd.read_csv(training_df_file_path,
+                        index_col=0,
+                        sep="\t",
+                        low_memory=False)
 
     def write_validation_df_to_file(
         self,
@@ -1269,7 +1272,10 @@ class MachineLearningUnit(object):
                              "from file: %s\n" % (validation_df_file_path))
 
         self.validation_df = \
-            pd.read_csv(validation_df_file_path, index_col=0, sep="\t")
+            pd.read_csv(validation_df_file_path,
+                        index_col=0,
+                        sep="\t",
+                        low_memory=False)
 
     def fit_linear_model_to_profile(self, profile):
         
