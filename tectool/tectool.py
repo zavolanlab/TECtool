@@ -84,7 +84,7 @@ try:
     from sklearn import linear_model
     from sklearn.cross_validation import train_test_split
     from sklearn import neighbors
-    from sklearn.model_selection import StratifiedKFold
+    # from sklearn.model_selection import StratifiedKFold
 except(Exception):
     raise("[ERROR] sklearn was not imported properly")
     sys.exit(-1)
