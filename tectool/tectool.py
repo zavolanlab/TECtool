@@ -882,7 +882,7 @@ def main():
             tmp=options.output_dir,
             annotation=annotation,
             exons_per_gene_bed_file=exons_per_gene_bed_file,
-            verbose=False
+            verbose=options.verbose
         )
 
         # free memory
@@ -969,7 +969,7 @@ def main():
         bam_file_path=options.bam_file,
         sequencing_direction=options.sequencing_direction,
         count_unique_mapping_reads_only=True,
-        verbose=False
+        verbose=options.verbose
     )
 
     # ---------------------------------------------------------------------
@@ -982,7 +982,7 @@ def main():
     ml_train_unit.create_terminal_exon_candidates_dataframe(
         annotation=annotation,
         novel_terminal_output_file=pre_novel_terminal_output_file,
-        verbose=False
+        verbose=options.verbose
     )
 
     # pre_novel_terminal_filtered_output_file \
@@ -1038,7 +1038,7 @@ def main():
             intermediate_output_file=intermediate_exons_statistics_file_path,
             terminal_output_file=terminal_exons_statistics_file_path,
             background_output_file=background_regions_statistics_file_path,
-            verbose=True
+            verbose=options.verbose
         )
 
         sys.stdout.write("After create_training_dataframes #{} \
@@ -1051,7 +1051,7 @@ def main():
         ml_train_unit.add_features_to_training_dataframes(
             nr_to_subsample=1100,  # "all",
             output_files_dir=options.output_dir,
-            verbose=True
+            verbose=options.verbose
         )
 
         sys.stdout.write("After add_features_to_training_dataframes #{} \
@@ -1066,7 +1066,7 @@ def main():
             validation_data_fraction=0.2,
             output_files_dir=options.output_dir,
             run_number=run_number,
-            verbose=True
+            verbose=options.verbose
         )
 
         sys.stdout.write("After load_training_data #{} \
@@ -1088,7 +1088,7 @@ def main():
     # ---------------------------------------------------------------------
     ml_train_unit.add_features_to_terminal_exon_candidates_dataframe(
         output_files_dir=options.output_dir,
-        verbose=True
+        verbose=options.verbose
     )
 
     sys.stdout.write("After add_features_to_terminal_exon_" +
@@ -1159,7 +1159,7 @@ def main():
         ml_train_unit.add_features_to_training_dataframes(
             nr_to_subsample="all",  # "all",1100
             output_files_dir=options.output_dir,
-            verbose=True
+            verbose=options.verbose
         )
 
         # ---------------------------------------------------------------------
@@ -1170,7 +1170,7 @@ def main():
             validation_data_fraction=0.2,
             output_files_dir=options.output_dir,
             run_number=-1,
-            verbose=True
+            verbose=options.verbose
         )
 
         # -----------------------------------------------------------------
@@ -1181,14 +1181,14 @@ def main():
             number_of_randomization=10,
             classifier=classifier,
             manually_selected_features=manually_selected_features,
-            verbose=True
+            verbose=options.verbose
         )
 
         # -----------------------------------------------------------------
         # Calculate features
         # -----------------------------------------------------------------
         # FIXME: remove the selected_features dependency from this function
-        ml_train_unit.load_terminal_exon_candidates(verbose=True)
+        ml_train_unit.load_terminal_exon_candidates(verbose=options.verbose)
 
         for run_number in range(len(ml_train_unit.list_of_training_dataframes)):
 
@@ -1204,7 +1204,7 @@ def main():
                 results_dir_path=options.output_dir,
                 classifier=classifier,
                 nr_of_train_vs_test_runs=25,
-                verbose=True
+                verbose=options.verbose
             )
 
             # -----------------------------------------------------------------
@@ -1225,7 +1225,7 @@ def main():
         ml_train_unit.classify_terminal_exon_candidates(
             results_dir=options.output_dir,
             classifier=classifier,
-            verbose=True
+            verbose=options.verbose
         )
 
     # ---------------------------------------------------------------------
