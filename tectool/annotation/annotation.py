@@ -871,9 +871,67 @@ class Annotation(object):
 
         return
 
-    def write_non_overlapping_regions_to_bed(self,
-                                             bed_in,
-                                             bed_out):
+    def write_start_exons(self,
+                          bed):
+        """
+        Finds intermediate exons of the transcripts and write them to
+        a bed file.
+        """
+        columns = ["chrom",
+                   "start",
+                   "end",
+                   "name",
+                   "score",
+                   "strand"]
+
+        start_exons = []
+
+        for transcript in self.transcripts:
+
+            # make sure that the transcripts has more than 1 exon
+            if (
+                len(self.transcripts[transcript].exon_list_sorted_by_end_coord
+                    ) > 1
+            ):
+
+                # determine intermediate exons
+                cutrrent_start_exons = \
+                    self.transcripts[transcript
+                                     ].get_bed_start_exon_as_list()
+
+                start_exons.append(cutrrent_start_exons)
+
+        start_exons_df = pd.DataFrame(start_exons)
+        start_exons_df.columns = columns
+
+        start_exons_df[["start", "end"]] = \
+            start_exons_df[["start", "end"]].apply(pd.to_numeric)
+
+        start_exons_df.sort_values(["chrom", "start"],
+                                   ascending=[True, True],
+                                   inplace=True)
+
+        start_exons_df.drop_duplicates(
+            subset=["chrom", "start", "end", "name", "strand"],
+            keep="first",
+            inplace=True
+        )
+
+        start_exons_df.to_csv(
+            bed,
+            sep="\t",
+            header=False,
+            index=False
+        )
+
+        return
+
+    def write_non_overlapping_regions_to_bed(
+        self,
+        bed_in,
+        bed_out,
+        strand
+    ):
         """
         Extract region that overlap only one time form a bed file
         """
@@ -910,7 +968,7 @@ class Annotation(object):
 
         # find overlapping regions within the file
         pybedtools.BedTool(bed_in).merge(
-            s=True,
+            s=strand,
             c=4,
             o="count,collapse"
         ).sort().saveas(tmp_file)
@@ -993,6 +1051,36 @@ class Annotation(object):
         )
 
         return
+
+    def write_non_overlapping_regions(
+        self,
+        selected_bed,
+        compare_bed_1,
+        compare_bed_2,
+        strand,
+        bed_out
+    ):
+        """
+        Take a bed file and a list of bed files and
+        find regions from A (selected_bed) that
+        are not in B (bed_list)
+        """
+
+        selected_bed = pybedtools.BedTool(selected_bed)
+        compare_bed_1 = pybedtools.BedTool(compare_bed_1)
+        compare_bed_2 = pybedtools.BedTool(compare_bed_2)
+
+        selected_bed.intersect(
+            compare_bed_1,
+            s=strand,
+            v=True,
+            wa=True
+        ).intersect(
+            compare_bed_2,
+            s=strand,
+            v=True,
+            wa=True
+        ).saveas(bed_out)
 
     def write_regions_identified_only_once_from_two_beds(
         self,

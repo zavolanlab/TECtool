@@ -395,10 +395,12 @@ def main():
          supported_sequencing_directions_unstranded]
 
     if sequencing_direction not in supported_sequencing_directions:
-        raise Exception("Provided sequencing direction parameter " +
-                        "(%s) is not supported. Please choose: %s" %
-                        (sequencing_direction,
-                         " ".join(supported_sequencing_directions)))
+        raise Exception("Provided sequencing direction parameter \
+                         ({}) is not supported. Please choose: {} \
+                         {}".format(sequencing_direction,
+                                    " ".join(supported_sequencing_directions),
+                                    os.linesep)
+                        )
 
     # -------------------------------------------------------------------------
     if options.drop_manually_selected_features:
@@ -423,11 +425,20 @@ def main():
     # -------------------------------------------------------------------------
     # create the annotation object and read in the annotation file
     # -------------------------------------------------------------------------
-    sys.stdout.write("Reading annotation file:\t%s%s" %
-                     (options.annotation, os.linesep))
+    sys.stdout.write("Reading annotation file:\t {} {}".format(
+        options.annotation, os.linesep))
     annotation = Annotation(annotation_id=options.annotation,
                             tmp=options.output_dir)
     annotation.parse(options.annotation)
+
+    # _________________________________________________________________________
+    # -------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
+    # Part to determine intronic poly(A) sites
+    # -------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
     # _________________________________________________________________________
     # -------------------------------------------------------------------------
@@ -504,92 +515,6 @@ def main():
         union_introns_bed=union_introns_bed_file
     )
 
-    # _________________________________________________________________________
-    # -------------------------------------------------------------------------
-    # Determine all terminal exons from multi-exonic transcripts in bed format
-    # -------------------------------------------------------------------------
-
-    sys.stdout.write("Extracting all terminal exons from " +
-                     "multi-exonic transcripts" + os.linesep)
-
-    all_terminal_exons_bed_file = os.path.join(
-        annotation_dir,
-        fc.get_new_filenumber_str() + '.all_terminal_exons.bed')
-
-    annotation.write_terminal_exons(bed=all_terminal_exons_bed_file)
-
-    # _________________________________________________________________________
-    # -------------------------------------------------------------------------
-    # Determine all intermediate exons from multi-exonic transcripts in bed
-    # format
-    # -------------------------------------------------------------------------
-
-    sys.stdout.write("Extracting all intermediate exons from " +
-                     "multi-exonic transcripts" + os.linesep)
-
-    all_intermediate_exons_bed_file = os.path.join(
-        annotation_dir,
-        fc.get_new_filenumber_str() + '.all_intermediate_exons.bed')
-
-    annotation.write_intermediate_exons(bed=all_intermediate_exons_bed_file)
-
-    # _________________________________________________________________________
-    # -------------------------------------------------------------------------
-    # Determine all terminal exons that do not overlap with other terminal
-    # exons
-    # -------------------------------------------------------------------------
-
-    sys.stdout.write("Extracting terminal exons that do not overlap with " +
-                     "other terminal exons" + os.linesep)
-
-    terminal_exons_not_overlap_other_terminal_exons_bed_file = \
-        os.path.join(
-            annotation_dir,
-            fc.get_new_filenumber_str() +
-            '.terminal_exons_not_overlap_other_terminal_exons.bed'
-        )
-
-    annotation.write_non_overlapping_regions_to_bed(
-        bed_in=all_terminal_exons_bed_file,
-        bed_out=terminal_exons_not_overlap_other_terminal_exons_bed_file)
-
-    # _________________________________________________________________________
-    # -------------------------------------------------------------------------
-    # Determine all intermediate exons that do not overlap with other
-    # intermediate exons
-    # -------------------------------------------------------------------------
-
-    sys.stdout.write("Extracting intermediate exons that do not overlap " +
-                     "with other intermediate exons" + os.linesep)
-
-    intermediate_exons_not_overlap_other_intermediate_exons_bed_file = \
-        os.path.join(
-            annotation_dir,
-            fc.get_new_filenumber_str() +
-            '.intermediate_exons_not_overlap_other_intermediate_exons.bed'
-        )
-
-    annotation.write_non_overlapping_regions_to_bed(
-        bed_in=all_intermediate_exons_bed_file,
-        bed_out=intermediate_exons_not_overlap_other_intermediate_exons_bed_file
-    )
-
-    # _________________________________________________________________________
-    # -------------------------------------------------------------------------
-    # Determine all exons (1 copy for each of the coordinates)
-    # -------------------------------------------------------------------------
-
-    sys.stdout.write("Extracting a copy from each of the exons " + os.linesep)
-
-    exons_unique = os.path.join(annotation_dir,
-                                fc.get_new_filenumber_str() +
-                                '.exons_unique.bed')
-
-    annotation.write_one_copy_for_each_region(
-        bed_in=exons_per_gene_bed_file,
-        bed_out=exons_unique
-    )
-
     if sequencing_direction == supported_sequencing_directions_forward:
 
         # _____________________________________________________________________
@@ -630,55 +555,6 @@ def main():
             polyasites=polyasites,
             introns=introns_not_overlap_with_exons_bed_file,
             intronic_polya_sites_bed=polyasites_in_introns_bed_file
-        )
-
-        # _________________________________________________________________________
-        # -------------------------------------------------------------------------
-        # Determine terminal exons than not ovelap with other exons
-        # for stranded protocols
-        # -------------------------------------------------------------------------
-
-        sys.stdout.write("Extracting terminal exons that do not overlap " +
-                         "with other exons (first exons, last exon or " +
-                         "intermediate exons) for stranded protocols" +
-                         os.linesep)
-
-        terminal_exons_non_overlapping = \
-            os.path.join(
-                annotation_dir,
-                fc.get_new_filenumber_str() +
-                '.terminal_exons_non_overlapping_stranded.bed'
-            )
-
-        annotation.write_regions_identified_only_once_from_two_beds(
-            selected_regions_bed=terminal_exons_not_overlap_other_terminal_exons_bed_file,
-            all_regions_bed=exons_unique,
-            non_ovelapping_bed=terminal_exons_non_overlapping,
-            strand=True
-        )
-
-        # _________________________________________________________________________
-        # -------------------------------------------------------------------------
-        # Determine intermediate exons than not ovelap with other exons
-        # for stranded protocols
-        # -------------------------------------------------------------------------
-
-        sys.stdout.write("Extracting intermediate exons that do not overlap " +
-                         "with other exons (first exons, last exons or " +
-                         "intermediate exons) for stranded protocols" + os.linesep)
-
-        intermediate_exons_non_overlapping = \
-            os.path.join(
-                annotation_dir,
-                fc.get_new_filenumber_str() +
-                '.intermediate_exons_non_overlapping_stranded.bed'
-            )
-
-        annotation.write_regions_identified_only_once_from_two_beds(
-            selected_regions_bed=intermediate_exons_not_overlap_other_intermediate_exons_bed_file,
-            all_regions_bed=exons_unique,
-            non_ovelapping_bed=intermediate_exons_non_overlapping,
-            strand=True
         )
 
     elif sequencing_direction == supported_sequencing_directions_unstranded:
@@ -722,10 +598,215 @@ def main():
             intronic_polya_sites_bed=polyasites_in_introns_bed_file
         )
 
+    else:
+        raise Exception("Provided sequencing direction parameter ({}) is not supported. Please choose: {} {} ".format(
+            sequencing_direction,
+            " ".join(supported_sequencing_directions),
+            os.linesep)
+        )
+
+    # _________________________________________________________________________
+    # -------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
+    # Part to which regions to count for machine learning
+    # -------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
+
+    # _________________________________________________________________________
+    # -------------------------------------------------------------------------
+    # Determine all terminal exons from multi-exonic transcripts in bed format
+    # -------------------------------------------------------------------------
+
+    sys.stdout.write("Extracting all terminal exons from " +
+                     "multi-exonic transcripts" + os.linesep)
+
+    all_terminal_exons_bed_file = os.path.join(
+        annotation_dir,
+        fc.get_new_filenumber_str() +
+        '.all_terminal_exons.bed')
+
+    annotation.write_terminal_exons(bed=all_terminal_exons_bed_file)
+
+    # _________________________________________________________________________
+    # -------------------------------------------------------------------------
+    # Determine all intermediate exons from multi-exonic transcripts in bed
+    # format
+    # -------------------------------------------------------------------------
+
+    sys.stdout.write("Extracting all intermediate exons from " +
+                     "multi-exonic transcripts" + os.linesep)
+
+    all_intermediate_exons_bed_file = os.path.join(
+        annotation_dir,
+        fc.get_new_filenumber_str() + '.all_intermediate_exons.bed')
+
+    annotation.write_intermediate_exons(bed=all_intermediate_exons_bed_file)
+
+    # _________________________________________________________________________
+    # -------------------------------------------------------------------------
+    # Determine all start exons from multi-exonic transcripts in bed
+    # format
+    # -------------------------------------------------------------------------
+
+    sys.stdout.write("Extracting all start exons from " +
+                     "multi-exonic transcripts" + os.linesep)
+
+    all_start_exons_bed_file = os.path.join(
+        annotation_dir,
+        fc.get_new_filenumber_str() + '.all_start_exons.bed')
+
+    annotation.write_start_exons(bed=all_start_exons_bed_file)
+
+    if sequencing_direction == supported_sequencing_directions_forward:
+
+        # _________________________________________________________________________
+        # -------------------------------------------------------------------------
+        # Determine all terminal exons that do not overlap with other terminal
+        # exons
+        # -------------------------------------------------------------------------
+
+        sys.stdout.write("Extracting terminal exons that do not overlap " +
+                         "with other terminal exons" + os.linesep)
+
+        terminal_exons_not_overlap_other_terminal_exons_bed_file = \
+            os.path.join(
+                annotation_dir,
+                fc.get_new_filenumber_str() +
+                '.terminal_exons_not_overlap_other_terminal_exons_stranded.bed'
+            )
+
+        annotation.write_non_overlapping_regions_to_bed(
+            bed_in=all_terminal_exons_bed_file,
+            bed_out=terminal_exons_not_overlap_other_terminal_exons_bed_file,
+            strand=True
+        )
+
+        # _________________________________________________________________________
+        # -------------------------------------------------------------------------
+        # Determine all intermediate exons that do not overlap with other
+        # intermediate exons
+        # -------------------------------------------------------------------------
+
+        sys.stdout.write("Extracting intermediate exons that do not overlap " +
+                         "with other intermediate exons" + os.linesep)
+
+        intermediate_exons_not_overlap_other_intermediate_exons_bed_file = \
+            os.path.join(
+                annotation_dir,
+                fc.get_new_filenumber_str() +
+                '.intermediate_exons_not_overlap_other_intermediate_exons_stranded.bed'
+            )
+
+        annotation.write_non_overlapping_regions_to_bed(
+            bed_in=all_intermediate_exons_bed_file,
+            bed_out=intermediate_exons_not_overlap_other_intermediate_exons_bed_file,
+            strand=True
+        )
+
         # _________________________________________________________________________
         # -------------------------------------------------------------------------
         # Determine terminal exons than not ovelap with other exons
-        # for unstranded protocols
+        # for stranded protocols
+        # -------------------------------------------------------------------------
+
+        sys.stdout.write("Extracting terminal exons that do not overlap " +
+                         "with other exons (first exons, last exon or " +
+                         "intermediate exons) for stranded protocols" +
+                         os.linesep)
+
+        terminal_exons_non_overlapping = \
+            os.path.join(
+                annotation_dir,
+                fc.get_new_filenumber_str() +
+                '.terminal_exons_non_overlapping_stranded.bed'
+            )
+
+        annotation.write_non_overlapping_regions(
+            selected_bed=terminal_exons_not_overlap_other_terminal_exons_bed_file,
+            compare_bed_1=all_intermediate_exons_bed_file,
+            compare_bed_2=all_start_exons_bed_file,
+            strand=True,
+            bed_out=terminal_exons_non_overlapping
+        )
+
+        # _________________________________________________________________________
+        # -------------------------------------------------------------------------
+        # Determine intermediate exons than not ovelap with other exons
+        # for stranded protocols
+        # -------------------------------------------------------------------------
+
+        sys.stdout.write("Extracting intermediate exons that do not overlap " +
+                         "with other exons (first exons, last exon or " +
+                         "intermediate exons) for stranded protocols" +
+                         os.linesep)
+
+        intermediate_exons_non_overlapping = \
+            os.path.join(
+                annotation_dir,
+                fc.get_new_filenumber_str() +
+                '.intermediate_exons_non_overlapping_stranded.bed'
+            )
+
+        annotation.write_non_overlapping_regions(
+            selected_bed=intermediate_exons_not_overlap_other_intermediate_exons_bed_file,
+            compare_bed_1=all_terminal_exons_bed_file,
+            compare_bed_2=all_start_exons_bed_file,
+            strand=True,
+            bed_out=intermediate_exons_non_overlapping
+        )
+
+    elif sequencing_direction == supported_sequencing_directions_unstranded:
+
+        # _________________________________________________________________________
+        # -------------------------------------------------------------------------
+        # Determine all terminal exons that do not overlap with other terminal
+        # exons
+        # -------------------------------------------------------------------------
+
+        sys.stdout.write("Extracting terminal exons that do not overlap " +
+                         "with other terminal exons" + os.linesep)
+
+        terminal_exons_not_overlap_other_terminal_exons_bed_file = \
+            os.path.join(
+                annotation_dir,
+                fc.get_new_filenumber_str() +
+                '.terminal_exons_not_overlap_other_terminal_exons_unstranded.bed'
+            )
+
+        annotation.write_non_overlapping_regions_to_bed(
+            bed_in=all_terminal_exons_bed_file,
+            bed_out=terminal_exons_not_overlap_other_terminal_exons_bed_file,
+            strand=True
+        )
+
+        # _________________________________________________________________________
+        # -------------------------------------------------------------------------
+        # Determine all intermediate exons that do not overlap with other
+        # intermediate exons
+        # -------------------------------------------------------------------------
+
+        sys.stdout.write("Extracting intermediate exons that do not overlap " +
+                         "with other intermediate exons" + os.linesep)
+
+        intermediate_exons_not_overlap_other_intermediate_exons_bed_file = \
+            os.path.join(
+                annotation_dir,
+                fc.get_new_filenumber_str() +
+                '.intermediate_exons_not_overlap_other_intermediate_exons_unstranded.bed'
+            )
+
+        annotation.write_non_overlapping_regions_to_bed(
+            bed_in=all_intermediate_exons_bed_file,
+            bed_out=intermediate_exons_not_overlap_other_intermediate_exons_bed_file,
+            strand=True
+        )
+
+        # _________________________________________________________________________
+        # -------------------------------------------------------------------------
+        # Determine terminal exons than not ovelap with other exons
+        # for stranded protocols
         # -------------------------------------------------------------------------
 
         sys.stdout.write("Extracting terminal exons that do not overlap " +
@@ -740,21 +821,22 @@ def main():
                 '.terminal_exons_non_overlapping_unstranded.bed'
             )
 
-        annotation.write_regions_identified_only_once_from_two_beds(
-            selected_regions_bed=terminal_exons_not_overlap_other_terminal_exons_bed_file,
-            all_regions_bed=exons_unique,
-            non_ovelapping_bed=terminal_exons_non_overlapping,
-            strand=False
+        annotation.write_non_overlapping_regions(
+            selected_bed=terminal_exons_not_overlap_other_terminal_exons_bed_file,
+            compare_bed_1=all_intermediate_exons_bed_file,
+            compare_bed_2=all_start_exons_bed_file,
+            strand=True,
+            bed_out=terminal_exons_non_overlapping
         )
 
         # _________________________________________________________________________
         # -------------------------------------------------------------------------
         # Determine intermediate exons than not ovelap with other exons
-        # for unstranded protocols
+        # for stranded protocols
         # -------------------------------------------------------------------------
 
         sys.stdout.write("Extracting intermediate exons that do not overlap " +
-                         "with other exons (first exons, last exons or " +
+                         "with other exons (first exons, last exon or " +
                          "intermediate exons) for unstranded protocols" +
                          os.linesep)
 
@@ -765,18 +847,20 @@ def main():
                 '.intermediate_exons_non_overlapping_unstranded.bed'
             )
 
-        annotation.write_regions_identified_only_once_from_two_beds(
-            selected_regions_bed=intermediate_exons_not_overlap_other_intermediate_exons_bed_file,
-            all_regions_bed=exons_unique,
-            non_ovelapping_bed=intermediate_exons_non_overlapping,
-            strand=False
+        annotation.write_non_overlapping_regions(
+            selected_bed=intermediate_exons_not_overlap_other_intermediate_exons_bed_file,
+            compare_bed_1=all_terminal_exons_bed_file,
+            compare_bed_2=all_start_exons_bed_file,
+            strand=True,
+            bed_out=intermediate_exons_non_overlapping
         )
 
     else:
-        raise Exception("Provided sequencing direction parameter " +
-                        "(%s) is not supported. Please choose: %s" %
-                        (sequencing_direction,
-                         " ".join(supported_sequencing_directions)))
+        raise Exception("Provided sequencing direction parameter ({}) is not supported. Please choose: {} {} ".format(
+            sequencing_direction,
+            " ".join(supported_sequencing_directions),
+            os.linesep)
+        )
 
     # _________________________________________________________________________
     # -------------------------------------------------------------------------
@@ -787,28 +871,8 @@ def main():
                      "upstream exon)..." + os.linesep)
 
     annotation.determine_feature_regions(
-        polyasites=polyasites_in_introns_bed_file)
-
-    # # _______________________________________________________________________
-    # # -----------------------------------------------------------------------
-    # # Create bed file with the non overlapping genes and update information
-    # # in the gene objects.
-    # # The output file depends on the strand
-    # # -----------------------------------------------------------------------
-    # sys.stdout.write("Writing non overlapping genes "
-    #                  "for stranded protocols" + os.linesep)
-
-    # non_overlapping_genes_bed = \
-    #     os.path.join(
-    #         annotation_dir,
-    #         "19.non_overlapping_genes.bed"
-    #     )
-
-    # annotation.write_non_overlapping_genes(
-    #     all_gene_regions=genes_bed_file,
-    #     sequencing_direction=sequencing_direction,
-    #     non_overlapping_genes_bed=non_overlapping_genes_bed
-    # )
+        polyasites=polyasites_in_introns_bed_file
+    )
 
     # _______________________________________________________________________
     # -----------------------------------------------------------------------
@@ -882,7 +946,7 @@ def main():
             tmp=options.output_dir,
             annotation=annotation,
             exons_per_gene_bed_file=exons_per_gene_bed_file,
-            verbose=options.verbose
+            verbose=False
         )
 
         # free memory
@@ -890,6 +954,7 @@ def main():
             del(aunits_dict[unit_id])
         except(KeyError):
             pass
+
     # _________________________________________________________________________
     # -------------------------------------------------------------------------
     # MACHINE LEARNING
@@ -1267,7 +1332,7 @@ def main():
     # -------------------------------------------------------------------------
     # Read genome file
     # -------------------------------------------------------------------------
-    sys.stdout.write("Reading genome file ...\n")
+    sys.stdout.write("Reading genome file ..." + os.linesep)
     genome = Fasta(options.genome)
 
     # _________________________________________________________________________
@@ -1275,14 +1340,16 @@ def main():
     # Annotate CDS for novel transcripts
     # -------------------------------------------------------------------------
     sys.stdout.write(
-        "Annotating CDS for novel transcripts (novel splicing)...\n")
+        "Annotating CDS for novel transcripts (novel splicing)..." +
+        os.linesep)
     annotation.determine_CDS_novel_transcrtips_from_spicing(genome)
 
     # _________________________________________________________________________
     # -------------------------------------------------------------------------
     # Write novel GTF file
     # -------------------------------------------------------------------------
-    sys.stdout.write("Writing GTF file for known and novel transcripts ...\n")
+    sys.stdout.write(
+        "Writing GTF file for known and novel transcripts ..." + os.linesep)
     output_file = "enriched_annotation.gtf"
     output_file_path = os.path.join(options.output_dir, output_file)
     w = open(output_file_path, 'w')

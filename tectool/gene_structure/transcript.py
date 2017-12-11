@@ -296,7 +296,9 @@ class Transcript(object):
                 self.strand])
 
     def get_terminal_exon(self):
-        """Get last exon of the transcript"""
+        """
+        Get last exon of the transcript
+        """
 
         if self.strand == '+':
             return(self.exon_list_sorted_by_end_coord[-1])
@@ -304,7 +306,9 @@ class Transcript(object):
             return(self.exon_list_sorted_by_end_coord[0])
 
     def get_bed_terminal_exon_as_list(self):
-        """Get last exon of the transcript"""
+        """
+        Get last exon of the transcript
+        """
 
         temrinal_exon = ''
 
@@ -322,8 +326,31 @@ class Transcript(object):
              temrinal_exon.strand]
         )
 
+    def get_bed_start_exon_as_list(self):
+        """
+        Get last exon of the transcript
+        """
+
+        start_exon = ''
+
+        if self.strand == '+':
+            start_exon = self.exon_list_sorted_by_end_coord[0]
+        elif self.strand == '-':
+            start_exon = self.exon_list_sorted_by_end_coord[-1]
+
+        return(
+            [start_exon.chromosome,
+             start_exon.start,
+             start_exon.end,
+             start_exon.gene_id,
+             "0",
+             start_exon.strand]
+        )
+
     def get_start_exon(self):
-        """Get first exon of the transcript"""
+        """
+        Get first exon of the transcript
+        """
 
         if self.strand == '+':
             return(self.exon_list_sorted_by_end_coord[0])

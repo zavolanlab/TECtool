@@ -427,7 +427,8 @@ class MachineLearningUnit(object):
         # ---------------------------------------------------------------------
         # Open the BAM file
         # ---------------------------------------------------------------------
-        sys.stdout.write("Counting reads for annotated terminal exons...\n")
+        sys.stdout.write("Counting reads for annotated terminal exons..." +
+                         os.linesep)
 
         bam_file_path = bam_file_path
         bam = HTSeq.BAM_Reader(bam_file_path)
@@ -446,7 +447,8 @@ class MachineLearningUnit(object):
             # give some feedback about the state of the script
             # (how many units have been analyzed so far?)
             if verbose and (unit_nr % 100) == 0:
-                sys.stdout.write("Regions processed:\t" + str(unit_nr) + "\n")
+                sys.stdout.write("Regions processed:\t" + str(unit_nr) +
+                                 os.linesep)
 
             # get the AnalysisUnit object
             aunits_terminal_exons_dict[
@@ -768,12 +770,15 @@ class MachineLearningUnit(object):
 
         # report to the user where the training dataframes will be written
         if verbose:
-            sys.stdout.write("Writing background exon training data: %s\n" %
-                             background_output_file)
-            sys.stdout.write("Writing intermediate exon training data: %s\n" %
-                             intermediate_output_file)
-            sys.stdout.write("Writing terminal exon training data: %s\n" %
-                             terminal_output_file)
+            sys.stdout.write("Writing background exon training data: {} {} \
+                             ".format(background_output_file,
+                                      os.linesep))
+            sys.stdout.write("Writing intermediate exon training data: {} {} \
+                             ".format(intermediate_output_file,
+                                      os.linesep))
+            sys.stdout.write("Writing terminal exon training data: {} {} \
+                             ".format(terminal_output_file,
+                                      os.linesep))
 
         # create a list for each of the training sets
         terminal_exon_training_data_list = []
@@ -918,13 +923,14 @@ class MachineLearningUnit(object):
 
                 # tell the user that we do not have the requested number
                 # of data sets available
-                sys.stderr.write(("WARNING: The number of available " +
-                                  "training data sets (=%i) is samller " +
-                                  "than the number of data sets " +
-                                  "(=%i) requested/recommended for " +
-                                  "determining feature weights.\n") %
-                                 (nr_available_data_sets,
-                                  nr_wanted_data_sets))
+                sys.stderr.write("WARNING: The number of available \
+                                  training data sets (={}) is smaller \
+                                  than the number of data sets \
+                                  (={}) requested/recommended for \
+                                  determining feature weights. {} \
+                                  ".format(nr_available_data_sets,
+                                           nr_wanted_data_sets,
+                                           os.linesep))
 
             else:
 
@@ -932,9 +938,10 @@ class MachineLearningUnit(object):
                 # nr_data_sets_to_sample = nr_wanted_data_sets
 
                 if verbose:
-                    sys.stdout.write(("Sampling %s data sets from each " +
-                                      "training class...\n") %
-                                     str(nr_wanted_data_sets))
+                    sys.stdout.write("Sampling {} data sets from each \
+                                      training class... {} \
+                                      ".format(str(nr_wanted_data_sets),
+                                               os.linesep))
 
                 # TE
                 self.terminal_exon_training_data = \
@@ -968,7 +975,7 @@ class MachineLearningUnit(object):
 
             if verbose:
                 sys.stdout.write("Using all data sets from each training " +
-                                 "class...\n")
+                                 "class..." + os.linesep)
 
         # use the maximum possible when choosing equal sized training sets
         elif str(nr_to_subsample) == "max_equal_size":
@@ -976,8 +983,8 @@ class MachineLearningUnit(object):
             if verbose:
                 sys.stdout.write(("Using maximum possible number (n=%i) of " +
                                   "data sets from each training class so " +
-                                  "that all of them have the same size...\n") %
-                                 (nr_available_data_sets))
+                                  "that all of them have the same size... %s") %
+                                 (nr_available_data_sets, os.linesep))
 
                 # TE
                 self.terminal_exon_training_data = \
@@ -1242,8 +1249,9 @@ class MachineLearningUnit(object):
         """Method that reads training data from a file into 'training_df'."""
 
         if verbose:
-            sys.stdout.write("Reading training data ('training_df') from " +
-                             "file: %s\n" % (training_df_file_path))
+            sys.stdout.write("Reading training data ('training_df') \
+                              from file: {} {} \
+                              ".format(training_df_file_path, os.linesep))
 
         self.training_df = \
             pd.read_csv(training_df_file_path,
@@ -1277,8 +1285,9 @@ class MachineLearningUnit(object):
         'validation_df'."""
 
         if verbose:
-            sys.stdout.write("Reading validation data ('validation_df') " +
-                             "from file: %s\n" % (validation_df_file_path))
+            sys.stdout.write("Reading validation data ('validation_df') \
+                              from file: {} {}".format(validation_df_file_path,
+                                                       os.linesep))
 
         self.validation_df = \
             pd.read_csv(validation_df_file_path,
@@ -1287,20 +1296,20 @@ class MachineLearningUnit(object):
                         low_memory=False)
 
     def fit_linear_model_to_profile(self, profile):
-        
         """
         Method that fits a linear model to a given profile.
         """
 
-        # create a list with the pins for the profile so that we have always 
+        # create a list with the pins for the profile so that we have always
         # length 0-1 for each region on the x-axis
-        x = np.arange( 0.0, 1.0, 1.0/len(profile) )
+        x = np.arange(0.0, 1.0, 1.0 / len(profile))
 
         # create the y-axis (=profile)
         y = np.array(profile)
 
         try:
-            slope, intercept, r_value, p_value, std_err = stats.linregress(x,y)
+            slope, intercept, r_value, p_value, std_err = \
+                stats.linregress(x, y)
         except ValueError:
             slope = np.nan
             intercept = np.nan
@@ -1379,11 +1388,11 @@ class MachineLearningUnit(object):
 
         try:
             # fit the parameter
-            popt, pcov = curve_fit( self.cumulative_fit_funct, x_axis, y_axis )
-            
+            popt, pcov = curve_fit(self.cumulative_fit_funct, x_axis, y_axis)
+
             # get the estimated y values
-            est_y = [ self.cumulative_fit_funct( l, *popt ) for l in x_axis ]
-            
+            est_y = [self.cumulative_fit_funct(l, *popt) for l in x_axis]
+
             # get the fitted a parameter
             fitted_a_param = popt[0]
             fitted_b_param = popt[1]
@@ -1391,14 +1400,15 @@ class MachineLearningUnit(object):
             # normalize the parameters
             fitted_a_param_norm = \
                 fitted_a_param / (fitted_a_param + fitted_b_param)
-            fitted_b_param_norm = fitted_b_param / (fitted_a_param+fitted_b_param)
+            fitted_b_param_norm = \
+                fitted_b_param / (fitted_a_param + fitted_b_param)
 
             # calculate the R squared for the fit
             # https://en.wikipedia.org/wiki/Coefficient_of_determination
             SS_res = 0.0
             for index in range(len(y_axis)):
                 SS_res += (y_axis[index] - est_y[index])**2
-            
+
             SS_tot = 0.0
             y_mean = sum(y_axis) / len(y_axis)
             for index in range(len(y_axis)):
@@ -1407,23 +1417,25 @@ class MachineLearningUnit(object):
             R_squared = 1 - (SS_res / SS_tot)
 
             # create some plots in order to check what is going on
-            if diagnostic_plots_dir_path is not None \
-              and region_id is not None \
-              and (R_squared > 0.999 or fitted_a_param < 0.0):
-                
-                file_name = "CDF_"+str(region_id)+".png"
+            if (
+                diagnostic_plots_dir_path is not None and
+                region_id is not None and
+                (R_squared > 0.999 or fitted_a_param < 0.0)
+            ):
+
+                file_name = "CDF_" + str(region_id) + ".png"
                 file_path = os.path.join(diagnostic_plots_dir_path, file_name)
 
                 plt.figure()
-                #plt.scatter( x_axis, y_axis , color='blue', alpha=0.5)
-                #plt.scatter( x_axis, est_y, color='red', alpha=0.5 )
-                plt.plot( x_axis, y_axis, 'ob', alpha=0.5)
-                plt.plot( x_axis, est_y, 'or-', alpha=0.5)
-                plt.xlim((-0.01,1.0))
-                plt.ylim((-0.01,1.0))
+                # plt.scatter(x_axis, y_axis, color='blue', alpha=0.5)
+                # plt.scatter(x_axis, est_y, color='red', alpha=0.5)
+                plt.plot(x_axis, y_axis, 'ob', alpha=0.5)
+                plt.plot(x_axis, est_y, 'or-', alpha=0.5)
+                plt.xlim((-0.01, 1.0))
+                plt.ylim((-0.01, 1.0))
                 plt.xlabel('Length normalized position')
                 plt.ylabel('Cumulative read density (distribution).')
-                
+
                 title = "R2=" + str(R_squared) + "; a=" + str(fitted_a_param_norm) + "; b=" + str(fitted_b_param_norm)
                 plt.title(title)
                 plt.savefig(file_path)
@@ -1450,7 +1462,10 @@ class MachineLearningUnit(object):
         """
 
         # create results directory
-        if results_dir_path is not None and not os.path.exists(results_dir_path):
+        if (
+            results_dir_path is not None and
+            not os.path.exists(results_dir_path)
+        ):
             os.makedirs(results_dir_path)
 
         # _____________________________________________________________________
@@ -2765,7 +2780,7 @@ class MachineLearningUnit(object):
         """Filters raw data."""
         
         # read in the file
-        df_raw = pd.io.parsers.read_csv(raw_data_file_path, sep="\t", index_col=rownames_col, header=0)
+        df_raw = pd.io.parsers.read_csv(raw_data_file_path, sep="\t", index_col=rownames_col, header=0, low_memory=False)
 
         # select the terminal exons we are interested in
         keep_rows_idx = (df_raw.ix[:,df_raw.columns != profile_col] >= min_feature_reads).any(axis=1)
