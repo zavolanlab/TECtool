@@ -109,6 +109,7 @@ conda install --channel coda-forge scikit-learn==0.19.0
 # TEMP usage for checking the PEP8 score of our code
 conda install pylint
 conda install --channel anaconda jupyter
+conda install flake8-docstrings
 ```
 
 

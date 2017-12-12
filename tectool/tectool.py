@@ -5,62 +5,62 @@
 
 try:
     import sys
-except(Exception):
+except Exception:
     raise("[ERROR] sys was not imported properly. Exiting.")
     sys.exit(-1)
 
 try:
     import HTSeq
-except(Exception):
+except Exception:
     raise("[ERROR] HTSeq was not imported properly. Exiting.")
     sys.exit(-1)
 
 try:
     import os
-except(Exception):
+except Exception:
     raise("[ERROR] os was not imported properly. Exiting.")
     sys.exit(-1)
 
 try:
     import math
-except(Exception):
+except Exception:
     raise("[ERROR] math was not imported properly. Exiting.")
     sys.exit(-1)
 
 try:
     from argparse import ArgumentParser, RawTextHelpFormatter
-except(Exception):
+except Exception:
     raise("[ERROR] argparse was not imported properly. Exiting.")
     sys.exit(-1)
 
 try:
     import itertools
-except(Exception):
+except Exception:
     raise("[ERROR] itertools was not imported properly. Exiting.")
     sys.exit(-1)
 
 try:
     import collections
     from collections import defaultdict
-except(Exception):
+except Exception:
     raise("[ERROR] collections was not imported properly. Exiting.")
     sys.exit(-1)
 
 try:
     import pybedtools
-except(Exception):
+except Exception:
     raise("[ERROR] pybedtools was not imported properly. Exiting.")
     sys.exit(-1)
 
 try:
     from pyfasta import Fasta
-except(Exception):
+except Exception:
     raise("[ERROR] pyfasta was not imported properly. Exiting.")
     sys.exit(-1)
 
 try:
     import pandas as pd
-except(Exception):
+except Exception:
     raise("[ERROR] pandas was not imported properly. Exiting.")
     sys.exit(-1)
 
@@ -68,7 +68,7 @@ try:
     import matplotlib as mpl
     mpl.use('Agg')
     import matplotlib.pyplot as plt
-except(Exception):
+except Exception:
     raise "[ERROR] plt from matplotlib.pyplot \
     was not imported properly. Exiting."
     sys.exit(-1)
@@ -85,14 +85,14 @@ try:
     from sklearn.cross_validation import train_test_split
     from sklearn import neighbors
     # from sklearn.model_selection import StratifiedKFold
-except(Exception):
+except Exception:
     raise("[ERROR] sklearn was not imported properly")
     sys.exit(-1)
 
 try:
     from scipy import interp
     from scipy import stats
-except(Exception):
+except Exception:
     raise("[ERROR] scipy was not imported properly")
     sys.exit(-1)
 
@@ -106,31 +106,31 @@ except(Exception):
 
 try:
     import random
-except(Exception):
+except Exception:
     raise("[ERROR] random was not imported properly. Exiting.")
     sys.exit(-1)
 
 try:
     import numpy as np
-except(Exception):
+except Exception:
     raise("[ERROR] numpy was not imported properly. Exiting.")
     sys.exit(-1)
 
 try:
     import copy
-except(Exception):
+except Exception:
     raise("[ERROR] copy was not imported properly. Exiting.")
     sys.exit(-1)
 
 try:
     import csv
-except(Exception):
+except Exception:
     raise("[ERROR] csv was not imported properly. Exiting.")
     sys.exit(-1)
 
 try:
     import functools
-except(Exception):
+except Exception:
     raise("[ERROR] functools was not imported properly. Exiting.")
 
 # _____________________________________________________________________________
@@ -250,8 +250,7 @@ def estimate_expression_of_selected_genes(
             sequencing_direction=sequencing_direction,
             count_unique_mapping_reads_only=True,
             annotation=annotation,
-            verbose=False
-        )
+            verbose=False)
 
         annotation.genes[gene_id].total_reads = int(gene_reads)
         annotation.genes[gene_id].estimate_ExpressionPerKBApproximated()
@@ -366,7 +365,7 @@ def main():
     # -------------------------------------------------------------------------
     try:
         options = parser.parse_args()
-    except(Exception):
+    except Exception:
         parser.print_help()
 
     if len(sys.argv) == 1:
