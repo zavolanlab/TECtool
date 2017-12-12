@@ -972,8 +972,7 @@ class AnalysisUnit:
                                                     transcript].get_existing_and_upstream_exons(
                                                         exon.split(":")[1],
                                                         exon.split(":")[2],
-                                                        exon.split(":")[3]
-                                                    )
+                                                        exon.split(":")[3])
 
                                                 # In case the list is not empty
                                                 if len(exons_before_novel_one) > 0:

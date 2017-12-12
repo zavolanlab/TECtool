@@ -1477,6 +1477,7 @@ class MachineLearningUnit(object):
         region_length = len(profile)
 
         if all(nt == 0 for nt in profile):
+
             # FIXME: we have to get all variables filled in here!
 
             # set ratios to zero for cases with no coverage
@@ -1701,6 +1702,14 @@ class MachineLearningUnit(object):
         # overwrite the old version that lacks features
         self.terminal_exon_training_data = TE_feat.copy()
 
+        # write out to DEBUG
+        self.terminal_exon_training_data.to_csv(
+            os.path.join(output_files_dir,
+                         'DEBUG_terminal_training.tsv'),
+            sep='\t',
+            index=True
+        )
+
         # clean up...
         del(TE_feat)
 
@@ -1746,6 +1755,14 @@ class MachineLearningUnit(object):
 
         # overwrite the old version that lacks features
         self.intermediate_exon_training_data = IE_feat.copy()
+
+        # write out to DEBUG
+        self.intermediate_exon_training_data.to_csv(
+            os.path.join(output_files_dir,
+                         'DEBUG_intermediate_training.tsv'),
+            sep='\t',
+            index=True
+        )
 
         # clean up...
         del(IE_feat)
@@ -1793,6 +1810,14 @@ class MachineLearningUnit(object):
 
         # overwrite the old version that lacks features
         self.background_training_data = BG_feat.copy()
+
+        # write out to DEBUG
+        self.background_training_data.to_csv(
+            os.path.join(output_files_dir,
+                         'DEBUG_background_training.tsv'),
+            sep='\t',
+            index=True
+        )
 
         # clean up...
         del(BG_feat)
