@@ -133,6 +133,12 @@ try:
 except Exception:
     raise("[ERROR] functools was not imported properly. Exiting.")
 
+try:
+    import multiprocessing as mp
+except Exception:
+    raise("[ERROR] multiprocessing was not imported properly. Exiting.")
+    sys.exit(-1)
+
 # _____________________________________________________________________________
 # -----------------------------------------------------------------------------
 # import our own modules
@@ -1029,7 +1035,7 @@ def main():
     # ---------------------------------------------------------------------
     estimate_expression_of_selected_genes(
         annotation=annotation,
-        selected_genes_dict=annotation.genes,
+        selected_genes_dict=genes_with_multiexonic_transcripts,
         bam_file_path=options.bam_file,
         sequencing_direction=options.sequencing_direction,
         count_unique_mapping_reads_only=True,

@@ -1372,14 +1372,23 @@ class Annotation(object):
                    "score",
                    "strand"]
 
+        columns_dtype = {
+            "chrom": "object",
+            "start": "int64",
+            "end": "int64",
+            "name": "object",
+            "score": "object",
+            "strand": "object"
+        }
+
         # read them as dataframes
         df = pd.read_csv(
             bed,
             sep="\t",
-            header=None
+            header=None,
+            names=columns,
+            dtype=columns_dtype
         )
-
-        df.columns = columns
 
         df_grouped = df.groupby("name").count()["score"]
 
