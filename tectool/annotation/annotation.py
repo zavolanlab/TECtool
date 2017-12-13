@@ -1082,6 +1082,55 @@ class Annotation(object):
             wa=True
         ).saveas(bed_out)
 
+        return
+
+    def write_non_repeated_regions(
+        self,
+        bed_in,
+        bed_out
+    ):
+
+        columns = ["chrom",
+                   "start",
+                   "end",
+                   "name",
+                   "score",
+                   "strand"]
+
+        columns_dtype = {
+            "chrom": "object",
+            "start": "int64",
+            "end": "int64",
+            "name": "object",
+            "score": "object",
+            "strand": "object"
+        }
+
+        df = pd.read_csv(bed_in,
+                         sep="\t",
+                         header=None,
+                         names=columns,
+                         dtype=columns_dtype)
+
+        df.sort_values(["chrom", "start"],
+                       ascending=[True, True],
+                       inplace=True)
+
+        df.drop_duplicates(
+            subset=["chrom", "start", "end"],
+            keep=False,
+            inplace=True
+        )
+
+        df.to_csv(
+            bed_out,
+            sep="\t",
+            header=False,
+            index=False
+        )
+
+        return
+
     def write_regions_identified_only_once_from_two_beds(
         self,
         selected_regions_bed,

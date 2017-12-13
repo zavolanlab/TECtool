@@ -871,6 +871,27 @@ def main():
     # -------------------------------------------------------------------------
     # Determine feature regions
     # -------------------------------------------------------------------------
+
+    sys.stdout.write("Extracting intermediate exons that do not belong to " +
+                     "multiple genes" +
+                     os.linesep)
+
+    intermediate_exons_non_overlapping_no_multiple_genes = \
+        os.path.join(
+            annotation_dir,
+            fc.get_new_filenumber_str() +
+            '.intermediate_exons_non_overlapping_no_multiple_genes.bed'
+        )
+
+    annotation.write_non_repeated_regions(
+        bed_in=intermediate_exons_non_overlapping,
+        bed_out=intermediate_exons_non_overlapping_no_multiple_genes
+    )
+
+    # _________________________________________________________________________
+    # -------------------------------------------------------------------------
+    # Determine feature regions
+    # -------------------------------------------------------------------------
     sys.stdout.write("Determining feature regions (=region between an " +
                      "intronic poly(A) site and the 3' end of the closest " +
                      "upstream exon)..." + os.linesep)
@@ -1020,7 +1041,7 @@ def main():
     # 2. directly afterwards they are deleted
     #
     ml_train_unit.create_intermediate_exon_training_set(
-        intermediate_exons_bed_file_path=intermediate_exons_non_overlapping,
+        intermediate_exons_bed_file_path=intermediate_exons_non_overlapping_no_multiple_genes,
         sequencing_direction=options.sequencing_direction,
         max_splice_fuzziness=max_splice_fuzziness,
         output_dir=options.output_dir,
