@@ -1204,10 +1204,10 @@ class Annotation(object):
 
         return
 
-    def write_non_overlapping_genes(
+    def write_non_overlapping_genes_to_bed(
         self,
         all_gene_regions,
-        sequencing_direction,
+        strand,
         non_overlapping_genes_bed
     ):
         """
@@ -1245,12 +1245,6 @@ class Annotation(object):
 
         # load gene coordinates
         all_genes = pybedtools.BedTool(all_gene_regions)
-
-        # select strand option for bedtools based on protocol
-        if sequencing_direction == "forward":
-            strand = True
-        elif sequencing_direction == "unstranded":
-            strand = False
 
         all_genes.intersect(all_genes,
                             s=strand,
@@ -1417,6 +1411,8 @@ class Annotation(object):
         and returns a dictionary of genes with multiple exons per gene"
         """
 
+        df_selected_dict = dict()
+
         columns = ["chrom",
                    "start",
                    "end",
@@ -1446,10 +1442,55 @@ class Annotation(object):
 
         df_selected_list = list(df_grouped[df_grouped > 1].index)
 
-        i = iter(df_selected_list)
-        df_selected_dict = dict(zip(i, i))
+        for i in df_selected_list:
+            df_selected_dict[i] = i
 
         return df_selected_dict
+
+    def create_dictionary_of_non_overlapping_genes(
+        self,
+        non_overlapping_genes_bed
+    ):
+        """
+        Function that takes a a bed file of non overlapping genes
+        and returens a dictionary that contains as key the gene_id
+        and value the gene_id. It uses the information stored in
+        the column name of the bed file.
+        """
+
+        non_overlapping_genes_dict = dict()
+
+        columns = ["chrom",
+                   "start",
+                   "end",
+                   "name",
+                   "score",
+                   "strand"]
+
+        columns_dtype = {
+            "chrom": "object",
+            "start": "int64",
+            "end": "int64",
+            "name": "object",
+            "score": "object",
+            "strand": "object"
+        }
+
+        # read them as dataframes
+        df = pd.read_csv(
+            non_overlapping_genes_bed,
+            sep="\t",
+            header=None,
+            names=columns,
+            dtype=columns_dtype
+        )
+
+        df_selected_list = list(set(df["name"].tolist()))
+
+        for i in df_selected_list:
+            non_overlapping_genes_dict[i] = i
+
+        return non_overlapping_genes_dict
 
     def filter_terminal_exon_training_candidates(self):
         """

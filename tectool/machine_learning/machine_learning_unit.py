@@ -111,7 +111,8 @@ try:
     mpl.use('Agg')
     import matplotlib.pyplot as plt
 except(Exception):
-    raise "[ERROR] plt from matplotlib.pyplot was not imported properly. Exiting."
+    raise("[ERROR] plt from matplotlib.pyplot was not " +
+          "imported properly. Exiting.")
     sys.exit(-1)
 
 try:
@@ -770,15 +771,9 @@ class MachineLearningUnit(object):
 
         # report to the user where the training dataframes will be written
         if verbose:
-            sys.stdout.write("Writing background exon training data: {} {} \
-                             ".format(background_output_file,
-                                      os.linesep))
-            sys.stdout.write("Writing intermediate exon training data: {} {} \
-                             ".format(intermediate_output_file,
-                                      os.linesep))
-            sys.stdout.write("Writing terminal exon training data: {} {} \
-                             ".format(terminal_output_file,
-                                      os.linesep))
+            sys.stdout.write("Writing background exon training data: {} {} ".format(background_output_file, os.linesep))
+            sys.stdout.write("Writing intermediate exon training data: {} {} ".format(intermediate_output_file, os.linesep))
+            sys.stdout.write("Writing terminal exon training data: {} {} ".format(terminal_output_file, os.linesep))
 
         # create a list for each of the training sets
         terminal_exon_training_data_list = []
@@ -808,52 +803,83 @@ class MachineLearningUnit(object):
         # Create pandas dataframes
 
         # terminal exons
-        self.terminal_exon_training_data = \
-            pd.DataFrame.from_records(
-                [t.to_dict() for t in terminal_exon_training_data_list])
+        try:
+            self.terminal_exon_training_data = \
+                pd.DataFrame.from_records(
+                    [t.to_dict() for t in terminal_exon_training_data_list])
 
-        self.terminal_exon_training_data.set_index(
-            "region",
-            inplace=True
-        )
+            self.terminal_exon_training_data.set_index(
+                "region",
+                inplace=True
+            )
 
-        self.terminal_exon_training_data.to_csv(
-            terminal_output_file,
-            sep="\t",
-            index=True
-        )
+            self.terminal_exon_training_data.to_csv(
+                terminal_output_file,
+                sep="\t",
+                index=True
+            )
+
+        except Exception:
+
+            raise Exception(
+                "The terminal exons dataset size was too small." +
+                "Number of entries" +
+                str(len(self.terminal_exon_training_data)) +
+                os.linesep + "Exiting..." + os.linesep
+            )
+            sys.exit(-1)
 
         # intermediate exons
-        self.intermediate_exon_training_data = \
-            pd.DataFrame.from_records(
-                [t.to_dict() for t in intermediate_exon_training_data_list])
+        try:
+            self.intermediate_exon_training_data = \
+                pd.DataFrame.from_records(
+                    [t.to_dict() for t in intermediate_exon_training_data_list])
 
-        self.intermediate_exon_training_data.set_index(
-            "region",
-            inplace=True
-        )
+            self.intermediate_exon_training_data.set_index(
+                "region",
+                inplace=True
+            )
 
-        self.intermediate_exon_training_data.to_csv(
-            intermediate_output_file,
-            sep="\t",
-            index=True
-        )
+            self.intermediate_exon_training_data.to_csv(
+                intermediate_output_file,
+                sep="\t",
+                index=True
+            )
+        except Exception:
+
+            raise Exception(
+                "The intermediate exons dataset size was too small." +
+                "Number of entries" +
+                str(len(self.intermediate_exon_training_data)) +
+                os.linesep + "Exiting..." + os.linesep
+            )
+            sys.exit(-1)
 
         # background
-        self.background_training_data = \
-            pd.DataFrame.from_records(
-                [t.to_dict() for t in background_training_data_list])
+        try:
+            self.background_training_data = \
+                pd.DataFrame.from_records(
+                    [t.to_dict() for t in background_training_data_list])
 
-        self.background_training_data.set_index(
-            "region",
-            inplace=True
-        )
+            self.background_training_data.set_index(
+                "region",
+                inplace=True
+            )
 
-        self.background_training_data.to_csv(
-            background_output_file,
-            sep="\t",
-            index=True
-        )
+            self.background_training_data.to_csv(
+                background_output_file,
+                sep="\t",
+                index=True
+            )
+        except Exception:
+
+            raise Exception(
+                "The background dataset size was too small." +
+                "Number of entries" +
+                str(len(self.background_training_data)) +
+                os.linesep + "Exiting..." + os.linesep
+            )
+            sys.exit(-1)
 
     def add_features_to_training_dataframes(
         self,

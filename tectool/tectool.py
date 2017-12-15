@@ -6,62 +6,62 @@
 try:
     import sys
 except Exception:
-    raise("[ERROR] sys was not imported properly. Exiting.")
+    raise Exception("[ERROR] sys was not imported properly. Exiting.")
     sys.exit(-1)
 
 try:
     import HTSeq
 except Exception:
-    raise("[ERROR] HTSeq was not imported properly. Exiting.")
+    raise Exception("[ERROR] HTSeq was not imported properly. Exiting.")
     sys.exit(-1)
 
 try:
     import os
 except Exception:
-    raise("[ERROR] os was not imported properly. Exiting.")
+    raise Exception("[ERROR] os was not imported properly. Exiting.")
     sys.exit(-1)
 
 try:
     import math
 except Exception:
-    raise("[ERROR] math was not imported properly. Exiting.")
+    raise Exception("[ERROR] math was not imported properly. Exiting.")
     sys.exit(-1)
 
 try:
     from argparse import ArgumentParser, RawTextHelpFormatter
 except Exception:
-    raise("[ERROR] argparse was not imported properly. Exiting.")
+    raise Exception("[ERROR] argparse was not imported properly. Exiting.")
     sys.exit(-1)
 
 try:
     import itertools
 except Exception:
-    raise("[ERROR] itertools was not imported properly. Exiting.")
+    raise Exception("[ERROR] itertools was not imported properly. Exiting.")
     sys.exit(-1)
 
 try:
     import collections
     from collections import defaultdict
 except Exception:
-    raise("[ERROR] collections was not imported properly. Exiting.")
+    raise Exception("[ERROR] collections was not imported properly. Exiting.")
     sys.exit(-1)
 
 try:
     import pybedtools
 except Exception:
-    raise("[ERROR] pybedtools was not imported properly. Exiting.")
+    raise Exception("[ERROR] pybedtools was not imported properly. Exiting.")
     sys.exit(-1)
 
 try:
     from pyfasta import Fasta
 except Exception:
-    raise("[ERROR] pyfasta was not imported properly. Exiting.")
+    raise Exception("[ERROR] pyfasta was not imported properly. Exiting.")
     sys.exit(-1)
 
 try:
     import pandas as pd
 except Exception:
-    raise("[ERROR] pandas was not imported properly. Exiting.")
+    raise Exception("[ERROR] pandas was not imported properly. Exiting.")
     sys.exit(-1)
 
 try:
@@ -69,8 +69,7 @@ try:
     mpl.use('Agg')
     import matplotlib.pyplot as plt
 except Exception:
-    raise "[ERROR] plt from matplotlib.pyplot \
-    was not imported properly. Exiting."
+    raise Exception("[ERROR] plt from matplotlib.pyplot was not imported properly. Exiting.")
     sys.exit(-1)
 
 try:
@@ -86,14 +85,14 @@ try:
     from sklearn import neighbors
     # from sklearn.model_selection import StratifiedKFold
 except Exception:
-    raise("[ERROR] sklearn was not imported properly")
+    raise Exception("[ERROR] sklearn was not imported properly")
     sys.exit(-1)
 
 try:
     from scipy import interp
     from scipy import stats
 except Exception:
-    raise("[ERROR] scipy was not imported properly")
+    raise Exception("[ERROR] scipy was not imported properly")
     sys.exit(-1)
 
 # try:
@@ -107,36 +106,36 @@ except Exception:
 try:
     import random
 except Exception:
-    raise("[ERROR] random was not imported properly. Exiting.")
+    raise Exception("[ERROR] random was not imported properly. Exiting.")
     sys.exit(-1)
 
 try:
     import numpy as np
 except Exception:
-    raise("[ERROR] numpy was not imported properly. Exiting.")
+    raise Exception("[ERROR] numpy was not imported properly. Exiting.")
     sys.exit(-1)
 
 try:
     import copy
 except Exception:
-    raise("[ERROR] copy was not imported properly. Exiting.")
+    raise Exception("[ERROR] copy was not imported properly. Exiting.")
     sys.exit(-1)
 
 try:
     import csv
 except Exception:
-    raise("[ERROR] csv was not imported properly. Exiting.")
+    raise Exception("[ERROR] csv was not imported properly. Exiting.")
     sys.exit(-1)
 
 try:
     import functools
 except Exception:
-    raise("[ERROR] functools was not imported properly. Exiting.")
+    raise Exception("[ERROR] functools was not imported properly. Exiting.")
 
 try:
     import multiprocessing as mp
 except Exception:
-    raise("[ERROR] multiprocessing was not imported properly. Exiting.")
+    raise Exception("[ERROR] multiprocessing was not imported properly. Exiting.")
     sys.exit(-1)
 
 # _____________________________________________________________________________
@@ -773,6 +772,28 @@ def main():
             bed_out=intermediate_exons_non_overlapping
         )
 
+        # _________________________________________________________________________
+        # -------------------------------------------------------------------------
+        # Find non overlapping genes
+        # -------------------------------------------------------------------------
+
+        sys.stdout.write("Determining non overlapping genes for stranded " +
+                         "protocols" + os.linesep)
+
+        non_overlapping_genes_bed = os.path.join(
+            os.path.join(
+                annotation_dir,
+                fc.get_new_filenumber_str() +
+                '.non_overlapping_genes_stranded.bed'
+            )
+        )
+
+        annotation.write_non_overlapping_genes_to_bed(
+            all_gene_regions=genes_bed_file,
+            strand=True,
+            non_overlapping_genes_bed=non_overlapping_genes_bed
+        )
+
     elif sequencing_direction == supported_sequencing_directions_unstranded:
 
         # _________________________________________________________________________
@@ -794,7 +815,7 @@ def main():
         annotation.write_non_overlapping_regions_to_bed(
             bed_in=all_terminal_exons_bed_file,
             bed_out=terminal_exons_not_overlap_other_terminal_exons_bed_file,
-            strand=True
+            strand=False
         )
 
         # _________________________________________________________________________
@@ -816,18 +837,18 @@ def main():
         annotation.write_non_overlapping_regions_to_bed(
             bed_in=all_intermediate_exons_bed_file,
             bed_out=intermediate_exons_not_overlap_other_intermediate_exons_bed_file,
-            strand=True
+            strand=False
         )
 
         # _________________________________________________________________________
         # -------------------------------------------------------------------------
         # Determine terminal exons than not ovelap with other exons
-        # for stranded protocols
+        # for unstranded protocols
         # -------------------------------------------------------------------------
 
         sys.stdout.write("Extracting terminal exons that do not overlap " +
                          "with other exons (first exons, last exon or " +
-                         "intermediate exons) for unstranded protocols" +
+                         "intermediate exons) for stranded protocols" +
                          os.linesep)
 
         terminal_exons_non_overlapping = \
@@ -848,7 +869,7 @@ def main():
         # _________________________________________________________________________
         # -------------------------------------------------------------------------
         # Determine intermediate exons than not ovelap with other exons
-        # for stranded protocols
+        # for unstranded protocols
         # -------------------------------------------------------------------------
 
         sys.stdout.write("Extracting intermediate exons that do not overlap " +
@@ -867,8 +888,30 @@ def main():
             selected_bed=intermediate_exons_not_overlap_other_intermediate_exons_bed_file,
             compare_bed_1=all_terminal_exons_bed_file,
             compare_bed_2=all_start_exons_bed_file,
-            strand=True,
+            strand=False,
             bed_out=intermediate_exons_non_overlapping
+        )
+
+        # _________________________________________________________________________
+        # -------------------------------------------------------------------------
+        # Find non overlapping genes
+        # -------------------------------------------------------------------------
+
+        sys.stdout.write("Determining non overlapping genes for unstranded " +
+                         "protocols" + os.linesep)
+
+        non_overlapping_genes_bed = os.path.join(
+            os.path.join(
+                annotation_dir,
+                fc.get_new_filenumber_str() +
+                '.non_overlapping_genes_unstranded.bed'
+            )
+        )
+
+        annotation.write_non_overlapping_genes_to_bed(
+            all_gene_regions=genes_bed_file,
+            strand=False,
+            non_overlapping_genes_bed=non_overlapping_genes_bed
         )
 
     else:
@@ -877,27 +920,6 @@ def main():
             " ".join(supported_sequencing_directions),
             os.linesep)
         )
-
-    # _________________________________________________________________________
-    # -------------------------------------------------------------------------
-    # Determine feature regions
-    # -------------------------------------------------------------------------
-
-    sys.stdout.write("Extracting intermediate exons that do not belong to " +
-                     "multiple genes" +
-                     os.linesep)
-
-    intermediate_exons_non_overlapping_no_multiple_genes = \
-        os.path.join(
-            annotation_dir,
-            fc.get_new_filenumber_str() +
-            '.intermediate_exons_non_overlapping_no_multiple_genes.bed'
-        )
-
-    annotation.write_non_repeated_regions(
-        bed_in=intermediate_exons_non_overlapping,
-        bed_out=intermediate_exons_non_overlapping_no_multiple_genes
-    )
 
     # _________________________________________________________________________
     # -------------------------------------------------------------------------
@@ -922,7 +944,8 @@ def main():
     sys.stdout.write("Determining union exons lengths..." + os.linesep)
 
     annotation.determine_union_exon_length_per_gene(
-        union_exons_bed=union_exons_bed_file)
+        union_exons_bed=union_exons_bed_file
+    )
 
     # _________________________________________________________________________
     # -------------------------------------------------------------------------
@@ -1006,12 +1029,50 @@ def main():
     ml_train_unit = MachineLearningUnit()
 
     # -------------------------------------------------------------------------
-    # Find genes with multiexonic transcripts (=transcripts that consist of
-    # more than one exon).
+    # Create dictionary of multiexonic genes
+    # (transcripts that consist of more than one exon).
     # -------------------------------------------------------------------------
-    genes_with_multiexonic_transcripts = \
+
+    genes_with_multiexonic_transcripts_dict = \
         annotation.get_genes_with_multiexonic_transcripts(
-            bed=union_exons_bed_file)
+            bed=union_exons_bed_file
+        )
+
+    if options.verbose:
+        sys.stdout.write(
+            "Number of genes with multiple exons : {} {}".format(
+                str(len(genes_with_multiexonic_transcripts_dict)),
+                os.linesep
+            )
+        )
+
+    # _________________________________________________________________________
+    # -------------------------------------------------------------------------
+    # # Create dictionaty of non overlapping genes
+    # -------------------------------------------------------------------------
+
+    non_overlapping_genes_dict = \
+        annotation.create_dictionary_of_non_overlapping_genes(
+            non_overlapping_genes_bed=non_overlapping_genes_bed
+        )
+
+    if options.verbose:
+        sys.stdout.write(
+            "Number of non overlapping genes: {} {}".format(
+                str(len(non_overlapping_genes_dict)),
+                os.linesep
+            )
+
+        )
+
+    genes_to_consider_for_ML = {x:non_overlapping_genes_dict[x] for x in non_overlapping_genes_dict if x in genes_with_multiexonic_transcripts_dict}
+
+    if options.verbose:
+        sys.stdout.write(
+            "Number of genes to consider for training (intersection of non overlapping genes and genes with muliple exons): {} {}".format(
+                str(len(genes_to_consider_for_ML)), os.linesep
+            )
+        )
 
     # -------------------------------------------------------------------------
     # TERMINAL EXONS - TRAINING SET CREATION
@@ -1027,7 +1088,7 @@ def main():
         sequencing_direction=options.sequencing_direction,
         max_splice_fuzziness=max_splice_fuzziness,
         output_dir=options.output_dir,
-        genes_to_consider_dict=genes_with_multiexonic_transcripts,
+        genes_to_consider_dict=genes_to_consider_for_ML,
         bam_file_path=options.bam_file,
         annotation=annotation,
         threshold_to_filter=minimum_spliced_reads_for_cryptic_exon_start_site,
@@ -1055,11 +1116,11 @@ def main():
     # 2. directly afterwards they are deleted
     #
     ml_train_unit.create_intermediate_exon_training_set(
-        intermediate_exons_bed_file_path=intermediate_exons_non_overlapping_no_multiple_genes,
+        intermediate_exons_bed_file_path=intermediate_exons_non_overlapping,
         sequencing_direction=options.sequencing_direction,
         max_splice_fuzziness=max_splice_fuzziness,
         output_dir=options.output_dir,
-        genes_to_consider_dict=genes_with_multiexonic_transcripts,
+        genes_to_consider_dict=genes_to_consider_for_ML,
         bam_file_path=options.bam_file,
         annotation=annotation,
         threshold_to_filter=minimum_spliced_reads_for_cryptic_exon_start_site
@@ -1070,7 +1131,7 @@ def main():
     # ---------------------------------------------------------------------
     estimate_expression_of_selected_genes(
         annotation=annotation,
-        selected_genes_dict=genes_with_multiexonic_transcripts,
+        selected_genes_dict=annotation.genes,
         bam_file_path=options.bam_file,
         sequencing_direction=options.sequencing_direction,
         count_unique_mapping_reads_only=True,
