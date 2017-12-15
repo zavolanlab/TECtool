@@ -350,6 +350,15 @@ def main():
     )
 
     parser.add_argument(
+        "--drop_intronic_polya_sites_of_overlapping_genes",
+        dest="drop_intronic_polya_sites_of_overlapping_genes",
+        action="store_true",
+        default=False,
+        help="Flag to ignore intronic polya sites shared " +
+        "among overlapping genes"
+    )
+
+    parser.add_argument(
         "-o",
         "--output_dir",
         dest="output_dir",
@@ -559,6 +568,7 @@ def main():
         annotation.write_intronic_polya_sites(
             polyasites=polyasites,
             introns=introns_not_overlap_with_exons_bed_file,
+            drop_intronic_polya_sites_of_overlapping_genes=options.drop_intronic_polya_sites_of_overlapping_genes,
             intronic_polya_sites_bed=polyasites_in_introns_bed_file
         )
 
@@ -600,6 +610,7 @@ def main():
         annotation.write_intronic_polya_sites(
             polyasites=polyasites,
             introns=introns_not_overlap_with_exons_bed_file,
+            drop_intronic_polya_sites_of_overlapping_genes=options.drop_intronic_polya_sites_of_overlapping_genes,
             intronic_polya_sites_bed=polyasites_in_introns_bed_file
         )
 
@@ -891,6 +902,9 @@ def main():
     # _________________________________________________________________________
     # -------------------------------------------------------------------------
     # Determine feature regions
+    # The bed file provided should contain the gene name in the name field
+    # If an intronic polya site is shared between two genes, then the bed file
+    # should contain 2 entries. One for each of the genes that is shared with.
     # -------------------------------------------------------------------------
     sys.stdout.write("Determining feature regions (=region between an " +
                      "intronic poly(A) site and the 3' end of the closest " +

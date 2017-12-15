@@ -669,7 +669,8 @@ class Annotation(object):
         self,
         polyasites,
         introns,
-        intronic_polya_sites_bed,
+        drop_intronic_polya_sites_of_overlapping_genes,
+        intronic_polya_sites_bed
     ):
         """
         Write intronic polya sites
@@ -716,7 +717,7 @@ class Annotation(object):
         introns_bed = pybedtools.BedTool(introns)
 
         # tmp file
-        tmp_intronic_polya_sites_bed = intronic_polya_sites_bed + "tmp"
+        tmp_intronic_polya_sites_bed = intronic_polya_sites_bed + "tmp.bed"
 
         # find all intronic polya sites
         # note:
@@ -741,14 +742,16 @@ class Annotation(object):
 
         intronic_polya_sites_df = intronic_polya_sites_df[columns]
 
-        # and remove duplicates
-        intronic_polya_sites_df.drop_duplicates(
-            subset=["chrom", "start", "end", "strand"],
-            keep=False,
-            inplace=True
-        )
+        if drop_intronic_polya_sites_of_overlapping_genes:
 
-        # write output file
+            # remove all duplicates
+            intronic_polya_sites_df.drop_duplicates(
+                subset=["chrom", "start", "end", "strand"],
+                keep=False,
+                inplace=True
+            )
+
+        # write file
         intronic_polya_sites_df.to_csv(
             intronic_polya_sites_bed,
             sep="\t",
