@@ -932,8 +932,7 @@ class Annotation(object):
     def write_non_overlapping_regions_to_bed(
         self,
         bed_in,
-        bed_out,
-        strand
+        bed_out
     ):
         """
         Extract region that overlap only one time form a bed file
@@ -971,7 +970,7 @@ class Annotation(object):
 
         # find overlapping regions within the file
         pybedtools.BedTool(bed_in).merge(
-            s=strand,
+            s=True,
             c=4,
             o="count,collapse"
         ).sort().saveas(tmp_file)
@@ -1087,11 +1086,17 @@ class Annotation(object):
 
         return
 
-    def write_non_repeated_regions(
+    def remove_regions_that_overlap_in_the_opposite_strand(
         self,
         bed_in,
         bed_out
     ):
+        """
+        Function that takes as input a bed file and removes
+        regions that with the same chromosome, start and 
+        end positions.
+        """
+
 
         columns = ["chrom",
                    "start",
