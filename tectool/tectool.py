@@ -624,7 +624,7 @@ def main():
     # -------------------------------------------------------------------------
     # -------------------------------------------------------------------------
     # -------------------------------------------------------------------------
-    # Part to which regions to count for machine learning
+    # What regions to count for machine learning
     # -------------------------------------------------------------------------
     # -------------------------------------------------------------------------
     # -------------------------------------------------------------------------
@@ -1066,7 +1066,7 @@ def main():
 
         )
 
-    genes_to_consider_for_ML = {x:non_overlapping_genes_dict[x] for x in non_overlapping_genes_dict if x in genes_with_multiexonic_transcripts_dict}
+    genes_to_consider_for_ML = {x: non_overlapping_genes_dict[x] for x in non_overlapping_genes_dict if x in genes_with_multiexonic_transcripts_dict}
 
     if options.verbose:
         sys.stdout.write(
@@ -1126,6 +1126,14 @@ def main():
         annotation=annotation,
         threshold_to_filter=minimum_spliced_reads_for_cryptic_exon_start_site
     )
+
+    # ---------------------------------------------------------------------
+    # FILTER INTERMEDIATE EXONS TRAINING SET
+    # Remove intermediate exons for which the profile is not > 0 reads.
+    # This might happen in rare cases where the same exon is shared among
+    # overlapping genes.
+    # ---------------------------------------------------------------------
+    annotation.filter_intermediate_exon_training_candidates()
 
     # ---------------------------------------------------------------------
     # Estimate gene expression

@@ -935,7 +935,7 @@ class Annotation(object):
         bed_out
     ):
         """
-        Extract region that overlap only one time form a bed file
+        Extract region that overlaps only one time from a bed file
         """
 
         # custom header
@@ -1530,6 +1530,31 @@ class Annotation(object):
 
                     self.genes[gene_id].annotated_terminal_exons.remove(
                         terminal_exon)
+
+    def filter_intermediate_exon_training_candidates(self):
+        """
+        Remove intermediate exons that the sum of the profile is not
+        > 0 reads
+        """
+
+        for gene_id in self.genes:
+
+            # copy list
+            list_of_intermediate_exons = list(
+                self.genes[gene_id].annotated_intermediate_exons)
+
+            # loop over the annotated intermediate exons
+            for intermediate_exon in list_of_intermediate_exons:
+
+                # get profiles
+                profile = str(intermediate_exon.profile).split(",")
+
+                # count the per base reads
+                sum_profile = sum([int(i) for i in profile])
+
+                if (sum_profile == 0):
+                    self.genes[gene_id].annotated_intermediate_exons.remove(
+                        intermediate_exon)
 
     def determine_CDS_novel_transcrtips_from_spicing(
         self,
