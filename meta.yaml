@@ -1,0 +1,22 @@
+package:
+  name: tectool
+  version: "0.2"
+
+source:
+  git_url: https://git.scicore.unibas.ch/zavolan_public/TECtool.git#Python3_support
+
+requirements:
+  build:
+    - python
+    - setuptools
+  run:
+    - python
+
+test:
+  imports:
+    - tectool
+
+about:
+  home: https://git.scicore.unibas.ch/zavolan_public/TECtool/tree/Python3_support
+  license: MIT
+  license_file: https://git.scicore.unibas.ch/zavolan_public/TECtool/blob/Python3_support/LICENSE

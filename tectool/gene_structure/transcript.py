@@ -1,27 +1,32 @@
 import sys
+import os
 
 
 class Transcript(object):
 
-    """This class represents a Transcript
+    """
+    This class represents a Transcript
 
-        :param transcript_id: unique id for a transcript (e.g. Ensembl Transcript ID).
-        :param chromosome: the chromosome on which the transcript is located on.
-        :param source: the source of the transcript annotation 
+        :param transcript_id: unique id for \
+            a transcript (e.g. Ensembl Transcript ID).
+        :param chromosome: the chromosome on \
+            which the transcript is located on.
+        :param source: the source of the transcript annotation \
             (as provided in the GTF/GFF file).
         :param start: the start of the transcript
         :param end: the end of the transcript
         :param strand: the end of the transcript
-        :param gene_id: unique id for the gene to which the transcript belongs to (e.g. Ensembl Gene ID).
+        :param gene_id: unique id for the gene to which the \
+            transcript belongs to (e.g. Ensembl Gene ID).
         :rtype: Transcript object
 
     *Class members*
 
         *chromosome*
             String. The chromosome at which the gene is located on.
-        
+
         *source*
-            String. The name of the program that generated the annotation 
+            String. The name of the program that generated the annotation \
                 feature, or the data source (database or project name).
 
         *feature*
@@ -37,16 +42,18 @@ class Transcript(object):
             String. Score.
 
         *strand*
-            String. Strand of the transcript (defined as + (forward) or - (reverse)).
+            String. Strand of the transcript
+            (defined as + (forward) or - (reverse)).
 
         *frame*
             String. It can be "."" which is no frame info or 0/1/2.
-             '0' indicates that the first base of the feature is 
+             '0' indicates that the first base of the feature is \
              the first base of a codon, '1' that the second base is
              the first base of a codon, and so on.
 
         *gene_id*
-            String. Unique id for the gene to which the transcript belongs to (e.g. Ensembl Gene ID).
+            String. Unique id for the gene to which the \
+            transcript belongs to (e.g. Ensembl Gene ID).
 
         *transcript_id*
             String. Unique id for a transcript (e.g. Ensembl Transcript ID).
@@ -67,16 +74,33 @@ class Transcript(object):
             List. List containing known exons of the transcript.
 
         *novel_exons*
-            List. List contatining novel exons (that occur from novel splicing). Empty in case the transcript is not novel.
+            List. List contatining novel exons (that occur \
+            from novel splicing). Empty in case the transcript is not novel.
 
         *write_CDS*
-            Bool. Flag of whether the CDS annotation should be written or not (True/False/None).
+            Bool. Flag of whether the CDS annotation \
+            should be written or not (True/False/None).
 
     """
 
-    def __init__(self, chromosome, source, feature, start, end, score, strand, frame, gene_id, transcript_id, gene_name, gene_biotype, transcript_name, transcript_biotype):
-        
-        """Initialise Transcript"""
+    def __init__(self,
+                 chromosome,
+                 source,
+                 feature,
+                 start,
+                 end,
+                 score,
+                 strand,
+                 frame,
+                 gene_id,
+                 transcript_id,
+                 gene_name,
+                 gene_biotype,
+                 transcript_name,
+                 transcript_biotype):
+        """
+        Initialise Transcript
+        """
 
         # Basic gtf info [Required]
         self.chromosome = str(chromosome)
@@ -96,167 +120,271 @@ class Transcript(object):
         self.transcript_name = str(transcript_name)
         self.transcript_biotype = str(transcript_biotype)
 
-        #self.transcript_startcodon =
-        #self.transcript_stopcodon =
-
         # List containing known exons of the transcript
         self.exon_list_sorted_by_end_coord = list()
 
-        # List contatining novel exons (that occur from novel splicing). Empty in case the transcript is not novel.
+        # List contatining novel exons (that occur from novel splicing).
+        # Empty in case the transcript is not novel.
         self.novel_exons = list()
 
-        # Flag of whether the CDS annotation should be written or not (True/False/None)
+        # Flag of whether the CDS annotation should be written
+        # or not (True/False/None)
         self.write_CDS = None
 
-
     def __repr__(self):
-      
-        """Create a string representation of a Transcript object."""
-      
+        """
+        Create a string representation of a Transcript object.
+        """
+
         repr_string = ""
         for attr in vars(self):
-            repr_string += ("%s\tobj.%s = %s\n" 
-                         % (type(getattr(self, attr)), 
-                            attr, getattr(self, attr)))
+            repr_string += \
+                "{}\tobj.{} = {}{}".format(
+                    type(getattr(self, attr)),
+                    attr,
+                    getattr(self, attr),
+                    os.linesep
+                )
 
         return(repr_string)
 
-
     def __str__(self):
-
-        """Create a readable string representation of a Transcript object."""
+        """
+        Create a readable string representation of a Transcript object.
+        """
 
         str_representation = \
-            + 80*"_" + "\n" \
-            + 80*"-" + "\n"
+            + 80 * "_" + os.linesep \
+            + 80 * "-" + os.linesep
         str_representation += \
-            ("Transcript(object):\t" + self.transcript_id + "\n")
+            ("Transcript(object):\t" +
+             self.transcript_id +
+             os.linesep)
         str_representation += \
-            + 80*"-" + "\n"
+            + 80 * "-" + os.linesep
         str_representation += \
             self.__repr__()
         str_representation += \
-            + 80*"-" + "\n"
+            + 80 * "-" + os.linesep
 
         return(str_representation)
 
-
     def __eq__(self, transcript):
-
-        """Equality operator."""
+        """
+        Equality operator.
+        """
 
         if isinstance(transcript, self.__class__):
-            return((self.chromosome == transcript.chromosome) and 
-                   (self.source == transcript.source) and            
-                   (self.feature == transcript.feature) and          
-                   (self.start == transcript.start) and
-                   (self.end == transcript.end) and
-                   (self.score == transcript.score) and              
-                   (self.strand == transcript.strand) and
-                   (self.frame == transcript.frame) and
-                   (self.gene_id == transcript.gene_id) and
-                   (self.transcript_id == transcript.transcript_id) and
-                   (self.gene_name == transcript.gene_name) and
-                   (self.gene_biotype == transcript.gene_biotype) and
-                   (self.transcript_name == transcript.transcript_name) and
-                   (self.transcript_biotype == transcript.transcript_biotype))
+            return(
+                self.chromosome == transcript.chromosome and
+                self.source == transcript.source and
+                self.feature == transcript.feature and
+                self.start == transcript.start and
+                self.end == transcript.end and
+                self.score == transcript.score and
+                self.strand == transcript.strand and
+                self.frame == transcript.frame and
+                self.gene_id == transcript.gene_id and
+                self.transcript_id == transcript.transcript_id and
+                self.gene_name == transcript.gene_name and
+                self.gene_biotype == transcript.gene_biotype and
+                self.transcript_name == transcript.transcript_name and
+                self.transcript_biotype == transcript.transcript_biotype
+            )
 
         return NotImplemented
 
-
     def __ne__(self, transcript):
-
-        """Non-equality operator."""
+        """
+        Non-equality operator.
+        """
 
         if isinstance(transcript, self.__class__):
             return(not self.__eq__(transcript))
         return NotImplemented
 
-
-    def extend(self, transcript, verbose=False):
-
-        """Method that extends the transcript by missing information from an existing transcript."""
+    def extend(
+        self,
+        transcript,
+        verbose=False
+    ):
+        """
+        Method that extends the transcript by missing
+        information from an existing transcript.
+        """
 
         # check if we have the same genes here
         if (self != transcript):
-            sys.stderr.write("ERROR: Transcript '" + self.transcript_id \
-                            +"' cannot be extended by transcript '" + transcript.transcript_id \
-                            +"' because the transcripts differ in annotation.\n")
+            sys.stderr.write(
+                "ERROR: Transcript '" + self.transcript_id +
+                "' cannot be extended by transcript '" +
+                transcript.transcript_id +
+                "' because the transcripts differ in annotation." +
+                os.linesep
+            )
             sys.exit(-1)
-        
-        else:
-            
-            # check whether we have an equal number of exons
-            if len(self.exon_list_sorted_by_end_coord) != len(transcript.exon_list_sorted_by_end_coord):
-                    sys.stderr.write("ERROR: Different numbers of exons " \
-                                    +" were found for transcript '" \
-                                    + self.transcript_id \
-                                    +"'.\n")
-                    sys.exit(-1)
 
-            # check whether the transcripts are equal according to the exon coordinates
+        else:
+            # check whether we have an equal number of exons
+            if (
+                len(self.exon_list_sorted_by_end_coord) !=
+                len(transcript.exon_list_sorted_by_end_coord)
+            ):
+                sys.stderr.write(
+                    "ERROR: Different numbers of exons " +
+                    " were found for transcript '" +
+                    self.transcript_id +
+                    os.linesep
+                )
+                sys.exit(-1)
+
+            # check whether the transcripts are equal
+            # according to the exon coordinates
             for idx, exon in enumerate(self.exon_list_sorted_by_end_coord):
 
-                if not exon.has_equal_coordinates(transcript.exon_list_sorted_by_end_coord[idx]):
-                    sys.stderr.write("ERROR: Exon '" + exon.exon_id \
-                                    +"' has different coordinates than exon '" \
-                                    + transcript.exon_list_sorted_by_end_coord[idx].exon_id \
-                                    +"' assigned to transcript '" 
-                                    + self.transcript_id \
-                                    +"'.\n")
+                if (
+                    not exon.has_equal_coordinates(
+                        transcript.exon_list_sorted_by_end_coord[idx])
+                ):
+                    sys.stderr.write(
+                        "ERROR: Exon '" + exon.exon_id +
+                        "' has different coordinates than exon '" +
+                        transcript.exon_list_sorted_by_end_coord[idx].exon_id +
+                        "' assigned to transcript '" +
+                        self.transcript_id +
+                        "'." + os.linesep)
                     sys.exit(-1)
 
-            # if our transcript was not annotated to be coding, but the incoming transcript is,
+            # if our transcript was not annotated to be coding,
+            # but the incoming transcript is,
             # let's use the annotation of the incoming transcript.
-            if not (self.contains_start_codon and self.contains_stop_codon) and \
-              (transcript.contains_start_codon and transcript.contains_stop_codon):
+            if (
+                not (self.contains_start_codon and
+                     self.contains_stop_codon) and
+                (transcript.contains_start_codon and
+                 transcript.contains_stop_codon)
+            ):
 
-                self.exon_list_sorted_by_end_coord = transcript.exon_list_sorted_by_end_coord
-
+                self.exon_list_sorted_by_end_coord = \
+                    transcript.exon_list_sorted_by_end_coord
 
     def insert_into_exon_list_sorted_by_end_coord(self, exon):
-        
-        """Insert exon in a sorted (by the end position) list, termed 'self.exon_list_sorted_by_end_coord'."""
+        """
+        Insert exon in a sorted (by the end position) list, termed
+        'self.exon_list_sorted_by_end_coord'.
+        """
 
         index = 0
         if len(self.exon_list_sorted_by_end_coord) == 0:
-             self.exon_list_sorted_by_end_coord.insert(0, exon)
+            self.exon_list_sorted_by_end_coord.insert(0, exon)
         else:
             for idx, info in enumerate(self.exon_list_sorted_by_end_coord):
                 if exon.end > info.end:
                     index = idx + 1
             self.exon_list_sorted_by_end_coord.insert(index, exon)
 
+    def get_bed_with_geneid_as_list(self):
+        """
+        Return the transcript in bed format as string
+        """
+
+        return([self.chromosome,
+                str(self.start),
+                str(self.end),
+                self.gene_id,
+                "0",
+                self.strand])
 
     def get_terminal_exon(self):
-
-        """Get last exon of the transcript"""
+        """
+        Get last exon of the transcript
+        """
 
         if self.strand == '+':
             return(self.exon_list_sorted_by_end_coord[-1])
         elif self.strand == '-':
             return(self.exon_list_sorted_by_end_coord[0])
 
+    def get_bed_terminal_exon_as_list(self):
+        """
+        Get last exon of the transcript
+        """
+
+        temrinal_exon = ''
+
+        if self.strand == '+':
+            temrinal_exon = self.exon_list_sorted_by_end_coord[-1]
+        elif self.strand == '-':
+            temrinal_exon = self.exon_list_sorted_by_end_coord[0]
+
+        return(
+            [temrinal_exon.chromosome,
+             temrinal_exon.start,
+             temrinal_exon.end,
+             temrinal_exon.gene_id,
+             "0",
+             temrinal_exon.strand]
+        )
+
+    def get_bed_start_exon_as_list(self):
+        """
+        Get last exon of the transcript
+        """
+
+        start_exon = ''
+
+        if self.strand == '+':
+            start_exon = self.exon_list_sorted_by_end_coord[0]
+        elif self.strand == '-':
+            start_exon = self.exon_list_sorted_by_end_coord[-1]
+
+        return(
+            [start_exon.chromosome,
+             start_exon.start,
+             start_exon.end,
+             start_exon.gene_id,
+             "0",
+             start_exon.strand]
+        )
 
     def get_start_exon(self):
+        """
+        Get first exon of the transcript
+        """
 
-        """Get first exon of the transcript"""
-        
         if self.strand == '+':
             return(self.exon_list_sorted_by_end_coord[0])
         elif self.strand == '-':
             return(self.exon_list_sorted_by_end_coord[-1])
 
-
     def get_intermediate_exons(self):
-
-        """Get intermediate exons of the transcript. All exons but first and last"""
+        """
+        Get intermediate exons of the transcript.
+        All exons but first and last
+        """
 
         return(self.exon_list_sorted_by_end_coord[1:-1])
 
+    def get_bed_intermediate_exons_as_list(self):
+        """
+        Get intermediate exons of the transcript.
+        All exons but first and last
+        """
+        intermediate_exons = []
+
+        for intermediate_exon in self.exon_list_sorted_by_end_coord[1:-1]:
+            intermediate_exons.append(
+                [intermediate_exon.chromosome,
+                 intermediate_exon.start,
+                 intermediate_exon.end,
+                 intermediate_exon.gene_id,
+                 "0",
+                 intermediate_exon.strand]
+            )
+
+        return intermediate_exons
 
     def get_all_exons_but_last(self):
-        
         """Get all exons except the temrinal"""
 
         if self.strand == "+":
@@ -264,10 +392,10 @@ class Transcript(object):
         elif self.strand == "-":
             return(self.exon_list_sorted_by_end_coord[-1:0:-1])
 
-
     def contains_start_codon(self):
-
-        """Determine if transcript has start codon"""
+        """
+        Determine if transcript has start codon
+        """
 
         for exon in self.exon_list_sorted_by_end_coord:
 
@@ -276,11 +404,11 @@ class Transcript(object):
                 return(True)
 
         return(False)
-
 
     def contains_stop_codon(self):
-
-        """Determine if transcript has start codon"""
+        """
+        Determine if transcript has start codon
+        """
 
         for exon in self.exon_list_sorted_by_end_coord:
 
@@ -290,10 +418,10 @@ class Transcript(object):
 
         return(False)
 
-
     def contains_start_codon_for_novel_transcripts(self):
-
-        """Determine if transcript has start codon"""
+        """
+        Determine if transcript has start codon
+        """
 
         for exon in self.novel_exons:
 
@@ -303,10 +431,10 @@ class Transcript(object):
 
         return(False)
 
-
     def contains_stop_codon_for_novel_transcripts(self):
-
-        """Determine if transcript has start codon"""
+        """
+        Determine if transcript has start codon
+        """
 
         for exon in self.novel_exons:
 
@@ -316,9 +444,7 @@ class Transcript(object):
 
         return(False)
 
-
     def get_novel_exons_sorted_by_end(self):
-
         """
         Return list of novel exons sorted by the
         transcript ends
@@ -326,9 +452,7 @@ class Transcript(object):
 
         return(self.sort_exons_by_end(self.novel_exons))
 
-
     def sort_exons_by_end(self, list_of_exons):
-
         """
         Function that gets a list of exons and sorts them by
         the exon end coordinate and returns the sorted list
@@ -336,11 +460,9 @@ class Transcript(object):
 
         return(sorted(list_of_exons, key=lambda x: x.end, reverse=False))
 
-
     def get_existing_and_upstream_exons(self, start, end, strand):
-        
         """
-        Generate the name for the novel transcripts based on 
+        Generate the name for the novel transcripts based on
         the exons found upstream of it
         """
 
@@ -364,10 +486,11 @@ class Transcript(object):
 
         return(upstream_exons)
 
-
     def get_upstream_exons(self, start, end, strand):
-        
-        """Generate the name for the novel transcripts based on the exons found upstream of it"""
+        """
+        Generate the name for the novel transcripts based on
+        the exons found upstream of it
+        """
 
         upstream_exons = []
 
@@ -389,34 +512,37 @@ class Transcript(object):
 
         return(upstream_exons)
 
-
     def write_transcript_gtf(self, output_file):
+        """
+        Function that writes in GTF format the
+        gene/transcript/exon annotation (known or/and novel)
+        """
 
-        """Function that writes in GTF format the gene/transcript/exon annotation (known or/and novel)"""
+        extra_field = "gene_id \"" + self.gene_id + "\"; "
+        extra_field += "transcript_id \"" + self.transcript_id + "\"; "
+        extra_field += "gene_name \"" + self.gene_name + "\"; "
+        extra_field += "gene_biotype \"" + self.gene_biotype + "\"; "
+        extra_field += "transcript_name \"" + self.transcript_name + "\"; "
+        extra_field += \
+            "transcript_biotype \"" + self.transcript_biotype + "\"; "
+        extra_field += os.linesep
 
-        extra_field  = "gene_id \""+self.gene_id+"\"; "
-        extra_field += "transcript_id \""+self.transcript_id+"\"; "
-        extra_field += "gene_name \""+self.gene_name+"\"; "
-        extra_field += "gene_biotype \""+self.gene_biotype+"\"; "
-        extra_field += "transcript_name \""+self.transcript_name+"\"; "
-        extra_field += "transcript_biotype \""+self.transcript_biotype+"\"; \n"
-
-        output_file.write("\t".join([self.chromosome, 
-                                    self.source, 
-                                    self.feature,
-                                    str(self.start+1),
-                                    str(self.end),
-                                    self.score,
-                                    self.strand,
-                                    self.frame,
-                                    extra_field]))
-
-                                    # "gene_id \""+self.gene_id+"\"; transcript_id \""+self.transcript_id+"\"; gene_name \""+self.gene_name+"\"; gene_source \""+self.gene_source+"\"; gene_biotype \""+self.gene_biotype+"\"; transcript_name \""+self.transcript_name+"\"; transcript_source \""+self.transcript_source+"\";\n"]))
-
+        output_file.write("\t".join(
+            [self.chromosome,
+             self.source,
+             self.feature,
+             str(self.start + 1),
+             str(self.end),
+             self.score,
+             self.strand,
+             self.frame,
+             extra_field])
+        )
 
     def write_exons_gtf(self, output_file, with_CDS):
-        
-        """Write exons of the transcript in gtf format"""
+        """
+        Write exons of the transcript in gtf format
+        """
 
         # Novel exons that have been found in this run
         # (therefore there exist self.novel_exons entries)
@@ -447,5 +573,10 @@ class Transcript(object):
                     else:
                         exon.write_exon_gtf(output_file, with_CDS=False)
             else:
-                sys.stderr.write("ERROR: '%s' is an unknown strand!\n" % (self.strand))
+                sys.stderr.write(
+                    "ERROR: {} is an unknown strand! {} ".format(
+                        self.strand,
+                        os.linesep
+                    )
+                )
                 sys.exit(-1)

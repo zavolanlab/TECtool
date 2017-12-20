@@ -49,7 +49,8 @@ try:
     mpl.use('Agg')
     import matplotlib.pyplot as plt
 except(Exception):
-    raise "[ERROR] plt from matplotlib.pyplot was not imported properly. Exiting."
+    raise "[ERROR] plt from matplotlib.pyplot was" + \
+          "not imported properly. Exiting."
     sys.exit(-1)
 
 try:
@@ -63,50 +64,49 @@ except(Exception):
 # CLASSES
 # -----------------------------------------------------------------------------
 
+
 class BayesClassifier(object):
-
     """
-        Class that represents a Bayes classifier. 
-
+    Class that represents a Bayes classifier.
         :rtype: BayesClassifier object
-
     *Class members*
-
         *background_likelihood*
-            Dictionary. Holds feature names as keys and the corresponding distributions as values.
-
-
-
+            Dictionary. Holds feature names as keys and the
+                        corresponding distributions as values.
     """
 
     def __init__(self):
-        
         # the classes
         self.class_col = None
         self.classes = list()
         self.class_dict = dict()
 
-
     def estimate_kernel(self, x):
-
         """
         Method...
         """
-        
+
         # ---------------------------------------------------------------------
         # get the kernel
         # ---------------------------------------------------------------------
-        # Function from scikit: http://scikit-learn.org/stable/modules/density.html
+        # Function from scikit:
+        # http://scikit-learn.org/stable/modules/density.html
         # bandwith = h
-        # 
-        kernel = KernelDensity(kernel='exponential', 
-                               bandwidth=np.std(x,ddof=1) / 5 + np.finfo(float).eps).fit(np.array(x)[:, np.newaxis])
-        
+        # ---------------------------------------------------------------------
+
+        kernel = KernelDensity(
+            kernel='exponential',
+            bandwidth=np.std(x, ddof=1) / 5 + np.finfo(float).eps).fit(
+                np.array(x)[:, np.newaxis]
+        )
+
         return(kernel)
 
-
-    def fit(self, X_train, y_train):
-        
+    def fit(
+        self,
+        X_train,
+        y_train
+    ):
         """
         Method...
         """
@@ -120,22 +120,28 @@ class BayesClassifier(object):
 
         # go over all classes
         for current_class in self.classes:
-            
+
             # add the current class to the class_dict
             if current_class not in self.class_dict:
                 self.class_dict[current_class] = dict()
             else:
-                sys.stderr.write("ERROR: class " + current_class \
-                                +" already exists in the " \
-                                +" BayesClassifier.class_dict.\n")
+                sys.stderr.write(
+                    "ERROR: class {} \
+                     already exists in the \
+                     BayesClassifier.class_dict. \
+                     {}".format(current_class,
+                                os.linesep)
+                )
                 sys.exit(-1)
 
             # add for each feature the kernel density
             for current_feature in X_train.columns.values:
-                
-                # get the values that we observe for the current class in our training data
-                feature_values = feature_data_frame[feature_data_frame[self.class_col]==current_class][current_feature].tolist()
-            
+                # get the values that we observe for the current
+                # class in our training data
+                feature_values = \
+                    feature_data_frame[feature_data_frame[
+                        self.class_col] == current_class][
+                            current_feature].tolist()
                 # estimate the kernel
                 kernel = self.estimate_kernel(feature_values)
 
@@ -143,24 +149,27 @@ class BayesClassifier(object):
                 if current_feature not in self.class_dict[current_class]:
                     self.class_dict[current_class][current_feature] = kernel
                 else:
-                    sys.stderr.write("ERROR: feature " + current_feature \
-                                    +" already exists in the " \
-                                    +" BayesClassifier.class_dict.\n")
+                    sys.stderr.write(
+                        """ERROR: feature {}
+                         already exists in the
+                         BayesClassifier.class_dict.
+                         {}""".format(current_feature,
+                                      os.linesep)
+                    )
                     sys.exit(-1)
 
-
     def predict(self, X):
-        
         """
-        Method that predicts the class of each feature data set (row) in a given dataframe X.
+        Method that predicts the class of each feature data
+        set (row) in a given dataframe X.
         """
 
         # the list that will contain the predicted classes for each row
         predicted_label = []
 
         # do the prediction row by row (=dataset per dataset)
-        for index, row in X.iterrows(): 
-            
+        for index, row in X.iterrows():
+
             # initialize the variables for the current dataset
             curr_max_probability = 0.0
             curr_max_class = None
@@ -169,31 +178,31 @@ class BayesClassifier(object):
 
                 # calculate the probability to belong to the current class
                 current_probability = 1.0
-                for current_feature, kernel in self.class_dict[current_class].iteritems():
-                    
-                    # get the value that we have observed for the current feature
-                    # in the current dataset (=row)
+                # for current_feature, kernel in self.class_dict[current_class].iteritems():
+                for current_feature, kernel in list(self.class_dict[current_class].items()):
+
+                    # get the value that we have observed for the
+                    # current feature in the current dataset (=row)
                     x = np.array([[row[current_feature]]])
-                    
+
                     # multiply it with the current probability
                     # HINT: the kernel.score_samples function gives back
-                    #       the ln of the probability to belong to the 
+                    #       the ln of the probability to belong to the
                     #       current kernel (=distribution).
                     current_probability *= np.exp(kernel.score_samples(x))
 
                 if current_probability >= curr_max_probability:
                     curr_max_probability = current_probability
                     curr_max_class = current_class
-            
-            predicted_label.append(curr_max_class)
-        
-        return(np.array(predicted_label))
 
+            predicted_label.append(curr_max_class)
+
+        return np.array(predicted_label)
 
     def predict_proba(self, row):
-
         """
-        Method that predicts the class of each feature data set (row) in a given dataframe X.
+        Method that predicts the class of each feature data set
+        (row) in a given dataframe X.
         """
 
         # initialize the variables for the current dataset
@@ -210,15 +219,16 @@ class BayesClassifier(object):
 
             # calculate the probability to belong to the current class
             current_probability = 1.0
-            for current_feature, kernel in self.class_dict[current_class].iteritems():
-                
+            # for current_feature, kernel in self.class_dict[current_class].iteritems():
+            for current_feature, kernel in list(self.class_dict[current_class].items()):
+
                 # get the value that we have observed for the current feature
                 # in the current dataset (=row)
                 x = np.array([[row[current_feature]]])
-                
+
                 # multiply it with the current probability
                 # HINT: the kernel.score_samples function gives back
-                #       the ln of the probability to belong to the 
+                #       the ln of the probability to belong to the
                 #       current kernel (=distribution).
                 current_probability *= np.exp(kernel.score_samples(x))
 
@@ -227,22 +237,15 @@ class BayesClassifier(object):
             if current_probability >= curr_max_probability:
                 curr_max_probability = current_probability
                 curr_max_class = current_class
-        
-        normalized_probabilities = [p/sum(list_of_probabilities) for p in list_of_probabilities]
+
+        normalized_probabilities = \
+            [p / sum(list_of_probabilities) for p in list_of_probabilities]
 
         results = dict()
 
         for i in range(len(class_order)):
-            results[class_order[i]+"_probability"] = normalized_probabilities[i][0]
+            results[class_order[i] + "_probability"] = \
+                normalized_probabilities[i][0]
         results['classification'] = curr_max_class
 
-
-        # results = {class_order[0] : float(terminal_probability/total_probability),
-        #            'intermediate_probability' : float(intermediate_probability/total_probability),
-        #            'background_probability' : float(background_probability/total_probability),
-        #            'classification' : curr_max_class}
-
         return(pd.Series(results))
-
-
-
