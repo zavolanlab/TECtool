@@ -132,11 +132,11 @@ try:
 except Exception:
     raise Exception("[ERROR] functools was not imported properly. Exiting.")
 
-try:
-    import multiprocessing as mp
-except Exception:
-    raise Exception("[ERROR] multiprocessing was not imported properly. Exiting.")
-    sys.exit(-1)
+# try:
+#     import multiprocessing as mp
+# except Exception:
+#     raise Exception("[ERROR] multiprocessing was not imported properly. Exiting.")
+#     sys.exit(-1)
 
 # _____________________________________________________________________________
 # -----------------------------------------------------------------------------

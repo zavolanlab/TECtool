@@ -3,20 +3,44 @@ package:
   version: "0.2"
 
 source:
-  git_url: https://git.scicore.unibas.ch/zavolan_public/TECtool.git#Python3_support
+  git_url: https://git.scicore.unibas.ch/zavolan_public/TECtool.git
+  git_rev: v0.2
+
+build:
+  number: 0
 
 requirements:
   build:
     - python
-    - setuptools
   run:
-    - python
+    - python 3.6.2
+    - htseq 0.9.1
+    - pybedtools 0.7.10
+    - bzip2
+    - pyfasta==0.5.2
+    - scikit-learn==0.19.0
 
 test:
   imports:
-    - tectool
+    - sys
+    - HTSeq
+    - math
+    - argparse
+    - itertools
+    - collections
+    - pybedtools
+    - pyfasta
+    - pandas
+    - matplotlib
+    - sklearn
+    - scipy
+    - random
+    - numpy
+    - copy
+    - csv
+    - functools
 
 about:
-  home: https://git.scicore.unibas.ch/zavolan_public/TECtool/tree/Python3_support
+  home: http://tectool.unibas.ch/
   license: MIT
-  license_file: https://git.scicore.unibas.ch/zavolan_public/TECtool/blob/Python3_support/LICENSE
+  license_file: https://git.scicore.unibas.ch/zavolan_public/TECtool/blob/master/LICENSE
