@@ -277,7 +277,7 @@ def main():
     parser.add_argument(
         "--annotation",
         dest="annotation",
-        help="Annotation file GTF/GFF [REQUIRED]",
+        help="Annotation file gtf format [REQUIRED] (tested with ENSEMBL v87)",
         metavar="FILE"
     )
 
@@ -292,8 +292,8 @@ def main():
         "--bam",
         dest="bam_file",
         help="The BAM file that should be analysed. [REQUIRED] " +
-        "Note that the BAM file should be shorted by coordinates." +
-        "And index file should be also present in the same directory.",
+        "Note that the BAM file should be shorted by coordinates. " +
+        "An index file should be also present in the same directory.",
         metavar="FILE"
     )
 
@@ -325,8 +325,8 @@ def main():
     parser.add_argument(
         "--min_region_overlap",
         dest="min_region_overlap",
-        default=1,
-        help="min_region_overlap [default=1]"
+        default=10,
+        help="min_region_overlap [default=10]"
     )
 
     # remove in the future
