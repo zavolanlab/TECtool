@@ -1,3 +1,3 @@
-from tectool import cli
+from .tectool import main
 
-cli()
+main()

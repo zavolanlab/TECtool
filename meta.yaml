@@ -47,4 +47,4 @@ about:
   home: http://tectool.unibas.ch/
   summary: TECtool is a method that uses mRNA and 3' end sequencing data to identify novel terminal exons.
   license: MIT
-  license_file: https://git.scicore.unibas.ch/zavolan_public/TECtool/blob/master/LICENSE
+  license_file: LICENSE
