@@ -26,23 +26,6 @@ requirements:
 test:
   imports:
     - tectool
-    - sys
-    - HTSeq
-    - math
-    - argparse
-    - itertools
-    - collections
-    - pybedtools
-    - pyfasta
-    - pandas
-    - matplotlib
-    - sklearn
-    - scipy
-    - random
-    - numpy
-    - copy
-    - csv
-    - functools
 about:
   home: http://tectool.unibas.ch/
   summary: TECtool is a method that uses mRNA and 3' end sequencing data to identify novel terminal exons.
