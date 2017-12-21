@@ -1,12 +1,15 @@
+import sys
 from setuptools import setup
 
+if sys.version_info < (3, 6):
+    sys.exit('Sorry, TECtool requirs Python >= 3.6 (Tested with Python 3.6.2)')
+
 requirements = [
-    "python=3.6.2",
-    "htseq=0.9.1",
-    "pybedtools=0.7.10",
+    "htseq>=0.9.1",
+    "pybedtools>=0.7.10",
     "bzip2",
-    "pyfasta=0.5.2",
-    "scikit-learn=0.19.0",
+    "pyfasta>=0.5.2",
+    "scikit-learn>=0.19.0",
 ]
 
 setup(
