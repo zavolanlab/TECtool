@@ -1,12 +1,12 @@
 from setuptools import setup
 
 requirements = [
-    "python 3.6.2",
-    "htseq 0.9.1",
-    "pybedtools 0.7.10",
+    "python=3.6.2",
+    "htseq=0.9.1",
+    "pybedtools=0.7.10",
     "bzip2",
-    "pyfasta 0.5.2",
-    "scikit-learn 0.19.0",
+    "pyfasta=0.5.2",
+    "scikit-learn=0.19.0",
 ]
 
 setup(
