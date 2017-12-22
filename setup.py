@@ -1,8 +1,8 @@
 import sys
-from setuptools import setup
+from setuptools import setup, find_packages
 
 if sys.version_info < (3, 6):
-    sys.exit('Sorry, TECtool requirs Python >= 3.6 (Tested with Python 3.6.2)')
+    sys.exit('Sorry, TECtool requires Python >= 3.6 (Tested with Python 3.6.2)')
 
 requirements = [
     "htseq>=0.9.1",
@@ -19,10 +19,9 @@ setup(
     author="Foivos Gypas",
     author_email='foivos.gypas@unibas.ch',
     url='https://git.scicore.unibas.ch/zavolan_public/TECtool.git',
-    packages=['tectool'],
-    scripts=[
-        'tectool/tectool.py'
-    ],
+    packages=['gene_structure', 'aln_analysis', 'annotation', 'machine_learning'],
+    package_dir={'':'tectool'},
+    scripts=['tectool/tectool.py'],
     install_requires=requirements,
     keywords='TECtool',
     classifiers=[

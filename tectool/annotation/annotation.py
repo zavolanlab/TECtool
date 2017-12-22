@@ -3,9 +3,9 @@
 # import our own modules
 # -----------------------------------------------------------------------------
 
-from gene_structure import Exon
-from gene_structure import Transcript
-from gene_structure import Gene
+import gene_structure.exon
+import gene_structure.transcript
+import gene_structure.gene
 
 # _____________________________________________________________________________
 # -----------------------------------------------------------------------------

@@ -150,9 +150,10 @@ except(Exception):
 # -----------------------------------------------------------------------------
 # from aln_analysis import DetailedAlignment
 # from aln_analysis import SplitEvent
-from aln_analysis import AnalysisUnit
-from aln_analysis import FeatureCounts
-from machine_learning import BayesClassifier
+
+import aln_analysis.analysis_unit
+import aln_analysis.feature_counts
+import machine_learning.bayes_classifier
 
 # _____________________________________________________________________________
 # -----------------------------------------------------------------------------

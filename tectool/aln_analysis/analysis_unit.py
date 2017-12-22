@@ -16,13 +16,13 @@ import os
 # import our own modules
 # -----------------------------------------------------------------------------
 
-from aln_analysis import DetailedAlignment
-from aln_analysis import SplitEvent
-from aln_analysis import FeatureCounts
+import aln_analysis.detailed_alignment
+import aln_analysis.split_event
+import aln_analysis.feature_counts
 
-from gene_structure import Gene
-from gene_structure import Transcript
-from gene_structure import Exon
+import gene_structure.exon
+import gene_structure.transcript
+import gene_structure.gene
 
 # _____________________________________________________________________________
 # -----------------------------------------------------------------------------

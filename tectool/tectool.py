@@ -147,16 +147,16 @@ except Exception:
 # import our own modules
 # -----------------------------------------------------------------------------
 
-from gene_structure import Exon
-from gene_structure import Transcript
-from gene_structure import Gene
-from aln_analysis import DetailedAlignment
-from aln_analysis import SplitEvent
-from aln_analysis import AnalysisUnit
-from aln_analysis import FeatureCounts
-from annotation import Annotation
-from machine_learning import MachineLearningUnit
-from machine_learning import BayesClassifier
+import gene_structure.exon
+import gene_structure.transcript
+import gene_structure.gene
+import aln_analysis.detailed_alignment
+import aln_analysis.split_event
+import aln_analysis.analysis_unit
+import aln_analysis.feature_counts
+import annotation.annotation
+import machine_learning.machine_learning_unit
+import machine_learning.bayes_classifier
 
 # _____________________________________________________________________________
 # -----------------------------------------------------------------------------
