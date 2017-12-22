@@ -20,11 +20,9 @@ setup(
     author_email='foivos.gypas@unibas.ch',
     url='https://git.scicore.unibas.ch/zavolan_public/TECtool.git',
     packages=['tectool'],
-    entry_points={
-        'console_scripts': [
-            'tectool=tectool.cli:cli'
-        ]
-    },
+    scripts=[
+        'tectool/tectool.py'
+    ],
     install_requires=requirements,
     keywords='TECtool',
     classifiers=[
