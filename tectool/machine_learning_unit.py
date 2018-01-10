@@ -3,157 +3,41 @@
 # import needed (external) modules
 # -----------------------------------------------------------------------------
 
-try:
-    import HTSeq
-except(Exception):
-    raise("[ERROR] HTSeq was not imported properly. Exiting.")
-    sys.exit(-1)
+import os
+import sys
+import copy
+import math
+import itertools
+import random
+import time
+import functools
 
-try:
-    import os
-except(Exception):
-    raise("[ERROR] os was not imported properly. Exiting.")
-    sys.exit(-1)
-
-try:
-    import sys
-except(Exception):
-    raise("[ERROR] sys was not imported properly. Exiting.")
-    sys.exit(-1)
-
-try:
-    import copy
-except(Exception):
-    raise("[ERROR] copy was not imported properly. Exiting.")
-    sys.exit(-1)
-
-try:
-    import csv
-except(Exception):
-    raise("[ERROR] csv was not imported properly. Exiting.")
-    sys.exit(-1)
-
-try:
-    import numpy as np
-except(Exception):
-    raise("[ERROR] numpy was not imported properly. Exiting.")
-    sys.exit(-1)
-
-try:
-    import math
-except(Exception):
-    raise("[ERROR] math was not imported properly. Exiting.")
-    sys.exit(-1)
-
-try:
-    import itertools
-except(Exception):
-    raise("[ERROR] itertools was not imported properly")
-    sys.exit(-1)
-
-try:
-    from sklearn import metrics
-    from sklearn.metrics import accuracy_score
-#    from sklearn.metrics import f1_score
-    from sklearn.metrics import confusion_matrix
-    from sklearn.metrics import make_scorer
-#    from sklearn.metrics import roc_curve, auc
-    from sklearn.model_selection import GridSearchCV
-#    from sklearn.preprocessing import label_binarize
-#    from sklearn.multiclass import OneVsRestClassifier
-#    from sklearn import linear_model
-    from sklearn.cross_validation import train_test_split
-    from sklearn import neighbors
-#    from sklearn.model_selection import StratifiedKFold
-except(Exception):
-    raise("[ERROR] sklearn was not imported properly")
-
-try:
-    import scipy as sp
-except(Exception):
-    raise("[ERROR] scipy was not imported properly. Exiting.")
-    sys.exit(-1)
-
-try:
-#    from scipy import interp
-    from scipy import stats
-    from scipy.optimize import curve_fit
-except(Exception):
-    raise("[ERROR] scipy was not imported properly")
-
-# try:
-#     # for feature selection
-#     # http://rasbt.github.io/mlxtend/user_guide/feature_selection/SequentialFeatureSelector/
-#     from mlxtend.feature_selection import SequentialFeatureSelector as SFS
-# except(Exception):
-#     raise e
-
-# try:
-#     from scipy import random
-# except(Exception):
-#     raise("[ERROR] random was not imported properly. Exiting.")
-#     sys.exit(-1)
-
-try:
-    import random
-except(Exception):
-    raise("[ERROR] time was not imported properly. Exiting.")
-    sys.exit(-1)
-
-try:
-    import time
-except(Exception):
-    raise("[ERROR] time was not imported properly. Exiting.")
-    sys.exit(-1)
-
-try:
-    import matplotlib as mpl
-    mpl.use('Agg')
-    import matplotlib.pyplot as plt
-except(Exception):
-    raise("[ERROR] plt from matplotlib.pyplot was not " +
-          "imported properly. Exiting.")
-    sys.exit(-1)
-
-try:
-    import pandas as pd
-except(Exception):
-    raise("[ERROR] pandas was not imported properly. Exiting.")
-    sys.exit(-1)
-
-try:
-    import pybedtools
-except(Exception):
-    raise("[ERROR] pybedtools was not imported properly. Exiting.")
-    sys.exit(-1)
-
-# try:
-#     from ast import literal_eval
-# except(Exception):
-#     raise("[ERROR] literal_eval from ast was not imported properly. Exiting.")
-#     sys.exit(-1)
-
-try:
-    import pickle
-except(Exception):
-    raise("[ERROR] pickle was not imported properly. Exiting.")
-    sys.exit(-1)
-
-try:
-    import functools
-except(Exception):
-    raise("[ERROR] functools was not imported properly. Exiting.")
+import HTSeq
+import numpy as np
+from sklearn import metrics
+from sklearn.metrics import accuracy_score
+from sklearn.metrics import confusion_matrix
+from sklearn.metrics import make_scorer
+from sklearn.model_selection import GridSearchCV
+from sklearn.cross_validation import train_test_split
+from sklearn import neighbors
+from scipy import stats
+from scipy.optimize import curve_fit
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+import pandas as pd
+import pybedtools
 
 # _____________________________________________________________________________
 # -----------------------------------------------------------------------------
 # import our own modules
 # -----------------------------------------------------------------------------
-# from aln_analysis import DetailedAlignment
-# from aln_analysis import SplitEvent
 
-import aln_analysis.analysis_unit
-import aln_analysis.feature_counts
-import machine_learning.bayes_classifier
+from .analysis_unit import AnalysisUnit
+from .feature_counts import FeatureCounts
+from .bayes_classifier import BayesClassifier
+
+mpl.use('Agg')
 
 # _____________________________________________________________________________
 # -----------------------------------------------------------------------------

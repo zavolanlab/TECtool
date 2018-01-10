@@ -299,3 +299,5 @@ class Exon:
                     str(self.frame),
                     extra_field])
                 )
+
+all = ('Exon', )

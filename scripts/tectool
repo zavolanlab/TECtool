@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# import ipdb;ipdb.set_trace()
 
 # _____________________________________________________________________________
 # -----------------------------------------------------------------------------
@@ -7,156 +8,55 @@
 
 __version__ = "0.2.0"
 
-try:
-    import sys
-except Exception:
-    raise Exception("[ERROR] sys was not imported properly. Exiting.")
-    sys.exit(-1)
-
-try:
-    import HTSeq
-except Exception:
-    raise Exception("[ERROR] HTSeq was not imported properly. Exiting.")
-    sys.exit(-1)
-
-try:
-    import os
-except Exception:
-    raise Exception("[ERROR] os was not imported properly. Exiting.")
-    sys.exit(-1)
-
-try:
-    import math
-except Exception:
-    raise Exception("[ERROR] math was not imported properly. Exiting.")
-    sys.exit(-1)
-
-try:
-    from argparse import ArgumentParser, RawTextHelpFormatter
-except Exception:
-    raise Exception("[ERROR] argparse was not imported properly. Exiting.")
-    sys.exit(-1)
-
-try:
-    import itertools
-except Exception:
-    raise Exception("[ERROR] itertools was not imported properly. Exiting.")
-    sys.exit(-1)
-
-try:
-    import collections
-    from collections import defaultdict
-except Exception:
-    raise Exception("[ERROR] collections was not imported properly. Exiting.")
-    sys.exit(-1)
-
-try:
-    import pybedtools
-except Exception:
-    raise Exception("[ERROR] pybedtools was not imported properly. Exiting.")
-    sys.exit(-1)
-
-try:
-    from pyfasta import Fasta
-except Exception:
-    raise Exception("[ERROR] pyfasta was not imported properly. Exiting.")
-    sys.exit(-1)
-
-try:
-    import pandas as pd
-except Exception:
-    raise Exception("[ERROR] pandas was not imported properly. Exiting.")
-    sys.exit(-1)
-
-try:
-    import matplotlib as mpl
-    mpl.use('Agg')
-    import matplotlib.pyplot as plt
-except Exception:
-    raise Exception("[ERROR] plt from matplotlib.pyplot was not imported properly. Exiting.")
-    sys.exit(-1)
-
-try:
-    from sklearn.metrics import accuracy_score
-    from sklearn.metrics import confusion_matrix
-    from sklearn.metrics import classification_report
-    from sklearn import metrics
-    from sklearn.metrics import roc_curve, auc
-    from sklearn.preprocessing import label_binarize
-    from sklearn.multiclass import OneVsRestClassifier
-    from sklearn import linear_model
-    from sklearn.cross_validation import train_test_split
-    from sklearn import neighbors
-    # from sklearn.model_selection import StratifiedKFold
-except Exception:
-    raise Exception("[ERROR] sklearn was not imported properly")
-    sys.exit(-1)
-
-try:
-    from scipy import interp
-    from scipy import stats
-except Exception:
-    raise Exception("[ERROR] scipy was not imported properly")
-    sys.exit(-1)
-
-# try:
-#     # for feature selection
-#     # http://rasbt.github.io/mlxtend/user_guide/feature_selection/SequentialFeatureSelector/
-#     from mlxtend.feature_selection import SequentialFeatureSelector as SFS
-# except(Exception):
-#     raise("[ERROR] mlxtend was not imported properly")
-#     sys.exit(-1)
-
-try:
-    import random
-except Exception:
-    raise Exception("[ERROR] random was not imported properly. Exiting.")
-    sys.exit(-1)
-
-try:
-    import numpy as np
-except Exception:
-    raise Exception("[ERROR] numpy was not imported properly. Exiting.")
-    sys.exit(-1)
-
-try:
-    import copy
-except Exception:
-    raise Exception("[ERROR] copy was not imported properly. Exiting.")
-    sys.exit(-1)
-
-try:
-    import csv
-except Exception:
-    raise Exception("[ERROR] csv was not imported properly. Exiting.")
-    sys.exit(-1)
-
-try:
-    import functools
-except Exception:
-    raise Exception("[ERROR] functools was not imported properly. Exiting.")
-
-# try:
-#     import multiprocessing as mp
-# except Exception:
-#     raise Exception("[ERROR] multiprocessing was not imported properly. Exiting.")
-#     sys.exit(-1)
+import sys
+import HTSeq
+import os
+import math
+from argparse import ArgumentParser, RawTextHelpFormatter
+import itertools
+import collections
+from collections import defaultdict
+import pybedtools
+from pyfasta import Fasta
+import pandas as pd
+import matplotlib as mpl
+mpl.use('Agg')
+import matplotlib.pyplot as plt
+from sklearn.metrics import accuracy_score
+from sklearn.metrics import confusion_matrix
+from sklearn.metrics import classification_report
+from sklearn import metrics
+from sklearn.metrics import roc_curve, auc
+from sklearn.preprocessing import label_binarize
+from sklearn.multiclass import OneVsRestClassifier
+from sklearn import linear_model
+from sklearn.cross_validation import train_test_split
+from sklearn import neighbors
+from scipy import interp
+from scipy import stats
+import random
+import numpy as np
+import copy
+import csv
+import functools
 
 # _____________________________________________________________________________
 # -----------------------------------------------------------------------------
 # import our own modules
 # -----------------------------------------------------------------------------
 
-import gene_structure.exon
-import gene_structure.transcript
-import gene_structure.gene
-import aln_analysis.detailed_alignment
-import aln_analysis.split_event
-import aln_analysis.analysis_unit
-import aln_analysis.feature_counts
-import annotation.annotation
-import machine_learning.machine_learning_unit
-import machine_learning.bayes_classifier
+sys.path.append('../tectool')
+
+from tectool.exon import Exon
+from tectool.transcript import Transcript
+from tectool.gene import Gene
+from tectool.detailed_alignment import DetailedAlignment
+from tectool.split_event import SplitEvent
+from tectool.analysis_unit import AnalysisUnit
+from tectool.feature_counts import FeatureCounts
+from tectool.annotation import Annotation
+from tectool.machine_learning_unit import MachineLearningUnit
+from tectool.bayes_classifier import BayesClassifier
 
 # _____________________________________________________________________________
 # -----------------------------------------------------------------------------

@@ -16,18 +16,19 @@ import os
 # import our own modules
 # -----------------------------------------------------------------------------
 
-import aln_analysis.detailed_alignment
-import aln_analysis.split_event
-import aln_analysis.feature_counts
+from .detailed_alignment import DetailedAlignment
+from .split_event import SplitEvent
+from .feature_counts import FeatureCounts
 
-import gene_structure.exon
-import gene_structure.transcript
-import gene_structure.gene
+from .exon import Exon
+from .transcript import Transcript
+from .gene import Gene
 
 # _____________________________________________________________________________
 # -----------------------------------------------------------------------------
 # CLASSES
 # -----------------------------------------------------------------------------
+
 
 class AnalysisUnit:
 

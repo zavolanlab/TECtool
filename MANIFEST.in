@@ -1,3 +1,14 @@
 # Pure and script
-include tectool/*
+include AUTHORS.rst
+include CONTRIBUTING.rst
+include HISTORY.md
+include LICENSE
+include README.md
 
+include tectool
+
+recursive-include tests *
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]
+
+#recursive-include docs *.rst conf.py Makefile make.bat
