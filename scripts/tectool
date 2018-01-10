@@ -622,7 +622,6 @@ def main():
 
     if sequencing_direction == supported_sequencing_directions_forward:
 
-
         # _________________________________________________________________________
         # -------------------------------------------------------------------------
         # Determine terminal exons than not ovelap with other exons
