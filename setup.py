@@ -1,18 +1,18 @@
 import sys
 from setuptools import setup, find_packages
 
-if sys.version_info < (3, 6):
-    sys.exit('Sorry, TECtool requires Python >= 3.6 (Tested with Python 3.6.2)')
+if sys.version_info < (3, 4):
+    sys.exit('Sorry, TECtool requires Python >= 3.4 (Tested with Python 3.6.2)')
 
 requirements = [
+    "numpy==1.13",
+    "scipy==0.19",
     "htseq==0.9.1",
     "pybedtools==0.7.10",
     "pyfasta==0.5.2",
     "scikit-learn==0.19.0",
     "pandas==0.20.3",
     "matplotlib==2.0.2",
-    "scikit-learn==0.19.0",
-    "scipy==0.19.1"
 ]
 
 setup(

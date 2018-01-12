@@ -22,7 +22,7 @@ Output files
 
 ## INSTALLATION
 
-TECtool as of version 0.2 is written in Python 3. You can use the conda package manager to install it.
+TECtool as of version 0.2 is written in Python 3. You can use the conda install it or you can install it via pip.
 
 ### Step 1: Download Miniconda3 (if not already installed)
 
@@ -39,14 +39,7 @@ On MacOS X:
 wget https://repo.continuum.io/miniconda/Miniconda3-latest-MacOSX-x86_64.sh
 bash Miniconda3-latest-MacOSX-x86_64.sh
 ```
-
-### Step 2: Install it via conda
-
-```bash
-conda intsall TECtool --channel bioconda
-```
-
-### Step 2 (alternative)
+### Step 2
 
 Create a new conda environment
 
@@ -76,8 +69,6 @@ and clone the repository
 ```bash
 git clone https://git.scicore.unibas.ch/zavolan_public/TECtool.git
 ```
-
-
 ## Run TECtool
 
 In order see all the option that are provided to TECtool then just go to the 
@@ -92,6 +83,22 @@ and run (after you activate the virtual environment that you previously generate
 ```bash
 python tectool.py --help
 ```
+### Pip intallation
+
+#### Create a virtual env
+
+```bash
+python3 -m virtualenv venvTECtool
+```
+
+#### Install requirements
+
+```bash
+pip install -r requirements.txt
+```
+or
+
+
 
 ### Options
 
