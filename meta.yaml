@@ -45,6 +45,17 @@ test:
     - copy
     - csv
     - functools
+    - tectool
+    - tectool.analysis_unit
+    - tectool.annotation
+    - tectool.bayes_classifier
+    - tectool.detailed_alignment
+    - tectool.exon
+    - tectool.feature_counts
+    - tectool.gene
+    - tectool.machine_learning_unit
+    - tectool.split_event
+    - tectool.transcript
 about:
   home: http://tectool.unibas.ch/
   summary: TECtool is a method that uses mRNA and 3' end sequencing data to identify novel terminal exons.
