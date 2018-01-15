@@ -12,7 +12,7 @@ TECtool is a method that uses mRNA and 3’ end sequencing data to identify nove
 Input files
 
 * A file containing all chromosomes in fasta format. **Important note:** The file should have the same chromosome names (header lines) as the ones specified in the gtf file. For example if the gtf file has chromosome 1 annotated as "1", then the fasta should have a header called ">1". No white spaces or trailing text should be included.
-* A file with the corresponding annotation in GTF format. **Note:** Currently only gtf files in ENSEMBL (tested with ENSEMBL v87).
+* A file with the corresponding annotation in GTF format. **Important note:** Currently only gtf files in ENSEMBL (tested with ENSEMBL v87).
 * A file with genome coordinates of 3’ end processing sites in BED format.
 * A file containing spliced alignments of mRNA-seq reads to the corresponding genome (in BAM format, sorted by coordinates and indexed) (tested with STAR aligner).
 
@@ -129,7 +129,7 @@ or
 pip install -r requirements.txt
 ```
 
-*Important Note* The requirements that will be installed include only the Python modules. Users should additionally install bedtools>=2.26 in their system. TECtool is not checking if the correct version of bedtools is installed and this might lead to run errors.
+**Important Note:** The requirements that will be installed include only the Python modules. Users should additionally install bedtools>=2.26 in their system. TECtool is not checking if the correct version of bedtools is installed and this might lead to run errors.
 
 Install TECtool
 ```bash
