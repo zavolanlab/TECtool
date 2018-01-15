@@ -197,15 +197,13 @@ tectool \
 --polyasites polya_sites.merged.anno.hg38.ENSEMBL.chromosome_21.bed \
 --bam STAR_Aligned.out.sorted.chromosome_21.bam \
 --sequencing_direction forward \
---genome Homo_sapiens.GRCh38.dna_sm.chromosome.fixed.chromosome_21.fa \
+--genome Homo_sapiens.GRCh38.dna_sm.primary_assembly.fixed.fa \
 --minimum_spliced_reads_for_cryptic_exon_start_site 5 \
 --min_region_overlap 10 \
 --max_splice_fuzziness 0 \
 --output_dir TECtool \
 --verbose
 ```
-
-
 
 ## Licence and documentation
 
