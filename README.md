@@ -12,7 +12,7 @@ TECtool is a method that uses mRNA and 3’ end sequencing data to identify nove
 Input files
 
 * A file containing all chromosomes in fasta format. **Important note:** The file should have the same chromosome names (header lines) as the ones specified in the gtf file. For example if the gtf file has chromosome 1 annotated as "1", then the fasta should have a header called ">1". No white spaces or trailing text should be included.
-* A file with the corresponding annotation in GTF format. **Note:** Currently only gtf files in ENSEMBL (tested with ENSEMBL v87), or GENCODE are supported. 
+* A file with the corresponding annotation in GTF format. **Note:** Currently only gtf files in ENSEMBL (tested with ENSEMBL v87).
 * A file with genome coordinates of 3’ end processing sites in BED format.
 * A file containing spliced alignments of mRNA-seq reads to the corresponding genome (in BAM format, sorted by coordinates and indexed) (tested with STAR aligner).
 
@@ -22,11 +22,11 @@ Output files
 
 ## INSTALLATION
 
-TECtool as of version 0.2 is written in Python 3. You can use conda package manager to install it or you can install it via pip.
+TECtool as of version 0.2 is written in Python 3. The recommended way to install TECtool is via the conda package manager, because it can install non Python dependencies (for example bedtools). In case you do not want to use conda other options to install TECtool are described below.
 
 ### Conda installation
 
-#### Step 1: Download Miniconda3 (if not already installed)
+#### Step 1: Download and install Miniconda3 (if not already installed)
 
 On Linux:
 
@@ -41,22 +41,37 @@ On MacOS X:
 wget https://repo.continuum.io/miniconda/Miniconda3-latest-MacOSX-x86_64.sh
 bash Miniconda3-latest-MacOSX-x86_64.sh
 ```
-### Step 2
+
+### Step 2: Create a new conda environment with conda create
 
 Create a new conda environment
+```bash
+conda create --name TECtool --channel conda-forge --channel bioconda --channel fgypas tectool
+```
 
+Activate the virtual environment
+```bash
+source activate TECtool
+```
+
+Check if tectool returns the necessary argparse options by typing
+```bash
+tectool --help
+```
+
+### Step 2 (alternative): Create a new conda environment and install the dependencies manually
+
+Create a new conda environment
 ```bash
 conda create --name TECtool --channel bioconda python=3.6.2
 ```
 
 Activate the virtual environment
-
 ```bash
 source activate TECtool
 ```
 
 Install dependencies
-
 ```bash
 conda install --channel bioconda htseq==0.9.1
 conda install --channel bioconda pybedtools==0.7.10
@@ -64,42 +79,69 @@ conda config --add channels conda-forge
 conda install --channel conda-forge bzip2
 conda install --channel bioconda pyfasta==0.5.2
 conda install --channel coda-forge scikit-learn==0.19.0
+conda install --channel fgypas tectool
 ```
 
-### Pip intallation
-
-#### Create a virtual env
-
+Check if tectool returns the necessary argparse options by typing
 ```bash
-python3 -m virtualenv venvTECtool
+tectool --help
 ```
 
-#### Install requirements
+### Step 2 (alternative): Install tectool in an existing environment or globally
+
+Install tectool in an existing conda environment or globally
+```bash
+conda install --channel conda-forge --channel bioconda --channel fgypas tectool
+```
+
+Check if tectool returns the necessary argparse options by typing
+```bash
+tectool --help
+```
+
+### Non conda installation
+
+For users that do not want to use conda
+
+Create a virtual environment with virtualenv
+```bash
+virtualenv TECtool
+```
+
+Clone the TECtool repository
+```bash
+git clone https://git.scicore.unibas.ch/zavolan_public/TECtool.git
+```
+
+Enter the directory
+```bash
+cd TECtool
+```
+
+Install dependencies with
+```bash
+pip install .
+```
+
+or
 
 ```bash
 pip install -r requirements.txt
 ```
 
-## Run TECtool
+*Important Note* The requirements that will be installed include only the Python modules. Users should additionally install bedtools>=2.26 in their system. TECtool is not checking if the correct version of bedtools is installed and this might lead to run errors.
 
-Clone the repository
-
+Install TECtool
 ```bash
-git clone https://git.scicore.unibas.ch/zavolan_public/TECtool.git
-```
-In order see all the option that are provided to TECtool then just go to the TECtool directory
-
-```bash
-cd scripts
+python setup.py install
 ```
 
-and run (after you activate the virtual environment that you previously generated)
-
+Check if tectool returns the necessary argparse options by typing
 ```bash
 tectool --help
 ```
 
-### Options
+## Available options
 
 The following options are available and should be set by the user:
 
