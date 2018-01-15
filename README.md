@@ -1,4 +1,4 @@
-# TECtool (Terminal exon characterization Tool)
+# TECtool (Terminal Exon Characterization tool)
 
 ## Features
 
@@ -129,7 +129,7 @@ or
 pip install -r requirements.txt
 ```
 
-**Important Note:** The requirements that will be installed include only the Python modules. Users should additionally install bedtools>=2.26 in their system. TECtool is not checking if the correct version of bedtools is installed and this might lead to run errors.
+**Important Note:** The requirements that will be installed include only Python modules. Users should additionally install bedtools>=2.26 in their system. TECtool is not checking if the correct version of bedtools is installed and this might lead to run errors.
 
 Install TECtool
 ```bash
@@ -175,7 +175,37 @@ The output of TECtool:
 
 ## Recommended files for testing
 
-Coming soon
+Download the test data
+```bash
+wget http://tectool.unibas.ch/data/test_data.tar.gz
+```
+
+Uncompress the files
+```bash
+tar xzvf test_data.tar.gz
+```
+
+Enter the directory
+```bash
+cd test_data
+```
+
+Run TECtool with the following options
+```
+tectool \
+--annotation Homo_sapiens.GRCh38.87.chr.support_level_5.chromosome_21.gtf \
+--polyasites polya_sites.merged.anno.hg38.ENSEMBL.chromosome_21.bed \
+--bam STAR_Aligned.out.sorted.chromosome_21.bam \
+--sequencing_direction forward \
+--genome Homo_sapiens.GRCh38.dna_sm.chromosome.fixed.chromosome_21.fa \
+--minimum_spliced_reads_for_cryptic_exon_start_site 5 \
+--min_region_overlap 10 \
+--max_splice_fuzziness 0 \
+--output_dir TECtool \
+--verbose
+```
+
+
 
 ## Licence and documentation
 

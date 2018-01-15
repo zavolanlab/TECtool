@@ -62,3 +62,7 @@ target/
 # Mac related
 .DS_Store
 ._.DS_Store
+
+test_data
+test_data.tar.gz
+
