@@ -193,11 +193,11 @@ cd test_data
 Run TECtool with the following options
 ```
 tectool \
---annotation Homo_sapiens.GRCh38.87.chr.support_level_5.chromosome_21.gtf \
---polyasites polya_sites.merged.anno.hg38.ENSEMBL.chromosome_21.bed \
---bam STAR_Aligned.out.sorted.chromosome_21.bam \
---sequencing_direction forward \
+--annotation Homo_sapiens.GRCh38.87.chr.support_level_5.chromosome_X.gtf \
+--polyasites polya_sites.merged.anno.hg38.ENSEMBL.chromosome_X.bed \
+--bam GSM1502499_RNA_seq_control_rep2.chrX.bam \
 --genome Homo_sapiens.GRCh38.dna_sm.primary_assembly.fixed.fa \
+--sequencing_direction forward \
 --minimum_spliced_reads_for_cryptic_exon_start_site 5 \
 --min_region_overlap 10 \
 --max_splice_fuzziness 0 \
