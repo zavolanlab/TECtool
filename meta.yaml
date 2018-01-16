@@ -3,7 +3,7 @@ package:
   version: "0.2"
 source:
   git_url: https://git.scicore.unibas.ch/zavolan_public/TECtool.git
-  git_rev: v0.2
+#  git_rev: v0.2
 build:
   # If the installation is complex, or different between Unix and Windows, use
   # separate bld.bat and build.sh files instead of this key.  Add the line
