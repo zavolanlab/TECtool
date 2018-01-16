@@ -18,7 +18,6 @@ channels:
 requirements:
   build:
     - python 3.6.2
-    - numpy 1.13
   run:
     - python
     - numpy 1.13
