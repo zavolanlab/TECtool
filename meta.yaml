@@ -18,10 +18,10 @@ channels:
 requirements:
   build:
     - python 3.6.2
+    - numpy 1.13
   run:
     - python
-    - numpy 1.14
-    - scipy 0.19
+    - numpy 1.13
     - htseq 0.9.1
     - pybedtools 0.7.10
     - bzip2
