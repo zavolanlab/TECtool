@@ -20,7 +20,6 @@ requirements:
     - python 3.6.2
   run:
     - python
-    - numpy 1.13
     - htseq 0.9.1
     - pybedtools 0.7.10
     - bzip2

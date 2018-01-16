@@ -5,6 +5,7 @@ if sys.version_info < (3, 4):
     sys.exit('Sorry, TECtool requires Python >= 3.4 (Tested with Python 3.6.2)')
 
 requirements = [
+    "numpy>=0.13",
     "scipy==0.19",
     "htseq==0.9.1",
     "pybedtools==0.7.10",
