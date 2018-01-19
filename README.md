@@ -24,9 +24,9 @@ You can do this with one of the following options:
     1. filling in the URL for the appropriate file in a browser window and saving the file
     for Linux:
     
-    ```
-    https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
-    ```
+```
+https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
+```
     
     for Mac OSX:
     ```
