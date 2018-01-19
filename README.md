@@ -19,41 +19,41 @@ If you do not want to use conda to install TECtool, other options are described 
 
 #### Step 1: Download miniconda 3 installation file (if not already installed)
 
-You can do this by:
+You can do this with one of the following options:
     1. filling in the URL for the appropriate file in a browser window and saving the file
     for Linux:
     
-    ```bash
+    ```
     https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
     ```
     
     for Mac OSX:
-    ```bash
+    ```
     https://repo.continuum.io/miniconda/Miniconda3-latest-MacOSX-x86_64.sh
     ```
     
     2. using wget:
     for Linux:
     
-    ```bash
+    ```
     wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
     ```
     for Mac OSX:
     
-    ```bash
+    ```
     wget https://repo.continuum.io/miniconda/Miniconda3-latest-MacOSX-x86_64.sh
     ```
    
     3. using curl:
     for Linux:
     
-    ```bash
+    ```
     curl https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -o Miniconda3-latest-Linux-x86_64.sh
     ```
     
     for Mac OSX:
     
-    ```bash
+    ```
     curl https://repo.continuum.io/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -o Miniconda3-latest-MacOSX-x86_64.sh
     ```
 
