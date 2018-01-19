@@ -9,7 +9,7 @@ TECtool is a method that uses mRNA and 3’ end sequencing data to identify nove
 
 ## INSTALLATION
 
-** TECtool uses genome sequence, annotation and RNA-seq data. Therefore, ~10 GB of disk space are needed for installation and testing. **
+**TECtool uses genome sequence, annotation and RNA-seq data. Therefore, ~10 GB of disk space are needed for installation and testing.**
 
 TECtool as of version 0.2 is written in Python 3. The recommended way to install TECtool is via the conda package manager, because it can install non Python dependencies (for example bedtools). 
 
