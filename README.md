@@ -21,17 +21,16 @@ If you do not want to use conda to install TECtool, other options are described 
 
 You can do this with one of the following options:
 
-    1. filling in the URL for the appropriate file in a browser window and saving the file
-    
+* filling in the URL for the appropriate file in a browser window and saving the file
+
 for Linux:
 ```
 https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
 ```
-    
-    for Mac OSX:
-    ```
-    https://repo.continuum.io/miniconda/Miniconda3-latest-MacOSX-x86_64.sh
-    ```
+for Mac OSX:
+```
+https://repo.continuum.io/miniconda/Miniconda3-latest-MacOSX-x86_64.sh
+```
     
     2. using wget:
     for Linux:
