@@ -9,18 +9,30 @@ TECtool is a method that uses mRNA and 3’ end sequencing data to identify nove
 
 ## INSTALLATION
 
-TECtool as of version 0.2 is written in Python 3. The recommended way to install TECtool is via the conda package manager, because it can install non Python dependencies (for example bedtools). In case you do not want to use conda other options to install TECtool are described below. Users will require ~10 GB of disk space for installation and testing.
+** TECtool uses genome sequence, annotation and RNA-seq data. Therefore, ~10 GB of disk space are needed for installation and testing. **
+
+TECtool as of version 0.2 is written in Python 3. The recommended way to install TECtool is via the conda package manager, because it can install non Python dependencies (for example bedtools). 
+
+If you do not want to use conda to install TECtool, other options are described below. 
 
 ### Conda installation
 
-#### Step 1: Download miniconda 3 installation (if not already installed)
+#### Step 1: Download miniconda 3 installation file (if not already installed)
 
-You can use wget, curl or through the browser. For example:
+You can do this by:
+    1. filling in the URL in a browser window and saving the file
+    https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
+    
+    2. using wget:
+    wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
+    
+    3. using curl:
+    curl https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -o Miniconda3-latest-Linux-x86_64.sh
 
 On Linux:
 
 ```bash
-wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
+
 bash Miniconda3-latest-Linux-x86_64.sh
 ```
 
