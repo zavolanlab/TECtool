@@ -70,34 +70,34 @@ bash Miniconda3-latest-MacOSX-x86_64.sh
 ### Step 3: Create a new conda environment
 
 Create a new conda environment
-```bash
+```
 conda create --name TECtool --channel bioconda --channel conda-forge --channel fgypas tectool
 ```
 
 Activate the virtual environment
-```bash
+```
 source activate TECtool
 ```
 
-Check if tectool returns the necessary argparse options by typing
-```bash
+Check the installation and options for the tool
+```
 tectool --help
 ```
 
-### Step 2 (alternative): Create a new conda environment and install the dependencies manually
+### Step 3 (alternative 1): Create a new conda environment and install the dependencies manually
 
-Create a new conda environment
-```bash
+Create a new conda environment that only contains python 3
+```
 conda create --name TECtool --channel bioconda python=3.6.2
 ```
 
 Activate the virtual environment
-```bash
+```
 source activate TECtool
 ```
 
-Install dependencies
-```bash
+Install dependencies one by one
+```
 conda install --channel bioconda htseq==0.9.1
 conda install --channel bioconda bedtools==2.26.0
 conda install --channel bioconda pybedtools==0.7.10
@@ -107,24 +107,24 @@ conda install --channel coda-forge scikit-learn==0.19.0
 conda install --channel fgypas tectool
 ```
 
-Check if tectool returns the necessary argparse options by typing
-```bash
+Check the installation and options for the tool
+```
 tectool --help
 ```
 
-### Step 2 (alternative): Install tectool in an existing environment or globally
+### Step 3 (alternative 2): Install tectool in an existing environment or globally
 
 Install tectool in an existing conda environment or globally
-```bash
-conda install --channel conda-forge --channel bioconda --channel fgypas tectool
+```
+conda install --channel bioconda --channel conda-forge --channel fgypas tectool
 ```
 
-Check if tectool returns the necessary argparse options by typing
-```bash
+Check the installation and options for the tool
+```
 tectool --help
 ```
 
-### Non conda installation
+### Installation of TECtool without using conda
 
 For users that do not want to use conda
 
