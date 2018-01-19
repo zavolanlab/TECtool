@@ -46,7 +46,7 @@ bash Miniconda3-latest-MacOSX-x86_64.sh
 
 Create a new conda environment
 ```bash
-conda create --name TECtool --channel bioconda --channel bioconda --channel fgypas tectool
+conda create --name TECtool --channel bioconda --channel conda-forge --channel fgypas tectool
 ```
 
 Activate the virtual environment
