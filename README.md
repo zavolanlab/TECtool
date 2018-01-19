@@ -26,7 +26,9 @@ TECtool as of version 0.2 is written in Python 3. The recommended way to install
 
 ### Conda installation
 
-#### Step 1: Download and install Miniconda3 (if not already installed)
+#### Step 1: Download miniconda 3 installation (if not already installed)
+
+You can use wget, curl or through the browser. For example:
 
 On Linux:
 
