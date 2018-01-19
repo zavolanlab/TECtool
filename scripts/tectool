@@ -45,8 +45,6 @@ import functools
 # import our own modules
 # -----------------------------------------------------------------------------
 
-sys.path.append('../tectool')
-
 from tectool.exon import Exon
 from tectool.transcript import Transcript
 from tectool.gene import Gene

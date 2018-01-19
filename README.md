@@ -46,7 +46,7 @@ bash Miniconda3-latest-MacOSX-x86_64.sh
 
 Create a new conda environment
 ```bash
-conda create --name TECtool --channel conda-forge --channel bioconda --channel fgypas tectool
+conda create --name TECtool --channel bioconda --channel bioconda --channel fgypas tectool
 ```
 
 Activate the virtual environment
@@ -74,8 +74,8 @@ source activate TECtool
 Install dependencies
 ```bash
 conda install --channel bioconda htseq==0.9.1
+conda install --channel bioconda bedtools==2.26.0
 conda install --channel bioconda pybedtools==0.7.10
-conda config --add channels conda-forge
 conda install --channel conda-forge bzip2
 conda install --channel bioconda pyfasta==0.5.2
 conda install --channel coda-forge scikit-learn==0.19.0
@@ -129,7 +129,7 @@ or
 pip install -r requirements.txt
 ```
 
-**Important Note:** The requirements that will be installed include only Python modules. Users should additionally install bedtools>=2.26 in their system. TECtool is not checking if the correct version of bedtools is installed and this might lead to run errors.
+**Important Note:** The requirements that will be installed include only Python modules. Users should additionally install bedtools=2.26 in their system. TECtool is not checking if the correct version of bedtools is installed and this might lead to run errors.
 
 Install TECtool
 ```bash
@@ -193,15 +193,15 @@ cd test_data
 Run TECtool with the following options
 ```
 tectool \
---annotation Homo_sapiens.GRCh38.87.chr.support_level_5.chromosome_X.gtf \
---polyasites polya_sites.merged.anno.hg38.ENSEMBL.chromosome_X.bed \
---bam GSM1502499_RNA_seq_control_rep2.chrX.bam \
+--annotation Homo_sapiens.GRCh38.87.chr.support_level_5.correct_gene_coordinates.chr1.14.22.X.16.gtf \
+--polyasites polya_sites.merged.anno.hg38.ENSEMBL.chr1.14.22.X.16.bed \
+--bam GSM1502499_RNA_seq_control_rep2.chr22.bam \
 --genome Homo_sapiens.GRCh38.dna_sm.primary_assembly.fixed.fa \
 --sequencing_direction forward \
 --minimum_spliced_reads_for_cryptic_exon_start_site 5 \
 --min_region_overlap 10 \
 --max_splice_fuzziness 0 \
---output_dir TECtool \
+--output_dir results \
 --verbose
 ```
 
@@ -209,7 +209,3 @@ tectool \
 
 * Free software: MIT license
 * Official website: http://tectool.unibas.ch/
-
-
-
-
