@@ -22,7 +22,7 @@ Output files
 
 ## INSTALLATION
 
-TECtool as of version 0.2 is written in Python 3. The recommended way to install TECtool is via the conda package manager, because it can install non Python dependencies (for example bedtools). In case you do not want to use conda other options to install TECtool are described below.
+TECtool as of version 0.2 is written in Python 3. The recommended way to install TECtool is via the conda package manager, because it can install non Python dependencies (for example bedtools). In case you do not want to use conda other options to install TECtool are described below. Users will require ~10 GB of disk space for installation and testing.
 
 ### Conda installation
 
