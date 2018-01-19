@@ -7,19 +7,6 @@ TECtool is a method that uses mRNA and 3’ end sequencing data to identify nove
 * Infer novel transcripts
 * Annotate CDS for novel transcripts
 
-## Input and output files
-
-Input files
-
-* A file containing all chromosomes in fasta format. **Important note:** The file should have the same chromosome names (header lines) as the ones specified in the gtf file. For example if the gtf file has chromosome 1 annotated as "1", then the fasta should have a header called ">1". No white spaces or trailing text should be included.
-* A file with the corresponding annotation in GTF format. **Important note:** Currently only gtf files in ENSEMBL (tested with ENSEMBL v87).
-* A file with genome coordinates of 3’ end processing sites in BED format.
-* A file containing spliced alignments of mRNA-seq reads to the corresponding genome (in BAM format, sorted by coordinates and indexed) (tested with STAR aligner).
-
-Output files
-* An augmented annotation file (in GTF format)
-* A file containing the novel terminal exons
-
 ## INSTALLATION
 
 TECtool as of version 0.2 is written in Python 3. The recommended way to install TECtool is via the conda package manager, because it can install non Python dependencies (for example bedtools). In case you do not want to use conda other options to install TECtool are described below. Users will require ~10 GB of disk space for installation and testing.
@@ -169,7 +156,16 @@ The following options are available and should be set by the user:
 
 * *--output_dir* OUTPUT_DIR: The path to the output directory.
 
-### Output files
+## Input files
+
+Input files
+
+* A file containing all chromosomes in fasta format. **Important note:** The file should have the same chromosome names (header lines) as the ones specified in the gtf file. For example if the gtf file has chromosome 1 annotated as "1", then the fasta should have a header called ">1". No white spaces or trailing text should be included.
+* A file with the corresponding annotation in GTF format. **Important note:** Currently only gtf files in ENSEMBL (tested with ENSEMBL v87).
+* A file with genome coordinates of 3’ end processing sites in BED format.
+* A file containing spliced alignments of mRNA-seq reads to the corresponding genome (in BAM format, sorted by coordinates and indexed) (tested with STAR aligner).
+
+## Output files
 
 The output of TECtool:
 * An augmented annotation file in gtf format named enriched_annotation.gtf. The gtf file contains genes, transcripts, exons, CDS, START and STOP lines.
