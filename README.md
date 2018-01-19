@@ -32,30 +32,27 @@ for Mac OSX:
 https://repo.continuum.io/miniconda/Miniconda3-latest-MacOSX-x86_64.sh
 ```
     
-    2. using wget:
-    for Linux:
-    
-    ```
-    wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
-    ```
-    for Mac OSX:
-    
-    ```
-    wget https://repo.continuum.io/miniconda/Miniconda3-latest-MacOSX-x86_64.sh
-    ```
+* using wget:
+
+for Linux:
+```
+wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
+```
+for Mac OSX:
+```
+wget https://repo.continuum.io/miniconda/Miniconda3-latest-MacOSX-x86_64.sh
+```
    
-    3. using curl:
-    for Linux:
-    
-    ```
-    curl https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -o Miniconda3-latest-Linux-x86_64.sh
-    ```
-    
-    for Mac OSX:
-    
-    ```
-    curl https://repo.continuum.io/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -o Miniconda3-latest-MacOSX-x86_64.sh
-    ```
+* using curl:
+
+for Linux:
+```
+curl https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -o Miniconda3-latest-Linux-x86_64.sh
+```
+for Mac OSX:
+```
+curl https://repo.continuum.io/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -o Miniconda3-latest-MacOSX-x86_64.sh
+```
 
 #### Step 2: Install miniconda 3
 
