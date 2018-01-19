@@ -20,6 +20,7 @@ If you do not want to use conda to install TECtool, other options are described 
 #### Step 1: Download miniconda 3 installation file (if not already installed)
 
 You can do this with one of the following options:
+
     1. filling in the URL for the appropriate file in a browser window and saving the file
     for Linux:
     
