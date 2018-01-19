@@ -67,7 +67,7 @@ for Mac OSX:
 bash Miniconda3-latest-MacOSX-x86_64.sh
 ```
 
-### Step 3: Create a new conda environment with conda create
+### Step 3: Create a new conda environment
 
 Create a new conda environment
 ```bash
