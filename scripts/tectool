@@ -1102,9 +1102,10 @@ def main():
     # Generate N=10 training and validation datasets
     for run_number in range(10):
 
-        sys.stdout.write("Generating #{} training and validation \
-                          datasets ... {}".format(str(run_number),
-                                                  os.linesep))
+        sys.stdout.write("Generating #{} training and validation datasets ... {}".format(
+            str(run_number),
+            os.linesep)
+        )
 
         # ---------------------------------------------------------------------
         # Create dataframes and supplement with gene expression information
@@ -1117,9 +1118,10 @@ def main():
             verbose=options.verbose
         )
 
-        sys.stdout.write("After create_training_dataframes #{} \
-                          ... {}".format(str(run_number),
-                                         os.linesep))
+        sys.stdout.write("After create_training_dataframes #{} ... {}".format(
+            str(run_number),
+            os.linesep)
+        )
 
         # ---------------------------------------------------------------------
         # Calculate features for training data
@@ -1145,9 +1147,10 @@ def main():
             verbose=options.verbose
         )
 
-        sys.stdout.write("After load_training_data #{} \
-                          ...{}".format(str(run_number),
-                                        os.linesep))
+        sys.stdout.write("After load_training_data #{} ...{}".format(
+            str(run_number),
+            os.linesep)
+        )
 
         # Append to lists of training and validation datasets
         ml_train_unit.list_of_training_dataframes.append(
@@ -1155,9 +1158,10 @@ def main():
         ml_train_unit.list_of_validation_dataframes.append(
             ml_train_unit.validation_df)
 
-        sys.stdout.write("After appending the lists #{} \
-                          ... {}".format(str(run_number),
-                                         os.linesep))
+        sys.stdout.write("After appending the lists #{} ... {}".format(
+            str(run_number),
+            os.linesep)
+        )
 
     # ---------------------------------------------------------------------
     # Calculate features

@@ -834,7 +834,7 @@ class MachineLearningUnit(object):
 
                 # tell the user that we do not have the requested number
                 # of data sets available
-                sys.stderr.write("WARNING: The number of available training data sets (={}) is smaller than the number of data sets (={}) requested/recommended for \determining feature weights. {} ".format(
+                sys.stderr.write("WARNING: The number of available training data sets (={}) is smaller than the number of data sets (={}) requested/recommended for determining feature weights. {} ".format(
                     nr_available_data_sets,
                     nr_wanted_data_sets,
                     os.linesep)
@@ -1116,21 +1116,19 @@ class MachineLearningUnit(object):
 
         if verbose:
             sys.stdout.write(
-                " > Final training data set size: {} \
-                  data entries having {} features. \
-                  {}".format(
+                " > Final training data set size: {} data entries having {} features. {}".format(
                     str(self.training_df.shape[0]),
                     str(self.training_df.shape[1]),
-                    os.linesep)
+                    os.linesep
+                )
             )
 
             sys.stdout.write(
-                " > Final validation data set size: {} \
-                  data entries having {} features. \
-                  {}".format(
+                " > Final validation data set size: {} data entries having {} features. {}".format(
                     str(self.validation_df.shape[0]),
                     str(self.validation_df.shape[1]),
-                    os.linesep)
+                    os.linesep
+                )
             )
 
     def write_training_df_to_file(
@@ -1144,9 +1142,10 @@ class MachineLearningUnit(object):
 
         if verbose:
             sys.stdout.write(
-                "Writing training data ('training_df') to file: \
-                {} {}".format(training_df_file_path,
-                              os.linesep)
+                "Writing training data ('training_df') to file: {} {}".format(
+                    training_df_file_path,
+                    os.linesep
+                )
             )
 
         self.training_df.to_csv(training_df_file_path, sep="\t")
@@ -1179,9 +1178,10 @@ class MachineLearningUnit(object):
 
         if verbose:
             sys.stdout.write(
-                "Writing validation data ('validation_df') \
-                 to file: {} {}".format(validation_df_file_path,
-                                        os.linesep)
+                "Writing validation data ('validation_df') to file: {} {}".format(
+                    validation_df_file_path,
+                    os.linesep
+                )
             )
 
         self.validation_df.to_csv(validation_df_file_path, sep="\t")
@@ -1601,10 +1601,10 @@ class MachineLearningUnit(object):
             data_fraction_with_features = \
                 float(TE_feat.shape[0]) / float(nr_TE_datasets)
             sys.stdout.write(
-                " :: terminal exon training data set fraction for which \
-                features could be calculated: {} {} \
-                ".format(data_fraction_with_features,
-                         os.linesep)
+                " :: terminal exon training data set fraction for which features could be calculated: {} {} ".format(
+                    data_fraction_with_features,
+                    os.linesep
+                )
             )
 
         # overwrite the old version that lacks features
@@ -1656,9 +1656,10 @@ class MachineLearningUnit(object):
             data_fraction_with_features = \
                 float(IE_feat.shape[0]) / float(nr_IE_datasets)
             sys.stdout.write(
-                " :: intermediate exon training data set fraction for which \
-                features could be calculated: {} {} \
-                ".format(data_fraction_with_features, os.linesep)
+                " :: intermediate exon training data set fraction for which features could be calculated: {} {} ".format(
+                    data_fraction_with_features,
+                    os.linesep
+                )
             )
 
         # overwrite the old version that lacks features
@@ -1710,10 +1711,10 @@ class MachineLearningUnit(object):
             data_fraction_with_features = \
                 float(BG_feat.shape[0]) / float(nr_BG_datasets)
             sys.stdout.write(
-                " :: background region training data set fraction for which \
-                 features could be calculated: {} {} \
-                 ".format(data_fraction_with_features,
-                          os.linesep)
+                " :: background region training data set fraction for which features could be calculated: {} {} ".format(
+                    data_fraction_with_features,
+                    os.linesep
+                )
             )
 
         # overwrite the old version that lacks features
