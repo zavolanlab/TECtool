@@ -834,14 +834,11 @@ class MachineLearningUnit(object):
 
                 # tell the user that we do not have the requested number
                 # of data sets available
-                sys.stderr.write("WARNING: The number of available \
-                                  training data sets (={}) is smaller \
-                                  than the number of data sets \
-                                  (={}) requested/recommended for \
-                                  determining feature weights. {} \
-                                  ".format(nr_available_data_sets,
-                                           nr_wanted_data_sets,
-                                           os.linesep))
+                sys.stderr.write("WARNING: The number of available training data sets (={}) is smaller than the number of data sets (={}) requested/recommended for \determining feature weights. {} ".format(
+                    nr_available_data_sets,
+                    nr_wanted_data_sets,
+                    os.linesep)
+                )
 
             else:
 
@@ -849,10 +846,10 @@ class MachineLearningUnit(object):
                 # nr_data_sets_to_sample = nr_wanted_data_sets
 
                 if verbose:
-                    sys.stdout.write("Sampling {} data sets from each \
-                                      training class... {} \
-                                      ".format(str(nr_wanted_data_sets),
-                                               os.linesep))
+                    sys.stdout.write("Sampling {} data sets from each training class... {} ".format(
+                        str(nr_wanted_data_sets),
+                        os.linesep)
+                    )
 
                 # TE
                 self.terminal_exon_training_data = \
@@ -892,10 +889,10 @@ class MachineLearningUnit(object):
         elif str(nr_to_subsample) == "max_equal_size":
 
             if verbose:
-                sys.stdout.write(("Using maximum possible number (n=%i) of " +
-                                  "data sets from each training class so " +
-                                  "that all of them have the same size... %s") %
-                                 (nr_available_data_sets, os.linesep))
+                sys.stdout.write("Using maximum possible number (n=%{}) of data sets from each training class so that all of them have the same size... %{}".format(
+                    nr_available_data_sets,
+                    os.linesep)
+                )
 
                 # TE
                 self.terminal_exon_training_data = \
