@@ -150,25 +150,25 @@ git clone https://git.scicore.unibas.ch/zavolan_public/TECtool.git
 
 Now you should see a direcroty for the virtual environment (envTECtool) and one directory for the TECtool package (TECtool)
 
-Enter the cloned directory directory
+Enter the cloned directory
 ```
 cd TECtool
 ```
 
 Install dependencies with
 ```
-pip install .
-```
-
-or
-
-```
 pip install -r requirements.txt
 ```
 
-**Important Note:** The requirements that will be installed include only Python modules. Users should additionally install bedtools=2.26 in their system. 
-For installation instruction please see here: http://bedtools.readthedocs.io/en/latest/content/quick-start.html#install-bedtools
+**Important Note:** The requirements that will be installed include only Python modules.
+Users should additionally install **bedtools version 2.26** in their system. 
+For installation instruction please see here: http://bedtools.readthedocs.io/en/latest/content/quick-start.html#install-bedtools.
 TECtool is not checking if the correct version of bedtools is installed and this might lead to run-time errors.
+
+You can chech the version of bedtools by typing
+```
+bedtools --version
+```
 
 Install TECtool
 ```
