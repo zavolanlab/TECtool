@@ -992,12 +992,11 @@ class MachineLearningUnit(object):
             else:
 
                 sys.stderr.write(
-                    "WARNING: there are not {} data \
-                    sets available for each training class! Thus, \
-                    the maximum possible number ({}) will be used. \
-                    {}".format(str(nr_wanted_data),
-                               str(nr_sets_available),
-                               os.linesep)
+                    "WARNING: there are not {} data sets available for each training class! Thus, the maximum possible number ({}) will be used. {}".format(
+                        str(nr_wanted_data),
+                        str(nr_sets_available),
+                        os.linesep
+                    )
                 )
 
                 training_data_set_size = "max_equal_size"
@@ -1953,11 +1952,10 @@ class MachineLearningUnit(object):
 
         if verbose:
             sys.stdout.write(
-                "Performing Greedy Feature Selection \
-                 (using {} independent runs per \
-                 feature)... {} \
-                 ".format(number_of_randomization,
-                          os.linesep)
+                "Performing Greedy Feature Selection (using {} independent runs per feature)... {} ".format(
+                    number_of_randomization,
+                    os.linesep
+                )
             )
 
         # Calculate the t-value that we consider to be significant
@@ -2139,9 +2137,10 @@ class MachineLearningUnit(object):
 
         if verbose:
             sys.stdout.write(
-                "Training classifier on greedy selected features: \
-                {} {}".format(self.selected_features,
-                              os.linesep)
+                "Training classifier on greedy selected features: {} {}".format(
+                    self.selected_features,
+                    os.linesep
+                )
             )
 
         # -----------------------------------------------------------------
