@@ -1684,40 +1684,41 @@ class Annotation(object):
 
                             if bases_left > first_stop_codon_position:
                                 transcript.write_CDS = False
-                                sys.stderr.write("-" * 80 + os.linesep)
-                                sys.stderr.write("[WARNING] Manually check " +
-                                                 "this exon for translation." +
-                                                 os.linesep)
-                                sys.stderr.write("-" * 80 + os.linesep)
-                                sys.stderr.write("chromosome: " +
-                                                 str(last_exon.chromosome) +
-                                                 os.linesep)
-                                sys.stderr.write("start: " +
-                                                 str(last_exon.start) +
-                                                 os.linesep)
-                                sys.stderr.write("end: " +
-                                                 str(last_exon.end) +
-                                                 os.linesep)
-                                sys.stderr.write("strand: " +
-                                                 str(last_exon.strand) +
-                                                 os.linesep)
-                                sys.stderr.write(
-                                    "first stop codon position: " +
-                                    str(first_stop_codon_position) +
-                                    os.linesep
-                                )
-                                sys.stderr.write("bases left: " +
-                                                 str(bases_left) +
-                                                 os.linesep)
-                                sys.stderr.write(
-                                    "possible last exon frame: " +
-                                    str(possible_last_exon_frame) +
-                                    os.linesep
-                                )
 
-                                sys.stderr.write("-" * 80 +
-                                                 os.linesep +
-                                                 os.linesep)
+                                # sys.stderr.write("-" * 80 + os.linesep)
+                                # sys.stderr.write("[WARNING] Manually check " +
+                                #                  "this exon for translation." +
+                                #                  os.linesep)
+                                # sys.stderr.write("-" * 80 + os.linesep)
+                                # sys.stderr.write("chromosome: " +
+                                #                  str(last_exon.chromosome) +
+                                #                  os.linesep)
+                                # sys.stderr.write("start: " +
+                                #                  str(last_exon.start) +
+                                #                  os.linesep)
+                                # sys.stderr.write("end: " +
+                                #                  str(last_exon.end) +
+                                #                  os.linesep)
+                                # sys.stderr.write("strand: " +
+                                #                  str(last_exon.strand) +
+                                #                  os.linesep)
+                                # sys.stderr.write(
+                                #     "first stop codon position: " +
+                                #     str(first_stop_codon_position) +
+                                #     os.linesep
+                                # )
+                                # sys.stderr.write("bases left: " +
+                                #                  str(bases_left) +
+                                #                  os.linesep)
+                                # sys.stderr.write(
+                                #     "possible last exon frame: " +
+                                #     str(possible_last_exon_frame) +
+                                #     os.linesep
+                                # )
+
+                                # sys.stderr.write("-" * 80 +
+                                #                  os.linesep +
+                                #                  os.linesep)
                                 continue
 
                             if last_exon.strand == "+":
