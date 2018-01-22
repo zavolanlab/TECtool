@@ -2312,14 +2312,12 @@ class MachineLearningUnit(object):
                 / float(self.novel_terminal_exon_candidates_data.shape[0])
 
             sys.stdout.write(
-                " :: terminal exon candidate data set \
-                     fraction for which sufficient coverage \
-                     (>={}) is available and therefore will \
-                     be considered: {} (={} candidates){} \
-                     ".format(min_profile_coverage_fraction * 100,
-                              data_fraction_with_coverage,
-                              NTE_sufficiently_covered.shape[0],
-                              os.linesep)
+                " :: terminal exon candidate data set fraction for which sufficient coverage (>={}) is available and therefore will be considered: {} (={} candidates){} ".format(
+                    min_profile_coverage_fraction * 100,
+                    data_fraction_with_coverage,
+                    NTE_sufficiently_covered.shape[0],
+                    os.linesep
+                )
             )
 
         # calculate the features
@@ -2349,10 +2347,10 @@ class MachineLearningUnit(object):
             data_fraction_with_features = \
                 float(NTE_feat.shape[0]) / float(nr_NTE_datasets)
             sys.stdout.write(
-                " :: fraction of considered terminal exon candidates \
-                for which features could be calculated: {} {} \
-                ".format(data_fraction_with_features,
-                         os.linesep)
+                " :: fraction of considered terminal exon candidates for which features could be calculated: {} {} ".format(
+                    data_fraction_with_features,
+                    os.linesep
+                )
             )
 
         # overwrite the old version that lacks features
