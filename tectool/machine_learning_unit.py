@@ -19,7 +19,7 @@ from sklearn.metrics import accuracy_score
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import make_scorer
 from sklearn.model_selection import GridSearchCV
-from sklearn.cross_validation import train_test_split
+from sklearn.model_selection import train_test_split
 from sklearn import neighbors
 from scipy import stats
 from scipy.optimize import curve_fit
