@@ -126,11 +126,24 @@ tectool --help
 
 ### Installation of TECtool without conda
 
-For users that do not want to use conda, but have a python installation (3.4 and above)
+For users that do not want to use conda, but have a python installation (3.4 and above).
+**Note:** Normally venv (https://docs.python.org/3/library/venv.html) should be pre-installed in Python 3.
+Some distributions separate it to a different package, such as python3-venv on Ubuntu/Debian, so users need to additionally installed it before running the following command.
 
-Create a virtual environment with virtualenv
+
+Create a virtual environment with venv named envTECtool. 
 ```
-virtualenv TECtool
+python3 -m venv envTECtool
+```
+
+Activate the virtual environment
+```
+source envTECtool/bin/activate
+```
+
+In the activated virtual environment you might need to upgrade pip
+```
+pip install --upgrade pip
 ```
 
 Clone the TECtool repository
@@ -138,23 +151,27 @@ Clone the TECtool repository
 git clone https://git.scicore.unibas.ch/zavolan_public/TECtool.git
 ```
 
-Enter the directory
+Now you should see a direcroty for the virtual environment (envTECtool) and one directory for the TECtool package (TECtool)
+
+Enter the cloned directory
 ```
 cd TECtool
 ```
 
 Install dependencies with
 ```
-pip install .
-```
-
-or
-
-```
 pip install -r requirements.txt
 ```
 
-**Important Note:** The requirements that will be installed include only Python modules. Users should additionally install bedtools=2.26 in their system. TECtool is not checking if the correct version of bedtools is installed and this might lead to run-time errors.
+**Important Note:** The requirements that will be installed include only Python modules.
+Users should additionally install **bedtools version 2.26** in their system. 
+For installation instruction please see here: http://bedtools.readthedocs.io/en/latest/content/quick-start.html#install-bedtools.
+TECtool is not checking if the correct version of bedtools is installed and this might lead to run-time errors.
+
+You can check the version of bedtools by typing
+```
+bedtools --version
+```
 
 Install TECtool
 ```
