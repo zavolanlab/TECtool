@@ -127,14 +127,14 @@ tectool --help
 ### Installation of TECtool without conda
 
 For users that do not want to use conda, but have a python installation (3.4 and above).
+**Note:** Normally venv (https://docs.python.org/3/library/venv.html) should be pre-installed in Python 3.
+Some distributions separate it to a different package, such as python3-venv on Ubuntu/Debian, so users need to additionally installed it before running the following command.
+
 
 Create a virtual environment with venv named envTECtool. 
 ```
 python3 -m venv envTECtool
 ```
-
-**Note:** Normally venv (https://docs.python.org/3/library/venv.html) should be pre-installed in Python 3.
-Some distributions separate it to a different package, such as python3-venv on Ubuntu/Debian, so users need to additionally installed it before running the **previous** command.
 
 Activate the virtual environment
 ```
