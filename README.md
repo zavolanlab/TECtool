@@ -165,7 +165,7 @@ Users should additionally install **bedtools version 2.26** in their system.
 For installation instruction please see here: http://bedtools.readthedocs.io/en/latest/content/quick-start.html#install-bedtools.
 TECtool is not checking if the correct version of bedtools is installed and this might lead to run-time errors.
 
-You can chech the version of bedtools by typing
+You can check the version of bedtools by typing
 ```
 bedtools --version
 ```
