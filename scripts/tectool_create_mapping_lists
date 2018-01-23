@@ -1,0 +1,142 @@
+#!/usr/bin/env python
+
+# _____________________________________________________________________________
+# -----------------------------------------------------------------------------
+# import needed (external) modules
+# -----------------------------------------------------------------------------
+
+import HTSeq
+import os
+import math
+from argparse import ArgumentParser, RawTextHelpFormatter, FileType
+import itertools
+import sys
+import collections
+from collections import defaultdict  
+import pybedtools
+from pyfasta import Fasta
+import pandas as pd
+import matplotlib as mpl
+mpl.use('Agg')
+import matplotlib.pyplot as plt
+from sklearn.metrics import accuracy_score
+from sklearn.metrics import confusion_matrix
+from sklearn.metrics import classification_report
+from sklearn import metrics
+from sklearn.metrics import roc_curve, auc
+from sklearn.preprocessing import label_binarize
+from sklearn.multiclass import OneVsRestClassifier
+from sklearn import linear_model
+from sklearn.model_selection import train_test_split
+from sklearn import neighbors
+from sklearn.model_selection import StratifiedKFold
+from scipy import interp
+from scipy import stats
+import random
+import numpy as np
+import copy
+import csv
+
+# _____________________________________________________________________________
+# -----------------------------------------------------------------------------
+# import our own modules
+# -----------------------------------------------------------------------------
+# import tectool classes
+
+from tectool.exon import Exon
+from tectool.transcript import Transcript
+from tectool.gene import Gene
+from tectool.detailed_alignment import DetailedAlignment
+from tectool.split_event import SplitEvent
+from tectool.analysis_unit import AnalysisUnit
+from tectool.feature_counts import FeatureCounts
+from tectool.annotation import Annotation
+from tectool.machine_learning_unit import MachineLearningUnit
+
+# _____________________________________________________________________________
+# -----------------------------------------------------------------------------
+# Main function
+# -----------------------------------------------------------------------------
+
+
+def main():
+    """
+    Main function
+    """
+
+    parser = ArgumentParser(
+        description=__doc__,
+        formatter_class=RawTextHelpFormatter
+    )
+
+    parser.add_argument(
+        "--annotation",
+        dest="annotation",
+        help="Annotation file GTF/GFF [REQUIRED]",
+        metavar="FILE"
+    )
+
+    parser.add_argument(
+        "-o",
+        "--output_dir",
+        dest="output_dir",
+        help="The path to the output directory. [REQUIRED]"
+    )
+
+    parser.add_argument(
+        "-v",
+        "--verbose",
+        action="store_true",
+        dest="verbose",
+        default=False,
+        help="Verbose"
+    )
+
+    # _________________________________________________________________________
+    # -------------------------------------------------------------------------
+    # get the arguments
+    # -------------------------------------------------------------------------
+    try:
+        options = parser.parse_args()
+    except(Exception):
+        parser.print_help()
+
+    if len(sys.argv) == 1:
+        parser.print_help()
+        sys.exit(1)
+
+    # _________________________________________________________________________
+    # -------------------------------------------------------------------------
+    # Create output directories
+    # -------------------------------------------------------------------------
+    if not os.path.exists(options.output_dir):
+        os.makedirs(options.output_dir)
+
+    # _________________________________________________________________________
+    # -------------------------------------------------------------------------
+    # create the annotation object and read in the annotation file
+    # -------------------------------------------------------------------------
+    sys.stdout.write("Reading annotation file:\t {} {}".format(
+        options.annotation, os.linesep
+    ))
+
+    annotation = Annotation(annotation_id=options.annotation,
+                            tmp=options.output_dir)
+    annotation.parse(options.annotation)
+
+    annotation.write_transcript2gene_mapping_list(
+        os.path.join(options.output_dir, "transcript2gene_mapping.tsv")
+    )
+
+# _____________________________________________________________________________
+# -----------------------------------------------------------------------------
+# Call the Main function and catch Keyboard interrups
+# -----------------------------------------------------------------------------
+
+
+if __name__ == '__main__':
+    try:
+        main()
+    except KeyboardInterrupt:
+        sys.stderr.write("User interrupt!" + os.linesep)
+        sys.exit(0)
