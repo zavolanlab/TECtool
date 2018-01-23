@@ -11,7 +11,7 @@ TECtool is a method that uses mRNA and 3’ end sequencing data to identify nove
 
 **TECtool uses genome sequence, annotation and RNA-seq data. Therefore, ~10 GB of disk space are needed for installation and testing.**
 
-TECtool as of version 0.2 is written in Python 3. The recommended way to install TECtool is via the conda package manager, because it can install non Python dependencies (for example bedtools). 
+TECtool as of version 0.2 is written in Python 3. Current instructions are written for Python 3 (>=3.4) ONLY. Installation with Python 2 will not work. The recommended way to install TECtool is via the conda package manager, because it can install non Python dependencies (for example bedtools).
 
 If you do not want to use conda to install TECtool, other options are described below. 
 
@@ -131,9 +131,9 @@ For users that do not want to use conda, but have a python installation (3.4 and
 Some distributions separate it to a different package, such as python3-venv on Ubuntu/Debian, so users need to additionally installed it before running the following command.
 
 
-Create a virtual environment with venv named envTECtool. 
+Create a virtual environment with venv named envTECtool.
 ```
-python3 -m venv envTECtool
+python -m venv envTECtool
 ```
 
 Activate the virtual environment
@@ -158,15 +158,15 @@ Enter the cloned directory
 cd TECtool
 ```
 
+**Important Note:** The requirements that will be installed include only Python modules.
+Users should additionally install **bedtools version 2.26** in their system.
+For installation instruction please see here: http://bedtools.readthedocs.io/en/latest/content/quick-start.html#install-bedtools.
+TECtool is not checking if the correct version of bedtools is installed and this might lead to run-time errors.
+
 Install dependencies with
 ```
 pip install -r requirements.txt
 ```
-
-**Important Note:** The requirements that will be installed include only Python modules.
-Users should additionally install **bedtools version 2.26** in their system. 
-For installation instruction please see here: http://bedtools.readthedocs.io/en/latest/content/quick-start.html#install-bedtools.
-TECtool is not checking if the correct version of bedtools is installed and this might lead to run-time errors.
 
 You can check the version of bedtools by typing
 ```
@@ -182,6 +182,8 @@ Check the installation and options for the tool
 ```
 tectool --help
 ```
+
+**Note:** TECtool will only be available only when the virtual environment is active.
 
 ## TECtool options
 
