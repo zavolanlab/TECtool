@@ -27,6 +27,7 @@ setup(
     include_package_data=True,
     scripts=['scripts/tectool',
              'scripts/tectool_add_novel_transcripts_to_gtf_file',
+             'scripts/tectool_create_mapping_lists',
              'scripts/tectool_extract_terminal_exons',
              'scripts/tectool_filter_gtf_by_transcript_support_level',
              'scripts/tectool_quantify_split_reads'],
