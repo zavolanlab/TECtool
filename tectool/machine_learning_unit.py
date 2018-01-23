@@ -2278,15 +2278,16 @@ class MachineLearningUnit(object):
 
         if verbose:
             sys.stdout.write(
-                "Calculating features for the novel terminal \
-                exon candidate regions..." + os.linesep
+                "Calculating features for the novel terminal " +
+                "exon candidate regions..." + 
+                os.linesep
             )
 
         # check whether we have data to train the classifier on
         if self.novel_terminal_exon_candidates_data is None:
             sys.stderr.write(
-                "ERROR: no novel terminal exon candidates data \
-                ('novel_terminal_exon_candidates_data') available!" +
+                "ERROR: no novel terminal exon candidates data" +
+                " ('novel_terminal_exon_candidates_data') available!" +
                 os.linesep
             )
             sys.exit(-1)
