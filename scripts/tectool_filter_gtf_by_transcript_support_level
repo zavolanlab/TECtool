@@ -1,32 +1,15 @@
+#!/usr/bin/env python
+
 # _____________________________________________________________________________
 # -----------------------------------------------------------------------------
 # import needed (external) modules
 # -----------------------------------------------------------------------------
 
-try:
-    import sys
-except(Exception):
-    raise("[ERROR] sys was not imported properly. Exiting.")
-    sys.exit(-1)
 
-try:
-    import os
-except(Exception):
-    raise("[ERROR] os was not imported properly. Exiting.")
-    sys.exit(-1)
-
-
-try:
-    import HTSeq
-except(Exception):
-    raise("[ERROR] HTSeq was not imported properly. Exiting.")
-    sys.exit(-1)
-
-try:
-    from argparse import ArgumentParser, RawTextHelpFormatter
-except(Exception):
-    raise("[ERROR] argparse was not imported properly. Exiting.")
-    sys.exit(-1)
+import sys
+import os
+import HTSeq
+from argparse import ArgumentParser, RawTextHelpFormatter
 
 # _____________________________________________________________________________
 # -----------------------------------------------------------------------------
@@ -250,5 +233,5 @@ if __name__ == '__main__':
     try:
         main()
     except KeyboardInterrupt:
-        sys.stderr.write("User interrupt!\n")
+        sys.stderr.write("User interrupt!" + os.linesep)
         sys.exit(0)

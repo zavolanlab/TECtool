@@ -1,5 +1,5 @@
 import sys
-from setuptools import setup, find_packages
+from setuptools import setup
 
 if sys.version_info < (3, 4):
     sys.exit('Sorry, TECtool requires Python >= 3.4 (Tested with Python 3.6.2)')
@@ -23,9 +23,13 @@ setup(
     author_email='foivos.gypas@unibas.ch',
     url='https://git.scicore.unibas.ch/zavolan_public/TECtool.git',
     packages=['tectool'],
-    package_dir={'tectool':'tectool'},
+    package_dir={'tectool': 'tectool'},
     include_package_data=True,
-    scripts=['scripts/tectool', 'scripts/tectool_add_novel_transcripts_to_gtf_file'],
+    scripts=['scripts/tectool',
+             'scripts/tectool_add_novel_transcripts_to_gtf_file',
+             'scripts/tectool_extract_terminal_exons',
+             'scripts/tectool_filter_gtf_by_transcript_support_level',
+             'scripts/tectool_quantify_split_reads'],
     install_requires=requirements,
     keywords='tectool',
     classifiers=[
