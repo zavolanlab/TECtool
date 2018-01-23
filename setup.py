@@ -25,7 +25,7 @@ setup(
     packages=['tectool'],
     package_dir={'tectool':'tectool'},
     include_package_data=True,
-    scripts=['scripts/tectool'],
+    scripts=['scripts/tectool', 'scripts/tectool_add_novel_transcripts_to_gtf_file'],
     install_requires=requirements,
     keywords='tectool',
     classifiers=[
