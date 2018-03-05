@@ -17,7 +17,7 @@ requirements = [
 
 setup(
     name='tectool',
-    version='0.2',
+    version='0.3',
     description="TECtool is a method that uses mRNA and 3’ end sequencing data to identify novel terminal exons.",
     author="Foivos Gypas",
     author_email='foivos.gypas@unibas.ch',

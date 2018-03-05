@@ -11,6 +11,7 @@ import itertools
 import random
 import time
 import functools
+import string
 
 import HTSeq
 import numpy as np
@@ -161,6 +162,12 @@ class MachineLearningUnit(object):
         *labels*
             List. List that contains the feature labels that shoud be used
             for candidate dataframes labels.
+
+        *accuracy_scores_list*
+            List. List that contains all calculated accuracy scores from training
+
+        *f1_scores_list*
+            List. List that contains all calculated F1 scores from training.
     """
 
     def __init__(self):
@@ -242,6 +249,12 @@ class MachineLearningUnit(object):
 
         # dictionary of background probabilities
         self.background_probabilities_dict = dict()
+
+        # accuracies score list
+        self.accuracy_scores_list = []
+
+        # f1 scores score list
+        self.f1_scores_list = []
 
         # the labels that shoud be used for candidate dataframes
         # self.gene_expr_col = "GeneExpressionPerKBApproximated"
@@ -2119,6 +2132,12 @@ class MachineLearningUnit(object):
         # return the classifier
         return(clf)
 
+    def get_random_string(self):
+
+        allchar = string.ascii_letters + string.digits
+
+        return("".join(random.choice(allchar) for x in range(random.randint(6, 6))))
+
     def train_classifier_on_selected_features(
         self,
         classifier,
@@ -2181,6 +2200,7 @@ class MachineLearningUnit(object):
         # -----------------------------------------------------------------
         # Create predictions for the validation data
         # -----------------------------------------------------------------
+
         y_pred = \
             self.classifier_dict[classifier].predict(
                 self.validation_df[self.selected_features]
@@ -2200,7 +2220,10 @@ class MachineLearningUnit(object):
             labels=self.region_classes
         )
 
-        cm_file_name = "normalized_confusion_matrix.png"
+        cm_file_name = \
+            "normalized_confusion_matrix" + \
+            str(self.get_random_string()) + \
+            ".png"
         cm_file_path = os.path.join(
             results_dir_path,
             cm_file_name
@@ -2228,11 +2251,15 @@ class MachineLearningUnit(object):
             normalize=True
         )
 
+        self.accuracy_scores_list.append(float(accuracy))
+
         f1_result = metrics.f1_score(
             y_true=y_true,
             y_pred=y_pred,
             average="macro"
         )
+
+        self.f1_scores_list.append(float(f1_result))
 
         if verbose:
             sys.stdout.write(" :: Accuracy: {} {}".format(
@@ -2705,8 +2732,6 @@ class MachineLearningUnit(object):
             self.selected_novel_terminal_exons = pd.DataFrame(columns=["Region","GeneId"])
             self.selected_novel_terminal_exons.to_csv(os.path.join(results_dir, 'classified_as_terminal_with_probabilities.tsv'), sep='\t', index=False)
 
-
-
     def filter_training_data(raw_data_file_path, rownames_col="Region", profile_col="profile", min_feature_reads=5):
         
         """Filters raw data."""
@@ -2725,3 +2750,18 @@ class MachineLearningUnit(object):
         # return the filtered data
         return(df_filtered)
 
+    def get_mean_accuracy_score(self):
+        
+        """
+        Calculate mean accuracy score
+        """
+
+        return(np.mean(self.accuracy_scores_list))
+
+    def get_mean_f1_score(self):
+        
+        """
+        Calculate mean accuracy score
+        """
+
+        return(np.mean(self.f1_scores_list))
