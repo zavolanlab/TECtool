@@ -5,7 +5,7 @@
 # import needed (external) modules
 # -----------------------------------------------------------------------------
 
-__version__ = "0.2.0"
+__version__ = "0.3"
 
 import sys
 import HTSeq
@@ -259,6 +259,23 @@ def main():
     )
 
     parser.add_argument(
+        "--use_precalculated_training_set",
+        dest="use_precalculated_training_set",
+        action="store_true",
+        default=False,
+        help="Use precalculated training set (skip training)"
+    )
+
+    parser.add_argument(
+        "--training_set_directory",
+        dest="training_set_directory",
+        help="Training set directory. This option should be provided " +
+             "in combination with the option: --use_precalculated_training_set , " +
+             "otherwise it is ignored.",
+        required=False
+    )
+
+    parser.add_argument(
         "-o",
         "--output_dir",
         dest="output_dir",
@@ -272,6 +289,12 @@ def main():
         dest="verbose",
         default=False,
         help="Verbose"
+    )
+
+    parser.add_argument(
+        '--version',
+        action='version',
+        version=__version__
     )
 
     # _________________________________________________________________________
@@ -966,316 +989,464 @@ def main():
 
         )
 
-    genes_to_consider_for_ML = {x: non_overlapping_genes_dict[x] for x in non_overlapping_genes_dict if x in genes_with_multiexonic_transcripts_dict}
+    if not options.use_precalculated_training_set:
 
-    if options.verbose:
-        sys.stdout.write(
-            "Number of genes to consider for training (intersection of non overlapping genes and genes with muliple exons): {} {}".format(
-                str(len(genes_to_consider_for_ML)), os.linesep
+        genes_to_consider_for_ML = {x: non_overlapping_genes_dict[x] for x in non_overlapping_genes_dict if x in genes_with_multiexonic_transcripts_dict}
+    
+        if options.verbose:
+            sys.stdout.write(
+                "Number of genes to consider for training (intersection of non overlapping genes and genes with muliple exons): {} {}".format(
+                    str(len(genes_to_consider_for_ML)), os.linesep
+                )
             )
-        )
-
-    # -------------------------------------------------------------------------
-    # TERMINAL EXONS - TRAINING SET CREATION
-    # -------------------------------------------------------------------------
-    # HINT: We only consider genes that have more than one exon, because
-    # otherwise we might get genes that have only one exon. Such 'terminal'
-    # exons would not have spliced reads that go in. Consequently, all the
-    # counted features would confound our training set, since we do not
-    # consider such candidates!
-
-    ml_train_unit.create_terminal_exon_training_set(
-        terminal_exons_bed_file_path=terminal_exons_non_overlapping,
-        sequencing_direction=options.sequencing_direction,
-        max_splice_fuzziness=max_splice_fuzziness,
-        output_dir=options.output_dir,
-        genes_to_consider_dict=genes_to_consider_for_ML,
-        bam_file_path=options.bam_file,
-        annotation=annotation,
-        threshold_to_filter=minimum_spliced_reads_for_cryptic_exon_start_site,
-        verbose=options.verbose
-    )
-
-    # ---------------------------------------------------------------------
-    # FILTER TERMINAL EXONS TRAINING SET
-    # Remove terminal exons for which the 3p crossing is not 0
-    # and the sum of the last 100 bases of the profile is not > 0 reads.
-    # HINT: Many terminal exons have multiple cleavage sites. In order to
-    #       get a clean training set we need to filter out candidates that
-    #       are in fact longer (3p crossing is not 0) or shorter
-    #       (sum of the last 100 bases of the profile is not > 0 reads).
-    # ---------------------------------------------------------------------
-    annotation.filter_terminal_exon_training_candidates()
-
-    # ---------------------------------------------------------------------
-    # INTERMEDIATE EXONS - TRAINING SET CREATION
-    # ---------------------------------------------------------------------
-    # FIXME: this parts are weird...
-    # 1. analyze_reads_for_annotated_regions
-    #    AnalysisUnit.analyze_reads_for_annotated_regions()
-    #    -> Writes a summary? where?
-    # 2. directly afterwards they are deleted
-    #
-    ml_train_unit.create_intermediate_exon_training_set(
-        intermediate_exons_bed_file_path=intermediate_exons_non_overlapping_filtered,
-        sequencing_direction=options.sequencing_direction,
-        max_splice_fuzziness=max_splice_fuzziness,
-        output_dir=options.output_dir,
-        genes_to_consider_dict=genes_to_consider_for_ML,
-        bam_file_path=options.bam_file,
-        annotation=annotation,
-        threshold_to_filter=minimum_spliced_reads_for_cryptic_exon_start_site
-    )
-
-    # ---------------------------------------------------------------------
-    # FILTER INTERMEDIATE EXONS TRAINING SET
-    # Remove intermediate exons for which the profile is not > 0 reads.
-    # This might happen in rare cases where the same exon is shared among
-    # overlapping genes.
-    # ---------------------------------------------------------------------
-    annotation.filter_intermediate_exon_training_candidates()
-
-    # ---------------------------------------------------------------------
-    # Estimate gene expression
-    # ---------------------------------------------------------------------
-    estimate_expression_of_selected_genes(
-        annotation=annotation,
-        selected_genes_dict=annotation.genes,
-        bam_file_path=options.bam_file,
-        sequencing_direction=options.sequencing_direction,
-        count_unique_mapping_reads_only=True,
-        verbose=options.verbose
-    )
-
-    # ---------------------------------------------------------------------
-    # Create a dataframe and supplement it with gene expression information
-    # ---------------------------------------------------------------------
-
-    pre_novel_terminal_output_file \
-        = os.path.join(options.output_dir, "pre_novel_terminal_exons.tsv")
-
-    ml_train_unit.create_terminal_exon_candidates_dataframe(
-        annotation=annotation,
-        novel_terminal_output_file=pre_novel_terminal_output_file,
-        verbose=options.verbose
-    )
-
-    # pre_novel_terminal_filtered_output_file \
-    #     = os.path.join(options.output_dir,
-    #                    "pre_novel_terminal_exons_filtered.tsv")
-
-    # # filter potential novel terminal exons that
-    # # might overlap with annotated exons
-    # ml_train_unit.remove_terminal_exon_candidates_that_overlap_annotated_exons(
-    #     annotation=annotation,
-    #     novel_terminal_output_file=pre_novel_terminal_filtered_output_file,
-    #     sequencing_direction=options.sequencing_direction,
-    #     exons=exons_per_gene_bed_file,
-    #     verbose=False
-    # )
-
-    # create the terminal exon training set
-    terminal_exons_file_core_name = "terminal_exons"
-    terminal_exons_statistics_file_path = \
-        os.path.join(
-            options.output_dir,
-            terminal_exons_file_core_name + ".tsv"
-        )
-
-    # create the intermediate exon training set
-    intermediate_exons_file_core_name = "intermediate_exons"
-    intermediate_exons_statistics_file_path = \
-        os.path.join(
-            options.output_dir,
-            intermediate_exons_file_core_name + ".tsv"
-        )
-
-    # create the background training set
-    background_regions_file_core_name = "background_regions"
-    background_regions_statistics_file_path = \
-        os.path.join(
-            options.output_dir,
-            background_regions_file_core_name + ".tsv"
-        )
-
-    # Generate N=10 training and validation datasets
-    for run_number in range(10):
-
-        sys.stdout.write("Generating #{} training and validation datasets ... {}".format(
-            str(run_number),
-            os.linesep)
-        )
-
-        # ---------------------------------------------------------------------
-        # Create dataframes and supplement with gene expression information
-        # ---------------------------------------------------------------------
-        ml_train_unit.create_training_dataframes(
+    
+        # -------------------------------------------------------------------------
+        # TERMINAL EXONS - TRAINING SET CREATION
+        # -------------------------------------------------------------------------
+        # HINT: We only consider genes that have more than one exon, because
+        # otherwise we might get genes that have only one exon. Such 'terminal'
+        # exons would not have spliced reads that go in. Consequently, all the
+        # counted features would confound our training set, since we do not
+        # consider such candidates!
+    
+        ml_train_unit.create_terminal_exon_training_set(
+            terminal_exons_bed_file_path=terminal_exons_non_overlapping,
+            sequencing_direction=options.sequencing_direction,
+            max_splice_fuzziness=max_splice_fuzziness,
+            output_dir=options.output_dir,
+            genes_to_consider_dict=genes_to_consider_for_ML,
+            bam_file_path=options.bam_file,
             annotation=annotation,
-            intermediate_output_file=intermediate_exons_statistics_file_path,
-            terminal_output_file=terminal_exons_statistics_file_path,
-            background_output_file=background_regions_statistics_file_path,
+            threshold_to_filter=minimum_spliced_reads_for_cryptic_exon_start_site,
             verbose=options.verbose
         )
-
-        sys.stdout.write("After create_training_dataframes #{} ... {}".format(
-            str(run_number),
-            os.linesep)
+    
+        # ---------------------------------------------------------------------
+        # FILTER TERMINAL EXONS TRAINING SET
+        # Remove terminal exons for which the 3p crossing is not 0
+        # and the sum of the last 100 bases of the profile is not > 0 reads.
+        # HINT: Many terminal exons have multiple cleavage sites. In order to
+        #       get a clean training set we need to filter out candidates that
+        #       are in fact longer (3p crossing is not 0) or shorter
+        #       (sum of the last 100 bases of the profile is not > 0 reads).
+        # ---------------------------------------------------------------------
+        annotation.filter_terminal_exon_training_candidates()
+    
+        # ---------------------------------------------------------------------
+        # INTERMEDIATE EXONS - TRAINING SET CREATION
+        # ---------------------------------------------------------------------
+        # FIXME: this parts are weird...
+        # 1. analyze_reads_for_annotated_regions
+        #    AnalysisUnit.analyze_reads_for_annotated_regions()
+        #    -> Writes a summary? where?
+        # 2. directly afterwards they are deleted
+        #
+        ml_train_unit.create_intermediate_exon_training_set(
+            intermediate_exons_bed_file_path=intermediate_exons_non_overlapping_filtered,
+            sequencing_direction=options.sequencing_direction,
+            max_splice_fuzziness=max_splice_fuzziness,
+            output_dir=options.output_dir,
+            genes_to_consider_dict=genes_to_consider_for_ML,
+            bam_file_path=options.bam_file,
+            annotation=annotation,
+            threshold_to_filter=minimum_spliced_reads_for_cryptic_exon_start_site
         )
-
+    
         # ---------------------------------------------------------------------
-        # Calculate features for training data
+        # FILTER INTERMEDIATE EXONS TRAINING SET
+        # Remove intermediate exons for which the profile is not > 0 reads.
+        # This might happen in rare cases where the same exon is shared among
+        # overlapping genes.
         # ---------------------------------------------------------------------
-        ml_train_unit.add_features_to_training_dataframes(
-            nr_to_subsample=1100,  # "all",
-            output_files_dir=options.output_dir,
+        annotation.filter_intermediate_exon_training_candidates()
+    
+        # ---------------------------------------------------------------------
+        # Estimate gene expression
+        # ---------------------------------------------------------------------
+        estimate_expression_of_selected_genes(
+            annotation=annotation,
+            selected_genes_dict=annotation.genes,
+            bam_file_path=options.bam_file,
+            sequencing_direction=options.sequencing_direction,
+            count_unique_mapping_reads_only=True,
             verbose=options.verbose
         )
-
-        sys.stdout.write("After add_features_to_training_dataframes #{} \
-                          ...{}".format(str(run_number),
-                                        os.linesep))
-
+    
         # ---------------------------------------------------------------------
-        # Sample training data
+        # Create a dataframe and supplement it with gene expression information
         # ---------------------------------------------------------------------
-        ml_train_unit.load_training_data(
-            training_data_set_size=1000,  # "max_equal_size",
-            validation_data_fraction=0.2,
-            output_files_dir=options.output_dir,
-            run_number=run_number,
+    
+        pre_novel_terminal_output_file \
+            = os.path.join(options.output_dir, "pre_novel_terminal_exons.tsv")
+    
+        ml_train_unit.create_terminal_exon_candidates_dataframe(
+            annotation=annotation,
+            novel_terminal_output_file=pre_novel_terminal_output_file,
             verbose=options.verbose
         )
-
-        sys.stdout.write("After load_training_data #{} ...{}".format(
-            str(run_number),
-            os.linesep)
-        )
-
-        # Append to lists of training and validation datasets
-        ml_train_unit.list_of_training_dataframes.append(
-            ml_train_unit.training_df)
-        ml_train_unit.list_of_validation_dataframes.append(
-            ml_train_unit.validation_df)
-
-        sys.stdout.write("After appending the lists #{} ... {}".format(
-            str(run_number),
-            os.linesep)
-        )
-
-    # ---------------------------------------------------------------------
-    # Calculate features
-    # ---------------------------------------------------------------------
-    ml_train_unit.add_features_to_terminal_exon_candidates_dataframe(
-        output_files_dir=options.output_dir,
-        verbose=options.verbose
-    )
-
-    sys.stdout.write("After add_features_to_terminal_exon_" +
-                     "candidates_dataframe..." + os.linesep)
-
-    # AJG: Go on from here!
-
-    # ---------------------------------------------------------------------
-    # Train a classifier
-    # ---------------------------------------------------------------------
-    sys.stdout.write("Training and validating classifiers..." + os.linesep)
-    # ["Bayes", "KNeighbors", "multiclass_SVC"]
-    for classifier in ["Bayes"]:
-
-        # ml_train_unit.training_df = \
-        #   ml_train_unit.list_of_training_dataframes[0]
-        # ml_train_unit.validation_df = \
-        #   ml_train_unit.list_of_validation_dataframes[0]
-
-        # -----------------------------------------------------------------
-        # classifier = KNeighborsClassifier(id=classifier_name)
-        # ml_train_unit.register_classifier(
-        #     classifier=classifier,
-        #     name=classifier_name
+    
+        # pre_novel_terminal_filtered_output_file \
+        #     = os.path.join(options.output_dir,
+        #                    "pre_novel_terminal_exons_filtered.tsv")
+    
+        # # filter potential novel terminal exons that
+        # # might overlap with annotated exons
+        # ml_train_unit.remove_terminal_exon_candidates_that_overlap_annotated_exons(
+        #     annotation=annotation,
+        #     novel_terminal_output_file=pre_novel_terminal_filtered_output_file,
+        #     sequencing_direction=options.sequencing_direction,
+        #     exons=exons_per_gene_bed_file,
+        #     verbose=False
         # )
-        # ml_train_unit.load_classifier(classifier_name)
-        # ml_train_unit.load_training_data(ml_train_unit.training_data...)
-        # ml_train_unit.greedy_feature_selection()
-        # ml_train_unit.train_on_selected_features()
-        # ml_train_unit.load_terminal_exon_candidates()
-        # ml_train_unit.classify_terminal_exon_candidates()
-        # -----------------------------------------------------------------
-
-        # FIXME: that's a dirty fix!
-        ml_train_unit.selected_features = None
-
-        # -----------------------------------------------------------------
-        # Create a results directory for the current classifier
-        # -----------------------------------------------------------------
-        classifier_results_dir = os.path.join(
-            options.output_dir, ("RESULTS_" + classifier))
-
-        # create the directory
-        if not os.path.exists(classifier_results_dir):
-            os.makedirs(classifier_results_dir)
-
-        # give user feedback
-        sys.stdout.write(
-            " :: Used classifier: {} -> Results can be found in: {} {} \
-            ".format(classifier,
-                     classifier_results_dir,
-                     os.linesep)
-        )
-
+    
+        # create the terminal exon training set
+        terminal_exons_file_core_name = "terminal_exons"
+        terminal_exons_statistics_file_path = \
+            os.path.join(
+                options.output_dir,
+                terminal_exons_file_core_name + ".tsv"
+            )
+    
+        # create the intermediate exon training set
+        intermediate_exons_file_core_name = "intermediate_exons"
+        intermediate_exons_statistics_file_path = \
+            os.path.join(
+                options.output_dir,
+                intermediate_exons_file_core_name + ".tsv"
+            )
+    
+        # create the background training set
+        background_regions_file_core_name = "background_regions"
+        background_regions_statistics_file_path = \
+            os.path.join(
+                options.output_dir,
+                background_regions_file_core_name + ".tsv"
+            )
+    
+        # Generate N=10 training and validation datasets
+        for run_number in range(10):
+    
+            sys.stdout.write("Generating #{} training and validation datasets ... {}".format(
+                str(run_number),
+                os.linesep)
+            )
+    
+            # ---------------------------------------------------------------------
+            # Create dataframes and supplement with gene expression information
+            # ---------------------------------------------------------------------
+            ml_train_unit.create_training_dataframes(
+                annotation=annotation,
+                intermediate_output_file=intermediate_exons_statistics_file_path,
+                terminal_output_file=terminal_exons_statistics_file_path,
+                background_output_file=background_regions_statistics_file_path,
+                verbose=options.verbose
+            )
+    
+            sys.stdout.write("After create_training_dataframes #{} ... {}".format(
+                str(run_number),
+                os.linesep)
+            )
+    
+            # ---------------------------------------------------------------------
+            # Calculate features for training data
+            # ---------------------------------------------------------------------
+            ml_train_unit.add_features_to_training_dataframes(
+                nr_to_subsample=1100,  # "all",
+                output_files_dir=options.output_dir,
+                verbose=options.verbose
+            )
+    
+            sys.stdout.write("After add_features_to_training_dataframes #{} \
+                              ...{}".format(str(run_number),
+                                            os.linesep))
+    
+            # ---------------------------------------------------------------------
+            # Sample training data
+            # ---------------------------------------------------------------------
+            ml_train_unit.load_training_data(
+                training_data_set_size=1000,  # "max_equal_size",
+                validation_data_fraction=0.2,
+                output_files_dir=options.output_dir,
+                run_number=run_number,
+                verbose=options.verbose
+            )
+    
+            sys.stdout.write("After load_training_data #{} ...{}".format(
+                str(run_number),
+                os.linesep)
+            )
+    
+            # Append to lists of training and validation datasets
+            ml_train_unit.list_of_training_dataframes.append(
+                ml_train_unit.training_df)
+            ml_train_unit.list_of_validation_dataframes.append(
+                ml_train_unit.validation_df)
+    
+            sys.stdout.write("After appending the lists #{} ... {}".format(
+                str(run_number),
+                os.linesep)
+            )
+    
         # ---------------------------------------------------------------------
-        # Create dataframes and supplement with gene expression information
-        # ---------------------------------------------------------------------
-        ml_train_unit.create_training_dataframes(
-            annotation=annotation,
-            intermediate_output_file=intermediate_exons_statistics_file_path,
-            terminal_output_file=terminal_exons_statistics_file_path,
-            background_output_file=background_regions_statistics_file_path
-        )
-
-        # ---------------------------------------------------------------------
-        # Calculate features for training data
-        # ---------------------------------------------------------------------
-        ml_train_unit.add_features_to_training_dataframes(
-            nr_to_subsample="all",  # "all",1100
-            output_files_dir=options.output_dir,
-            verbose=options.verbose
-        )
-
-        # ---------------------------------------------------------------------
-        # Sample training data
-        # ---------------------------------------------------------------------
-        ml_train_unit.load_training_data(
-            training_data_set_size="max_equal_size",  # "max_equal_size",1000
-            validation_data_fraction=0.2,
-            output_files_dir=options.output_dir,
-            run_number=-1,
-            verbose=options.verbose
-        )
-
-        # -----------------------------------------------------------------
-        # Select features using Greedy algorithm
-        # -----------------------------------------------------------------
-        # FIXME: hand over the default features
-        ml_train_unit.greedy_feature_selection(
-            number_of_randomization=10,
-            classifier=classifier,
-            manually_selected_features=manually_selected_features,
-            verbose=options.verbose
-        )
-
-        # -----------------------------------------------------------------
         # Calculate features
+        # ---------------------------------------------------------------------
+        ml_train_unit.add_features_to_terminal_exon_candidates_dataframe(
+            output_files_dir=options.output_dir,
+            verbose=options.verbose
+        )
+    
+        sys.stdout.write("After add_features_to_terminal_exon_" +
+                         "candidates_dataframe..." + os.linesep)
+    
+        # AJG: Go on from here!
+    
+        # ---------------------------------------------------------------------
+        # Train a classifier
+        # ---------------------------------------------------------------------
+        sys.stdout.write("Training and validating classifiers..." + os.linesep)
+        # ["Bayes", "KNeighbors", "multiclass_SVC"]
+        for classifier in ["Bayes"]:
+    
+            # ml_train_unit.training_df = \
+            #   ml_train_unit.list_of_training_dataframes[0]
+            # ml_train_unit.validation_df = \
+            #   ml_train_unit.list_of_validation_dataframes[0]
+    
+            # -----------------------------------------------------------------
+            # classifier = KNeighborsClassifier(id=classifier_name)
+            # ml_train_unit.register_classifier(
+            #     classifier=classifier,
+            #     name=classifier_name
+            # )
+            # ml_train_unit.load_classifier(classifier_name)
+            # ml_train_unit.load_training_data(ml_train_unit.training_data...)
+            # ml_train_unit.greedy_feature_selection()
+            # ml_train_unit.train_on_selected_features()
+            # ml_train_unit.load_terminal_exon_candidates()
+            # ml_train_unit.classify_terminal_exon_candidates()
+            # -----------------------------------------------------------------
+    
+            # FIXME: that's a dirty fix!
+            ml_train_unit.selected_features = None
+    
+            # -----------------------------------------------------------------
+            # Create a results directory for the current classifier
+            # -----------------------------------------------------------------
+            classifier_results_dir = os.path.join(
+                options.output_dir, ("RESULTS_" + classifier))
+    
+            # create the directory
+            if not os.path.exists(classifier_results_dir):
+                os.makedirs(classifier_results_dir)
+    
+            # give user feedback
+            sys.stdout.write(
+                " :: Used classifier: {} -> Results can be found in: {} {} \
+                ".format(classifier,
+                         classifier_results_dir,
+                         os.linesep)
+            )
+    
+            # ---------------------------------------------------------------------
+            # Create dataframes and supplement with gene expression information
+            # ---------------------------------------------------------------------
+            ml_train_unit.create_training_dataframes(
+                annotation=annotation,
+                intermediate_output_file=intermediate_exons_statistics_file_path,
+                terminal_output_file=terminal_exons_statistics_file_path,
+                background_output_file=background_regions_statistics_file_path
+            )
+    
+            # ---------------------------------------------------------------------
+            # Calculate features for training data
+            # ---------------------------------------------------------------------
+            ml_train_unit.add_features_to_training_dataframes(
+                nr_to_subsample="all",  # "all",1100
+                output_files_dir=options.output_dir,
+                verbose=options.verbose
+            )
+    
+            # ---------------------------------------------------------------------
+            # Sample training data
+            # ---------------------------------------------------------------------
+            ml_train_unit.load_training_data(
+                training_data_set_size="max_equal_size",  # "max_equal_size",1000
+                validation_data_fraction=0.2,
+                output_files_dir=options.output_dir,
+                run_number=-1,
+                verbose=options.verbose
+            )
+    
+            # -----------------------------------------------------------------
+            # Select features using Greedy algorithm
+            # -----------------------------------------------------------------
+            # FIXME: hand over the default features
+            ml_train_unit.greedy_feature_selection(
+                number_of_randomization=10,
+                classifier=classifier,
+                manually_selected_features=manually_selected_features,
+                verbose=options.verbose
+            )
+    
+            # -----------------------------------------------------------------
+            # Calculate features
+            # -----------------------------------------------------------------
+            # FIXME: remove the selected_features dependency from this function
+            ml_train_unit.load_terminal_exon_candidates(verbose=options.verbose)
+    
+            for run_number in range(len(ml_train_unit.list_of_training_dataframes)):
+    
+                ml_train_unit.training_df = \
+                    ml_train_unit.list_of_training_dataframes[run_number]
+                ml_train_unit.validation_df = \
+                    ml_train_unit.list_of_validation_dataframes[run_number]
+    
+                # -----------------------------------------------------------------
+                # Train a classifier on the greedy selected features
+                # -----------------------------------------------------------------
+                ml_train_unit.train_classifier_on_selected_features(
+                    results_dir_path=options.output_dir,
+                    classifier=classifier,
+                    nr_of_train_vs_test_runs=25,
+                    verbose=options.verbose
+                )
+    
+                # -----------------------------------------------------------------
+                # Calculate probabilities
+                # -----------------------------------------------------------------
+                ml_train_unit.fill_probabilities_dictionary(
+                    classifier=classifier,
+                    results_dir=options.output_dir,
+                    verbose=True
+                )
+    
+            # -----------------------------------------------------------------
+            # Classify novel terminal exon candidates as...
+            #  - terminal exons
+            #  - intermediate exons
+            #  - background regions
+            # -----------------------------------------------------------------
+            ml_train_unit.classify_terminal_exon_candidates(
+                results_dir=options.output_dir,
+                classifier=classifier,
+                verbose=options.verbose
+            )
+    
+    elif options.use_precalculated_training_set:
+
+        # ---------------------------------------------------------------------
+        # Estimate gene expression
+        # ---------------------------------------------------------------------
+        estimate_expression_of_selected_genes(
+            annotation=annotation,
+            selected_genes_dict=annotation.genes,
+            bam_file_path=options.bam_file,
+            sequencing_direction=options.sequencing_direction,
+            count_unique_mapping_reads_only=True,
+            verbose=options.verbose
+        )
+    
+        # ---------------------------------------------------------------------
+        # Create a dataframe and supplement it with gene expression information
+        # ---------------------------------------------------------------------
+        pre_novel_terminal_output_file \
+            = os.path.join(options.output_dir, "pre_novel_terminal_exons.tsv")
+    
+        ml_train_unit.create_terminal_exon_candidates_dataframe(
+            annotation=annotation,
+            novel_terminal_output_file=pre_novel_terminal_output_file,
+            verbose=options.verbose
+        )
+
+        # ---------------------------------------------------------------------
+        # Calculate features for terminal exons
+        # ---------------------------------------------------------------------
+        ml_train_unit.add_features_to_terminal_exon_candidates_dataframe(
+            output_files_dir=options.output_dir,
+            verbose=options.verbose
+        )
+
+        # ---------------------------------------------------------------------
+        # Load training and validation data
+        # ---------------------------------------------------------------------
+
+        ml_train_unit.terminal_exon_training_data = pd.read_csv(
+            os.path.join(
+                options.training_set_directory,
+                "run_number_-1_training_data.tsv"
+            ),    
+            sep="\t",
+            header=0
+        )
+        
+        # get selected features
+        features = list(ml_train_unit.terminal_exon_training_data.columns)
+        if 'region' in features:
+            features.remove('region')
+        if 'class' in features:
+            features.remove('class')
+
+        ml_train_unit.features = features
+        ml_train_unit.selected_features = features
+
+        # List of training dataframes
+        ml_train_unit.list_of_training_dataframes = []
+        # List of validation dataframes
+        ml_train_unit.list_of_validation_dataframes = []
+
+        # Read N=10 training and validation datasets
+        for run_number in range(10):
+    
+            sys.stdout.write("Reading #{} training and validation datasets ... {}".format(
+                str(run_number),
+                os.linesep)
+            )
+
+            # load training df
+            ml_train_unit.training_df = pd.read_csv(
+                os.path.join(
+                    options.training_set_directory,
+                    "run_number_"+str(run_number)+"_training_data.tsv"
+                ),    
+                sep="\t",
+                header=0
+            )
+
+            # load validation df
+            ml_train_unit.validation_df = pd.read_csv(
+                os.path.join(
+                    options.training_set_directory,
+                    "run_number_"+str(run_number)+"_validation_data.tsv"
+                ),
+                sep="\t",
+                header=0
+            )
+
+            # store training df in a list
+            ml_train_unit.list_of_training_dataframes.append(
+                ml_train_unit.training_df
+            )
+
+            # store validation df in a list
+            ml_train_unit.list_of_validation_dataframes.append(
+                ml_train_unit.validation_df
+            )
+
         # -----------------------------------------------------------------
-        # FIXME: remove the selected_features dependency from this function
+        # Load terminal exon candidates with selected features
+        # -----------------------------------------------------------------
         ml_train_unit.load_terminal_exon_candidates(verbose=options.verbose)
 
-        for run_number in range(len(ml_train_unit.list_of_training_dataframes)):
+        # select type of classifier to use
+        classifier = "Bayes"
 
+        for run_number in range(len(ml_train_unit.list_of_training_dataframes)):
+    
             ml_train_unit.training_df = \
                 ml_train_unit.list_of_training_dataframes[run_number]
             ml_train_unit.validation_df = \
                 ml_train_unit.list_of_validation_dataframes[run_number]
-
+    
             # -----------------------------------------------------------------
             # Train a classifier on the greedy selected features
             # -----------------------------------------------------------------
@@ -1285,7 +1456,7 @@ def main():
                 nr_of_train_vs_test_runs=25,
                 verbose=options.verbose
             )
-
+    
             # -----------------------------------------------------------------
             # Calculate probabilities
             # -----------------------------------------------------------------
@@ -1387,6 +1558,22 @@ def main():
     )
     w.close()
 
+    # _________________________________________________________________________
+    # -------------------------------------------------------------------------
+    # Write warning message if accuracy is low
+    # -------------------------------------------------------------------------
+    mean_accuracy_score = ml_train_unit.get_mean_accuracy_score()
+    mean_f1_score = ml_train_unit.get_mean_f1_score()
+
+    if mean_accuracy_score < 0.8:
+
+        sys.stderr.write("Warning: The mean accuracy score is: " +
+                         str(mean_accuracy_score)+ " which might " +
+                         "lead to bad classification." +
+                         os.linesep)
+
+        sys.stderr.write("The mean F1 score is: " + str(mean_f1_score) +
+                         os.linesep)
 
 # _____________________________________________________________________________
 # -----------------------------------------------------------------------------

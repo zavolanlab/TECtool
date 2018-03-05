@@ -66,3 +66,5 @@ target/
 test_data
 test_data.tar.gz
 
+# training
+pre_trained_model
