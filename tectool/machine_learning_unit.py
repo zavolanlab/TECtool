@@ -2229,12 +2229,12 @@ class MachineLearningUnit(object):
             cm_file_name
         )
 
-        self.plot_confusion_matrix(
-            cnf_matrix,
-            file_path=cm_file_path,
-            normalize=True,
-            title='Confusion matrix'
-        )
+        # self.plot_confusion_matrix(
+        #     cnf_matrix,
+        #     file_path=cm_file_path,
+        #     normalize=True,
+        #     title='Confusion matrix'
+        # )
 
         if verbose:
             sys.stdout.write(

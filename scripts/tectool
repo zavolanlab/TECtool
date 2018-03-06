@@ -1567,13 +1567,19 @@ def main():
 
     if mean_accuracy_score < 0.8:
 
-        sys.stderr.write("Warning: The mean accuracy score is: " +
-                         str(mean_accuracy_score)+ " which might " +
-                         "lead to bad classification." +
-                         os.linesep)
+        sys.stderr.write(
+            "Warning: The mean accuracy on this data set is only: " +
+            str(mean_accuracy_score) +
+            "indicating that the model trained on this data set is" +
+            " not highly reliable." +
+            os.linesep
+        )
 
-        sys.stderr.write("The mean F1 score is: " + str(mean_f1_score) +
-                         os.linesep)
+        sys.stderr.write(
+            "The mean F1 score is: " +
+            str(mean_f1_score) +
+            os.linesep
+        )
 
 # _____________________________________________________________________________
 # -----------------------------------------------------------------------------
