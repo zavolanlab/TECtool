@@ -145,9 +145,10 @@ def estimate_expression_of_selected_genes(
 
         # give some feedback about the state of the script
         # (how many units have been analyzed so far?)
-        if (unit_nr % 100) == 0:
-            sys.stderr.write("Regions processed:\t" +
-                             str(unit_nr) + os.linesep)
+        if verbose:
+            if (unit_nr % 100) == 0:
+                sys.stdout.write("Regions processed:\t" +
+                                 str(unit_nr) + os.linesep)
 
         gene_reads, gene_id = aunits_genes_dict[unit_id
                                                 ].estimate_gene_expression(
@@ -428,7 +429,7 @@ def main():
     # Determine exons of all genes and write them to a bed file
     # -------------------------------------------------------------------------
 
-    sys.stdout.write("Extracting exons per gene in bed format" +
+    sys.stdout.write("Extracting exons per gene in bed format..." +
                      os.linesep)
 
     exons_per_gene_bed_file = os.path.join(
@@ -442,7 +443,7 @@ def main():
     # Determine transcripts of all genes and write them to a bed file
     # -------------------------------------------------------------------------
 
-    sys.stdout.write("Extracting transcripts per gene in bed format" +
+    sys.stdout.write("Extracting transcripts per gene in bed format..." +
                      os.linesep)
 
     transcripts_per_gene_bed_file = os.path.join(
@@ -456,7 +457,7 @@ def main():
     # Determine genes and write them to a bed file
     # -------------------------------------------------------------------------
 
-    sys.stdout.write("Extracting genes in bed format" +
+    sys.stdout.write("Extracting genes in bed format..." +
                      os.linesep)
 
     genes_bed_file = os.path.join(
@@ -470,7 +471,7 @@ def main():
     # Determine the union exon per gene
     # -------------------------------------------------------------------------
 
-    sys.stdout.write("Extracting union exons per gene in bed format" +
+    sys.stdout.write("Extracting union exons per gene in bed format..." +
                      os.linesep)
 
     union_exons_bed_file = os.path.join(
@@ -486,7 +487,7 @@ def main():
     # in a gene might be part of an exon in another gene and vice versa.
     # -------------------------------------------------------------------------
 
-    sys.stdout.write("Extracting union introns per gene in bed format" +
+    sys.stdout.write("Extracting union introns per gene in bed format..." +
                      os.linesep)
 
     union_introns_bed_file = os.path.join(
@@ -507,7 +508,7 @@ def main():
 
         sys.stdout.write("Extracting union introns per gene that do not " +
                          "overlap with exons in bed format for stranded " +
-                         "protocols" + os.linesep)
+                         "protocols..." + os.linesep)
 
         introns_not_overlap_with_exons_bed_file = os.path.join(
             annotation_dir,
@@ -527,7 +528,7 @@ def main():
         # -------------------------------------------------------------------------
 
         sys.stdout.write("Extracting intronic poly(A) sites for stranded " +
-                         "protocols" + os.linesep)
+                         "protocols..." + os.linesep)
 
         polyasites_in_introns_bed_file = os.path.join(
             annotation_dir,
@@ -550,7 +551,7 @@ def main():
 
         sys.stdout.write("Extracting union introns per gene that do not " +
                          "overlap with exons in bed format for unstranded " +
-                         "protocols" + os.linesep)
+                         "protocols..." + os.linesep)
 
         introns_not_overlap_with_exons_bed_file = os.path.join(
             annotation_dir,
@@ -569,7 +570,7 @@ def main():
         # -------------------------------------------------------------------------
 
         sys.stdout.write("Extracting intronic poly(A) sites for unstranded " +
-                         "protocols" + os.linesep)
+                         "protocols..." + os.linesep)
 
         polyasites_in_introns_bed_file = os.path.join(
             annotation_dir,
@@ -605,7 +606,7 @@ def main():
     # -------------------------------------------------------------------------
 
     sys.stdout.write("Extracting all terminal exons from " +
-                     "multi-exonic transcripts" + os.linesep)
+                     "multi-exonic transcripts..." + os.linesep)
 
     all_terminal_exons_bed_file = os.path.join(
         annotation_dir,
@@ -621,7 +622,7 @@ def main():
     # -------------------------------------------------------------------------
 
     sys.stdout.write("Extracting all intermediate exons from " +
-                     "multi-exonic transcripts" + os.linesep)
+                     "multi-exonic transcripts..." + os.linesep)
 
     all_intermediate_exons_bed_file = os.path.join(
         annotation_dir,
@@ -636,7 +637,7 @@ def main():
     # -------------------------------------------------------------------------
 
     sys.stdout.write("Extracting all start exons from " +
-                     "multi-exonic transcripts" + os.linesep)
+                     "multi-exonic transcripts..." + os.linesep)
 
     all_start_exons_bed_file = os.path.join(
         annotation_dir,
@@ -651,7 +652,7 @@ def main():
     # -------------------------------------------------------------------------
 
     sys.stdout.write("Extracting terminal exons that do not overlap " +
-                     "with other terminal exons" + os.linesep)
+                     "with other terminal exons..." + os.linesep)
 
     terminal_exons_not_overlap_other_terminal_exons_bed_file = \
         os.path.join(
@@ -672,7 +673,7 @@ def main():
     # -------------------------------------------------------------------------
 
     sys.stdout.write("Extracting intermediate exons that do not overlap " +
-                     "with other intermediate exons" + os.linesep)
+                     "with other intermediate exons..." + os.linesep)
 
     intermediate_exons_not_overlap_other_intermediate_exons_bed_file = \
         os.path.join(
@@ -696,7 +697,7 @@ def main():
 
         sys.stdout.write("Extracting terminal exons that do not overlap " +
                          "with other exons (first exons, last exon or " +
-                         "intermediate exons) for stranded protocols" +
+                         "intermediate exons) for stranded protocols..." +
                          os.linesep)
 
         terminal_exons_non_overlapping = \
@@ -722,7 +723,7 @@ def main():
 
         sys.stdout.write("Extracting intermediate exons that do not overlap " +
                          "with other exons (first exons, last exon or " +
-                         "intermediate exons) for stranded protocols" +
+                         "intermediate exons) for stranded protocols..." +
                          os.linesep)
 
         intermediate_exons_non_overlapping = \
@@ -748,7 +749,7 @@ def main():
         # -------------------------------------------------------------------------
 
         sys.stdout.write("Remove intermediate exons that overlap with other " +
-                         "intermediate exons on the opposite strand" +
+                         "intermediate exons on the opposite strand..." +
                          os.linesep)
 
         intermediate_exons_non_overlapping_filtered = \
@@ -769,7 +770,7 @@ def main():
         # -------------------------------------------------------------------------
 
         sys.stdout.write("Determining non overlapping genes for stranded " +
-                         "protocols" + os.linesep)
+                         "protocols..." + os.linesep)
 
         non_overlapping_genes_bed = os.path.join(
             os.path.join(
@@ -795,7 +796,7 @@ def main():
 
         sys.stdout.write("Extracting terminal exons that do not overlap " +
                          "with other exons (first exons, last exon or " +
-                         "intermediate exons) for stranded protocols" +
+                         "intermediate exons) for stranded protocols..." +
                          os.linesep)
 
         terminal_exons_non_overlapping = \
@@ -821,7 +822,7 @@ def main():
 
         sys.stdout.write("Extracting intermediate exons that do not overlap " +
                          "with other exons (first exons, last exon or " +
-                         "intermediate exons) for unstranded protocols" +
+                         "intermediate exons) for unstranded protocols..." +
                          os.linesep)
 
         intermediate_exons_non_overlapping = \
@@ -847,7 +848,7 @@ def main():
         # -------------------------------------------------------------------------
 
         sys.stdout.write("Remove intermediate exons that overlap with other " +
-                         "intermediate exons on the opposite strand" +
+                         "intermediate exons on the opposite strand..." +
                          os.linesep)
 
         intermediate_exons_non_overlapping_filtered = \
@@ -868,7 +869,7 @@ def main():
         # -------------------------------------------------------------------------
 
         sys.stdout.write("Determining non overlapping genes for unstranded " +
-                         "protocols" + os.linesep)
+                         "protocols..." + os.linesep)
 
         non_overlapping_genes_bed = os.path.join(
             os.path.join(
@@ -963,10 +964,11 @@ def main():
 
         # give some feedback about the state of the script
         # (how many units have been analyzed so far?)
-        if (unit_nr % 100) == 0:
-            sys.stdout.write("Regions processed:\t" +
-                             str(unit_nr) +
-                             os.linesep)
+        if options.verbose:
+            if (unit_nr % 100) == 0:
+                sys.stdout.write("Regions processed:\t" +
+                                 str(unit_nr) +
+                                 os.linesep)
 
         # get the AnalysisUnit object
         aunits_dict[unit_id].analyze_reads(
@@ -1095,7 +1097,8 @@ def main():
             genes_to_consider_dict=genes_to_consider_for_ML,
             bam_file_path=options.bam_file,
             annotation=annotation,
-            threshold_to_filter=minimum_spliced_reads_for_cryptic_exon_start_site
+            threshold_to_filter=minimum_spliced_reads_for_cryptic_exon_start_site,
+            verbose=options.verbose
         )
     
         # ---------------------------------------------------------------------
@@ -1172,10 +1175,11 @@ def main():
         # Generate N=10 training and validation datasets
         for run_number in range(10):
     
-            sys.stdout.write("Generating #{} training and validation datasets ... {}".format(
-                str(run_number),
-                os.linesep)
-            )
+            if options.verbose:
+                sys.stdout.write("Generating #{} training and validation datasets ... {}".format(
+                    str(run_number),
+                    os.linesep)
+                )
     
             # ---------------------------------------------------------------------
             # Create dataframes and supplement with gene expression information
@@ -1188,11 +1192,6 @@ def main():
                 verbose=options.verbose
             )
     
-            sys.stdout.write("After create_training_dataframes #{} ... {}".format(
-                str(run_number),
-                os.linesep)
-            )
-    
             # ---------------------------------------------------------------------
             # Calculate features for training data
             # ---------------------------------------------------------------------
@@ -1201,10 +1200,10 @@ def main():
                 output_files_dir=options.output_dir,
                 verbose=options.verbose
             )
-    
-            sys.stdout.write("After add_features_to_training_dataframes #{} \
-                              ...{}".format(str(run_number),
-                                            os.linesep))
+            if options.verbose:
+                sys.stdout.write("After add_features_to_training_dataframes #{} \
+                                  ...{}".format(str(run_number),
+                                                os.linesep))
     
             # ---------------------------------------------------------------------
             # Sample training data
@@ -1217,10 +1216,11 @@ def main():
                 verbose=options.verbose
             )
     
-            sys.stdout.write("After load_training_data #{} ...{}".format(
-                str(run_number),
-                os.linesep)
-            )
+            if options.verbose:
+                sys.stdout.write("After load_training_data #{} ...{}".format(
+                    str(run_number),
+                    os.linesep)
+                )
     
             # Append to lists of training and validation datasets
             ml_train_unit.list_of_training_dataframes.append(
@@ -1228,10 +1228,11 @@ def main():
             ml_train_unit.list_of_validation_dataframes.append(
                 ml_train_unit.validation_df)
     
-            sys.stdout.write("After appending the lists #{} ... {}".format(
-                str(run_number),
-                os.linesep)
-            )
+            if options.verbose:
+                sys.stdout.write("After appending the lists #{} ... {}".format(
+                    str(run_number),
+                    os.linesep)
+                )
     
         # ---------------------------------------------------------------------
         # Calculate features
@@ -1240,9 +1241,9 @@ def main():
             output_files_dir=options.output_dir,
             verbose=options.verbose
         )
-    
-        sys.stdout.write("After add_features_to_terminal_exon_" +
-                         "candidates_dataframe..." + os.linesep)
+        if options.verbose:
+            sys.stdout.write("After add_features_to_terminal_exon_" +
+                             "candidates_dataframe..." + os.linesep)
     
         # AJG: Go on from here!
     
@@ -1285,13 +1286,14 @@ def main():
             if not os.path.exists(classifier_results_dir):
                 os.makedirs(classifier_results_dir)
     
-            # give user feedback
-            sys.stdout.write(
-                " :: Used classifier: {} -> Results can be found in: {} {} \
-                ".format(classifier,
-                         classifier_results_dir,
-                         os.linesep)
-            )
+            if options.verbose:
+                # give user feedback
+                sys.stdout.write(
+                    " :: Used classifier: {} -> Results can be found in: {} {} \
+                    ".format(classifier,
+                             classifier_results_dir,
+                             os.linesep)
+                )
     
             # ---------------------------------------------------------------------
             # Create dataframes and supplement with gene expression information
@@ -1443,10 +1445,11 @@ def main():
         # Read N=10 training and validation datasets
         for run_number in range(10):
     
-            sys.stdout.write("Reading #{} training and validation datasets ... {}".format(
-                str(run_number),
-                os.linesep)
-            )
+            if options.verbose:
+                sys.stdout.write("Reading #{} training and validation datasets ... {}".format(
+                    str(run_number),
+                    os.linesep)
+                )
 
             # load training df
             ml_train_unit.training_df = pd.read_csv(
@@ -1616,7 +1619,7 @@ def main():
         sys.stderr.write(
             "Warning: The mean accuracy on this data set is only: " +
             str(mean_accuracy_score) +
-            "indicating that the model trained on this data set is" +
+            " indicating that the model trained on this data set is" +
             " not highly reliable." +
             os.linesep
         )

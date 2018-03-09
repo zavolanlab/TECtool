@@ -378,7 +378,8 @@ class MachineLearningUnit(object):
         genes_to_consider_dict,
         bam_file_path,
         annotation,
-        threshold_to_filter
+        threshold_to_filter,
+        verbose=False
     ):
         """
         Method that creates training data for intermediate exons and
@@ -446,8 +447,9 @@ class MachineLearningUnit(object):
 
             # give some feedback about the state of the script
             # (how many units have been analyzed so far?)
-            if (unit_nr % 100) == 0:
-                sys.stderr.write("Regions processed:\t" + str(unit_nr) + "\n")
+            if verbose:
+                if (unit_nr % 100) == 0:
+                    sys.stderr.write("Regions processed:\t" + str(unit_nr) + "\n")
 
             # get the AnalysisUnit object
             aunits_intermediate_exons_dict[
