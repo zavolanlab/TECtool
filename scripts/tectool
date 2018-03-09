@@ -360,6 +360,23 @@ def main():
 
     # _________________________________________________________________________
     # -------------------------------------------------------------------------
+    # Fix reference genome sequence
+    # -------------------------------------------------------------------------
+
+    genome_internal_path = os.path.join(annotation_dir, 'genome.fa')
+    genome_internal = open(genome_internal_path, 'w')
+    with open(options.genome) as fp:
+        for line in fp:
+            # fix header
+            if line[0] == ">":
+                header = str(line.strip().split(" ")[0]) + os.linesep
+                genome_internal.write(header)
+                continue
+            genome_internal.write(line)
+    genome_internal.close()
+
+    # _________________________________________________________________________
+    # -------------------------------------------------------------------------
     # create the annotation object and read in the annotation file
     # -------------------------------------------------------------------------
     sys.stdout.write("Reading annotation file:\t {} {}".format(
@@ -1518,7 +1535,7 @@ def main():
     # Read genome file
     # -------------------------------------------------------------------------
     sys.stdout.write("Reading genome file ..." + os.linesep)
-    genome = Fasta(options.genome)
+    genome = Fasta(genome_internal_path)
 
     # _________________________________________________________________________
     # -------------------------------------------------------------------------

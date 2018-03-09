@@ -57,7 +57,7 @@ if ( opt$gtf== "" || opt$polyasites=="" || opt$bam=="" || opt$tectool_exons=="" 
 #================#
 
 #---> START MESSAGE <---#
-if ( opt$verbose  ) cat("Starting '", script, "'...\n\n", sep="")
+if ( opt$verbose  ) cat("Starting script'", "'...\n\n", sep="")
 
 #---> Configuration for non ucsc chromosomes (chomosome that start with chr) <---
 options(ucscChromosomeNames=FALSE)
@@ -118,14 +118,7 @@ if ("terminal_probability" %in% colnames(tectool_exons)){
 
 		tectool_exons[i, "min_start"] <- min_start
 		tectool_exons[i, "min_end"] <- max_end
-
-
-
-
-
 	}
-} else {
-	stop("Nothing can be plotted. Exiting ... \n")
 }
 
 plot_novel_exon <- function(x) {
@@ -176,8 +169,8 @@ if ("terminal_probability" %in% colnames(tectool_exons)) {
 		dev.off()
 	}
 } else{
-	pdf(file.path(opt$output_dir,"plots.pdf"))
-	dev.off()
+	x <- data.frame()
+	write.table(x, file=file.path(opt$output_dir,"plots.pdf"), col.names=FALSE)
 }
 
 #================#
