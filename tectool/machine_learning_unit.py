@@ -500,6 +500,13 @@ class MachineLearningUnit(object):
         #     pd.DataFrame.from_records(novel_terminal_exon_candidates_data_list,
         #                               columns=self.labels)
 
+        if self.novel_terminal_exon_candidates_data.empty:
+            sys.stderr.write(
+                "No novel terminal exons could be identified. Exiting." +
+                os.linesep
+            )
+            sys.exit(-1)
+
         self.novel_terminal_exon_candidates_data.set_index(
             ["region",
              "gene_id"],
