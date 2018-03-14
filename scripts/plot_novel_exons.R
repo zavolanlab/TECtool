@@ -1,7 +1,10 @@
+#!/usr/bin/env Rscript
+
 #==================#
 #   HEADER START   #
 #==================#
 ### Created: Jun 8, 2017
+### Updates: March, 14 2018
 ### Author: Foivos Gypas
 ### Company: Zavolan Group, Biozentrum, University of Basel
 ### Version: v1.0
@@ -27,19 +30,17 @@ suppressPackageStartupMessages(library("GenomicFeatures"))
 #---> COMMAND-LINE ARGUMENTS <---#
 ## List of allowed/recognized arguments
 option_list <- list(
-	make_option(c("-g", "--gtf"), action="store", type="character", default="", help="REQUIRED: GTF file with annotated transcripts", metavar="file"),
-	make_option(c("-p", "--polyasites"), action="store", type="character", default="", help="REQUIRED: BED file with polya sites", metavar="file"),
-	make_option(c("-b", "--bam"), action="store", type="character", default="", help="REQUIRED: Alignment file in BAM format", metavar="file"),
-	make_option(c("-t", "--tectool_exons"), action="store", type="character", default="", help="REQUIRED: TECtool exons file in tsv format", metavar="file"),
-	make_option(c("-o", "--output_dir"), action="store", type="character", default="", help="REQUIRED: Output directory", metavar="directory"),
-	make_option(c("-h", "--help"), action="store_true", default=FALSE, help="Show this information and die"),
-	make_option(c("-u", "--usage"), action="store_true", default=FALSE, dest="help", help="Show this information and die"),
-	make_option(c("-v", "--verbose"), action="store_true", default=TRUE, help="Print log messages [DEFAULT]"),
-	make_option(c("-s", "--silent"), action="store_false", dest="verbose", help="Shut up!")
+	make_option(c("--gtf"), action="store", type="character", default="", help="REQUIRED: GTF file with annotated transcripts", metavar="file"),
+	make_option(c("--polyasites"), action="store", type="character", default="", help="REQUIRED: BED file with polya sites", metavar="file"),
+	make_option(c("--bam"), action="store", type="character", default="", help="REQUIRED: Alignment file in BAM format", metavar="file"),
+	make_option(c("--tectool_exons"), action="store", type="character", default="", help="REQUIRED: TECtool exons file in tsv format. Output of TECtool (classified_as_terminal_with_probabilities.tsv).", metavar="file"),
+	make_option(c("--output_dir"), action="store", type="character", default="", help="REQUIRED: Output directory", metavar="directory"),
+	make_option(c("--help"), action="store_true", default=FALSE, help="Show this information and die"),
+	make_option(c("--verbose"), action="store_true", default=FALSE, help="Be Verbose")
 )
 #	make_option(c("-i", "--genome_version", action="store", type="character", default="hg38", help="REQUIRED: Genome Version. Example hg38, hg19, mm10"))
 ## Parse command-line arguments
-opt_parser <- OptionParser(usage="Usage: %prog [OPTIONS] --gtf [FILE] --polyasites [FILE] --tectool_exons [FILE] --genome_version [STRING] --output_dir [DIRECTORY]", option_list = option_list, add_help_option=FALSE, description="\n Plots novel terminal exons as identified by TECtool")
+opt_parser <- OptionParser(usage="Usage: %prog [OPTIONS] --gtf [FILE] --polyasites [FILE] --tectool_exons [FILE] --bam [FILE] --output_dir [DIRECTORY]", option_list = option_list, add_help_option=FALSE, description="\n Plots novel terminal exons as identified by TECtool")
 opt <- parse_args(opt_parser)
 
 ## Die if any required arguments are missing...

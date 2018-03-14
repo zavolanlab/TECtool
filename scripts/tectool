@@ -38,6 +38,7 @@ import numpy as np
 import copy
 import csv
 import functools
+from progress.bar import ChargingBar
 
 # _____________________________________________________________________________
 # -----------------------------------------------------------------------------
@@ -135,13 +136,18 @@ def estimate_expression_of_selected_genes(
     # the reads and count
     # ---------------------------------------------------------------------
 
-    sys.stdout.write("Estimating gene expression ..." + os.linesep)
+    charging_bar = ChargingBar(
+        'Estimating gene expression',
+        max=len(list(aunits_genes_dict.items()))
+    )
 
     # go over each unit
     unit_nr = 0
     for unit_id in aunits_genes_dict.keys():
 
         unit_nr += 1
+
+        charging_bar.next()
 
         # give some feedback about the state of the script
         # (how many units have been analyzed so far?)
@@ -161,6 +167,8 @@ def estimate_expression_of_selected_genes(
 
         annotation.genes[gene_id].total_reads = int(gene_reads)
         annotation.genes[gene_id].estimate_ExpressionPerKBApproximated()
+
+    charging_bar.finish()
 
 # _____________________________________________________________________________
 # -----------------------------------------------------------------------------
@@ -392,8 +400,13 @@ def main():
     # -------------------------------------------------------------------------
     # Fix reference genome sequence
     # -------------------------------------------------------------------------
-
+    
     genome_internal_path = os.path.join(annotation_dir, 'genome.fa')
+
+    sys.stdout.write("Pre-processing genome file:\t {} {}".format(
+         options.genome, os.linesep
+        )
+    )
     genome_internal = open(genome_internal_path, 'w')
     with open(options.genome) as fp:
         for line in fp:
@@ -796,7 +809,7 @@ def main():
 
         sys.stdout.write("Extracting terminal exons that do not overlap " +
                          "with other exons (first exons, last exon or " +
-                         "intermediate exons) for stranded protocols..." +
+                         "intermediate exons) for unstranded protocols..." +
                          os.linesep)
 
         terminal_exons_non_overlapping = \
@@ -955,12 +968,19 @@ def main():
     # annotation object
     # -------------------------------------------------------------------------
 
-    sys.stdout.write("Counting feature regions..." + os.linesep)
+    # sys.stdout.write("Counting feature regions..." + os.linesep)
+
+    charging_bar = ChargingBar(
+        'Counting feature regions',
+        max=len(list(aunits_dict.items()))
+    )
 
     unit_nr = 0
     # for region in feature regions:
     for unit_id, unit_value in list(aunits_dict.items()):
         unit_nr += 1
+
+        charging_bar.next()
 
         # give some feedback about the state of the script
         # (how many units have been analyzed so far?)
@@ -989,6 +1009,7 @@ def main():
             del(aunits_dict[unit_id])
         except(KeyError):
             pass
+    charging_bar.finish()
 
     # _________________________________________________________________________
     # -------------------------------------------------------------------------
@@ -1365,7 +1386,7 @@ def main():
                 ml_train_unit.fill_probabilities_dictionary(
                     classifier=classifier,
                     results_dir=options.output_dir,
-                    verbose=True
+                    verbose=options.verbose
                 )
     
             # -----------------------------------------------------------------
@@ -1512,7 +1533,7 @@ def main():
             ml_train_unit.fill_probabilities_dictionary(
                 classifier=classifier,
                 results_dir=options.output_dir,
-                verbose=True
+                verbose=options.verbose
             )
 
         # -----------------------------------------------------------------
