@@ -11,7 +11,7 @@ TECtool is a method that uses mRNA and 3’ end sequencing data to identify nove
 
 **TECtool uses genome sequence, annotation and RNA-seq data. Therefore, ~10 GB of disk space are needed for installation and testing.**
 
-TECtool as of version 0.2 is written in Python 3. Current instructions are written for Python 3 (>=3.4) ONLY. Installation with Python 2 will not work. The recommended way to install TECtool is via the conda package manager, because it can install non Python dependencies (for example bedtools).
+TECtool as of version 0.2 is written in Python 3. Current instructions are written for Python 3 ONLY (>=3.4 should work, but extensively tested with Python 3.6). Installation with Python 2 will not work. The recommended way to install TECtool is via the conda package manager, because it can install non Python dependencies (for example bedtools).
 
 If you do not want to use conda to install TECtool, other options are described below. 
 
@@ -225,7 +225,7 @@ The following options are available and should be set by the user:
 
 Input files
 
-* A file containing all chromosomes in fasta format. **Important note:** The file should have the same chromosome names (header lines) as the ones specified in the gtf file. For example if the gtf file has chromosome 1 annotated as "1", then the fasta should have a header called ">1". No white spaces or trailing text should be included.
+* A file containing all chromosomes in fasta format. **Important note for versions <0.3::** The file should have the same chromosome names (header lines) as the ones specified in the gtf file. For example if the gtf file has chromosome 1 annotated as "1", then the fasta should have a header called ">1". No white spaces or trailing text should be included.
 * A file with the corresponding annotation in GTF format. **Important note:** Currently only gtf files in ENSEMBL (tested with ENSEMBL v87).
 * A file with genome coordinates of 3’ end processing sites in BED format.
 * A file containing spliced alignments of mRNA-seq reads to the corresponding genome (in BAM format, sorted by coordinates and indexed) (tested with STAR aligner).
@@ -235,6 +235,19 @@ Input files
 The output of TECtool:
 * An augmented annotation file in gtf format named enriched_annotation.gtf. The gtf file contains genes, transcripts, exons, CDS, START and STOP lines.
 * A file containing the novel terminal exons named classified_as_terminal_with_probabilities.tsv: The table contains the terminal exon region, the gene id, the features that were used, the probability that this region is terminal (terminal_probability), the probability that this region is intermediate (intermediate_probability), the probability that the region is background (background_probability), the type that was selected (terminal/intermediate/background) and the genomic coordinates of the region (chromosome, start, end, strand).
+
+## Plot novel exons
+
+A supplementary script (written in R) is also provided that uses one of the outputs of TECtool and visualizes the novel terminal exons. The script is called plot_novel_exons.R and is available in the scripts directory of TECtool.
+In order to run it users should have R installed (tested with R 3.3.1) with the following packages: optparse, rtracklayer, Gviz, biomaRt and GenomicFeatures. The following options are available:
+
+* *--gtf*: GTF file with annotated transcripts
+* *--polyasites*: BED file with polya sites
+* *--bam*: Alignment file in BAM format
+* *--tectool_exons*: TECtool exons file in tsv format. Output of TECtool (classified_as_terminal_with_probabilities.tsv).
+* *--output_dir*: Output directory
+* *--help*: Show help message
+* *--verbose*: Be Verbose
 
 ## Recommended files for testing
 
@@ -260,13 +273,19 @@ tectool \
 --polyasites polya_sites.merged.anno.hg38.ENSEMBL.chr1.14.22.X.16.bed \
 --bam GSM1502499_RNA_seq_control_rep2.chr22.bam \
 --genome Homo_sapiens.GRCh38.dna_sm.primary_assembly.fixed.fa \
---sequencing_direction forward \
---minimum_spliced_reads_for_cryptic_exon_start_site 5 \
---min_region_overlap 10 \
---max_splice_fuzziness 0 \
---output_dir results \
---verbose
+--output_dir results
 ```
+
+In order to test the vizualization script please run the following example:
+```
+plot_novel_exons.R \
+--gtf Homo_sapiens.GRCh38.87.chr.support_level_5.correct_gene_coordinates.chr1.14.22.X.16.gtf \
+--polyasites polya_sites.merged.anno.hg38.ENSEMBL.chr1.14.22.X.16.bed \
+--bam GSM1502499_RNA_seq_control_rep2.chr22.bam \
+--tectool_exons results/classified_as_terminal_with_probabilities.tsv \
+--output_dir plots
+```
+
 
 ## Licence and documentation
 

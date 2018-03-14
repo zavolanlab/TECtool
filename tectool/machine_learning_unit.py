@@ -28,6 +28,7 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import pandas as pd
 import pybedtools
+from progress.bar import ChargingBar
 
 # _____________________________________________________________________________
 # -----------------------------------------------------------------------------
@@ -326,8 +327,6 @@ class MachineLearningUnit(object):
         # ---------------------------------------------------------------------
         # Open the BAM file
         # ---------------------------------------------------------------------
-        sys.stdout.write("Counting reads for annotated terminal exons..." +
-                         os.linesep)
 
         bam_file_path = bam_file_path
         bam = HTSeq.BAM_Reader(bam_file_path)
@@ -338,10 +337,17 @@ class MachineLearningUnit(object):
         # and count
         # ---------------------------------------------------------------------
 
+        charging_bar = ChargingBar(
+            'Counting reads for annotated terminal exons',
+            max=len(list(aunits_terminal_exons_dict.items()))
+        )
+
         # go over each unit
         unit_nr = 0
         for unit_id, unit_value in list(aunits_terminal_exons_dict.items()):
             unit_nr += 1
+
+            charging_bar.next()
 
             # give some feedback about the state of the script
             # (how many units have been analyzed so far?)
@@ -368,6 +374,8 @@ class MachineLearningUnit(object):
                 del(aunits_terminal_exons_dict[unit_id])
             except(KeyError):
                 pass
+
+        charging_bar.finish()
 
     def create_intermediate_exon_training_set(
         self,
@@ -436,20 +444,24 @@ class MachineLearningUnit(object):
         # Go over all AnalysisUnit objects for intermediate exons, fetch the
         # reads and count
         # -------------------------------------------------------------------------
-        sys.stdout.write("Counting annotated intermediate exons...\n")
+
+        charging_bar = ChargingBar(
+            'Counting annotated intermediate exons',
+            max=len(list(aunits_intermediate_exons_dict.items()))
+        )
 
         # go over each unit
         unit_nr = 0
         for unit_id, unit_value in list(aunits_intermediate_exons_dict.items()
                                         ):
-
             unit_nr += 1
+            charging_bar.next()
 
             # give some feedback about the state of the script
             # (how many units have been analyzed so far?)
             if verbose:
                 if (unit_nr % 100) == 0:
-                    sys.stderr.write("Regions processed:\t" + str(unit_nr) + "\n")
+                    sys.stderr.write("Regions processed:\t" + str(unit_nr) + os.linesep)
 
             # get the AnalysisUnit object
             aunits_intermediate_exons_dict[
@@ -470,6 +482,8 @@ class MachineLearningUnit(object):
                 del(aunits_intermediate_exons_dict[unit_id])
             except(KeyError):
                 pass
+
+        charging_bar.finish()
 
     def create_terminal_exon_candidates_dataframe(
         self,
@@ -965,7 +979,7 @@ class MachineLearningUnit(object):
         validation_data_fraction=0.2,
         output_files_dir=None,
         run_number=0,
-        verbose=True
+        verbose=False
     ):
         """
         Method that samples a specific number of training data from each
@@ -1013,12 +1027,11 @@ class MachineLearningUnit(object):
 
             else:
 
-                sys.stderr.write(
-                    "WARNING: there are not {} data sets available for each training class! Thus, the maximum possible number ({}) will be used. {}".format(
-                        str(nr_wanted_data),
-                        str(nr_sets_available),
-                        os.linesep
-                    )
+                sys.stderr.write("WARNING: there are not {} data sets available for each training class! Thus, the maximum possible number ({}) will be used. {}".format(
+                                 str(nr_wanted_data),
+                                 str(nr_sets_available),
+                                 os.linesep
+                                )
                 )
 
                 training_data_set_size = "max_equal_size"
@@ -1083,7 +1096,7 @@ class MachineLearningUnit(object):
                     output_files_dir,
                     "run_number_" + str(run_number) + "_training_data.tsv"
                 ),
-                verbose=True
+                verbose=verbose
             )
 
         # select validation data
@@ -1100,7 +1113,7 @@ class MachineLearningUnit(object):
                     validation_df_file_path=os.path.join(output_files_dir,
                     "run_number_" + str(run_number) + "_validation_data.tsv"
                     ),
-                    verbose=True
+                    verbose=verbose
                 )
 
     def sample_validation_data_from_training_data(
@@ -1155,7 +1168,7 @@ class MachineLearningUnit(object):
     def write_training_df_to_file(
         self,
         training_df_file_path,
-        verbose=True
+        verbose=False
     ):
         """
         Method that writes the training data ('training_df') to a file.
@@ -1190,7 +1203,7 @@ class MachineLearningUnit(object):
     def write_validation_df_to_file(
         self,
         validation_df_file_path,
-        verbose=True
+        verbose=False
     ):
         """
         Method that writes the validation data ('validation_df')
@@ -2416,7 +2429,7 @@ class MachineLearningUnit(object):
         self,
         classifier,
         results_dir,
-        verbose=True
+        verbose=False
     ):
         """
         Use the classifier to classify given regions based on their features.
@@ -2609,7 +2622,7 @@ class MachineLearningUnit(object):
                     current_terminal = \
                         geneid_chromosome_start[1].loc[
                             [geneid_chromosome_start[1][
-                                "terminal_probability"].argmax()]]
+                                "terminal_probability"].idxmax()]]
                     self.selected_novel_terminal_exons = \
                         pd.concat([self.selected_novel_terminal_exons,
                                    current_terminal])
@@ -2621,7 +2634,7 @@ class MachineLearningUnit(object):
                     current_terminal = \
                         geneid_chromosome_end[1].loc[
                             [geneid_chromosome_end[1][
-                                "terminal_probability"].argmax()]]
+                                "terminal_probability"].idxmax()]]
                     self.selected_novel_terminal_exons = \
                         pd.concat([self.selected_novel_terminal_exons,
                                    current_terminal])
@@ -2723,13 +2736,13 @@ class MachineLearningUnit(object):
             if strand_group[0] == "+":
                 # group by chromosome, start and gene id and concatenate to the final dataframe
                 for geneid_chromosome_start in strand_group[1].groupby(["chromosome", "start", "GeneId"]):
-                    current_terminal = geneid_chromosome_start[1].loc[[geneid_chromosome_start[1]["terminal_probability"].argmax()]]
+                    current_terminal = geneid_chromosome_start[1].loc[[geneid_chromosome_start[1]["terminal_probability"].idxmax()]]
                     self.selected_novel_terminal_exons = pd.concat([self.selected_novel_terminal_exons, current_terminal])
 
             if strand_group[0] == "-":
                 # group by chromosome, end and gene id and concatenate to the final dataframe
                 for geneid_chromosome_end in strand_group[1].groupby(["chromosome", "end", "GeneId"]):
-                    current_terminal = geneid_chromosome_end[1].loc[[geneid_chromosome_end[1]["terminal_probability"].argmax()]]
+                    current_terminal = geneid_chromosome_end[1].loc[[geneid_chromosome_end[1]["terminal_probability"].idxmax()]]
                     self.selected_novel_terminal_exons = pd.concat([self.selected_novel_terminal_exons, current_terminal])
 
         # Write out the final terminal exons that we will use

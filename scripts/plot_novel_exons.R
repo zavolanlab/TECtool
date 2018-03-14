@@ -97,7 +97,7 @@ if ("terminal_probability" %in% colnames(tectool_exons)){
 	# Subset EXONS (discards all other categories, e.g. CDS, start_codon etc.)
 	gr <- gr[values(gr)[["type"]] == "exon"]
 	# keep genes that we are interested in
-	gr_subset <- gr[,gr$gene_id %in% tectool_exons["gene_id"]]
+	gr_subset <- gr[gr$gene_id %in% tectool_exons[["gene_id"]]]
 	# create a granges object from exons
 	tectool_exons_granges <- makeGRangesFromDataFrame(tectool_exons)
 
