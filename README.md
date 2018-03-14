@@ -286,6 +286,23 @@ plot_novel_exons.R \
 --output_dir plots
 ```
 
+## Annotation files
+
+In the following links you can find genome files for GRCh38 and GRCm38, their correspoing poly(A) sites and ENSEMBL annotation files wiht support level 1 and support level 5.
+* Humnan, GRCh38, Ensembl version 87, support level 1: http://tectool.unibas.ch/data/GRCh38.87_support_level_1.tar.gz
+* Humnan, GRCh38, Ensembl version 87, support level 5: http://tectool.unibas.ch/data/GRCh38.87_support_level_5.tar.gz
+* Mouse, GRCm38, Ensembl version 87, support level 1: http://tectool.unibas.ch/data/GRCm38.87_support_level_1.tar.gz
+* Mouse, GRCm38, Ensembl version 87, support level 5: http://tectool.unibas.ch/data/GRCm38.87_support_level_5.tar.gz
+
+**Note**: The script tectool_filter_gtf_by_transcript_support_level in the scritps directory of TECtool takes as input a gtf file and keeps only the transcripts with the user specified support level. You can run it as following:
+```
+tectool_filter_gtf_by_transcript_support_level \
+--gtf <ORIGINAL GTF FILE> \
+--out <FILTERED GTF FILE> \
+--support_level <Transcript support level to choose [1,2,3,4,5] \
+--fix_gene_coordinates
+```
+
 
 ## Licence and documentation
 
