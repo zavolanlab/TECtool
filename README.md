@@ -289,7 +289,7 @@ plot_novel_exons.R \
 
 ## Annotation files
 
-In the following links you can find genome files for GRCh38 and GRCm38, their correspoing poly(A) sites and ENSEMBL annotation files wiht support level 1 and support level 5.
+In the following links you can find genome files for GRCh38 and GRCm38, their corresponding poly(A) sites and ENSEMBL annotation files wiht support level 1 and support level 5.
 * Humnan, GRCh38, Ensembl version 87, support level 1: http://tectool.unibas.ch/data/GRCh38.87_support_level_1.tar.gz
 * Humnan, GRCh38, Ensembl version 87, support level 5: http://tectool.unibas.ch/data/GRCh38.87_support_level_5.tar.gz
 * Mouse, GRCm38, Ensembl version 87, support level 1: http://tectool.unibas.ch/data/GRCm38.87_support_level_1.tar.gz
