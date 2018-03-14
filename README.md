@@ -104,6 +104,7 @@ conda install --channel bioconda pybedtools==0.7.10
 conda install --channel conda-forge bzip2
 conda install --channel bioconda pyfasta==0.5.2
 conda install --channel coda-forge scikit-learn==0.19.0
+conda install -c conda-forge progress==1.3
 conda install --channel fgypas tectool
 ```
 
