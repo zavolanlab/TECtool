@@ -240,8 +240,20 @@ The output of TECtool:
 ## Plot novel exons
 
 A supplementary script (written in R) is also provided that uses one of the outputs of TECtool and visualizes the novel terminal exons. The script is called plot_novel_exons.R and is available in the scripts directory of TECtool.
-In order to run it users should have R installed (tested with R 3.3.1) with the following packages: optparse, rtracklayer, Gviz, biomaRt and GenomicFeatures. The following options are available:
+In order to run it users should have R installed (>=3.4) (tested with R 3.4.2) with the following packages: optparse, rtracklayer, Gviz, biomaRt and GenomicFeatures.
 
+*Note for users that installed tectool via conda*: The default environment for running tectool does not contain any R installation. In order to run the plotting script please create a new conda environment that contains both TECtool and the R dependencies. You can do this as following:
+
+```
+conda create -n TECtool_plot_novel_exons --channel bioconda --channel conda-forge --channel r --channel fgypas bioconductor-gviz r-optparse tectool
+```
+
+Acivate the virtual environment
+```
+source activate TECtool_plot_novel_exons
+```
+
+The following options are available in the script:
 * *--gtf*: GTF file with annotated transcripts
 * *--polyasites*: BED file with polya sites
 * *--bam*: Alignment file in BAM format
@@ -277,7 +289,7 @@ tectool \
 --output_dir results
 ```
 
-In order to test the vizualization script please run the following example:
+In order to test the vizualization script please first check the section "Plot novel exons" (for proper installation of R dependencies) and then run the following example:
 ```
 plot_novel_exons.R \
 --gtf Homo_sapiens.GRCh38.87.chr.support_level_5.correct_gene_coordinates.chr1.14.22.X.16.gtf \

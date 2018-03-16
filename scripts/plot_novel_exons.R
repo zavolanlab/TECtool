@@ -107,11 +107,11 @@ if ("terminal_probability" %in% colnames(tectool_exons)){
 		# http://web.mit.edu/~r/current/arch/i386_linux26/lib/R/library/GenomicRanges/html/nearest-methods.html
 
 		# find previous exon
-		precede_exon <- gr_subset[follow(tectool_exons_granges[i], gr_subset, select=c("arbitrary"), ignore.strand=FALSE)]
+		precede_exon <- gr_subset[follow(tectool_exons_granges[i], gr_subset, select=c("last"), ignore.strand=FALSE)]
 		precede_start <- start(precede_exon)
 		precede_end <- end(precede_exon)
 		# find next exon
-		follow_exon <- gr_subset[precede(tectool_exons_granges[i], gr_subset, select=c("arbitrary"), ignore.strand=FALSE)]
+		follow_exon <- gr_subset[precede(tectool_exons_granges[i], gr_subset, select=c("first"), ignore.strand=FALSE)]
 		follow_start <- start(follow_exon)
 		follow_end <- end(follow_exon)
 		min_start <- min(precede_start, precede_end, follow_start, follow_end)
