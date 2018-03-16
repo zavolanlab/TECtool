@@ -245,7 +245,7 @@ In order to run it users should have R installed (>=3.4) (tested with R 3.4.2) w
 *Note for users that installed tectool via conda*: The default environment for running tectool does not contain any R installation. In order to run the plotting script please create a new conda environment that contains both TECtool and the R dependencies. You can do this as following:
 
 ```
-conda create -name TECtool_plot_novel_exons --channel bioconda --channel conda-forge --channel r --channel fgypas r-base-3.4.2 bioconductor-gviz r-optparse tectool
+conda create -name TECtool_plot_novel_exons --channel bioconda --channel conda-forge --channel r --channel fgypas r-base=3.4.2 bioconductor-gviz r-optparse tectool
 ```
 
 Acivate the virtual environment
