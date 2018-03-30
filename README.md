@@ -84,7 +84,7 @@ Check the installation and options for the tool
 tectool --help
 ```
 
-You can find test files in the section [Recommended files for testing](##Recommended-files-for-testing)
+You can find test files in the section [Recommended files for testing](README.md#recommended-files-for-testing)
 
 ### Step 3 (alternative 1): Install tectool in an existing environment or globally
 
@@ -98,7 +98,7 @@ Check the installation and options for the tool
 tectool --help
 ```
 
-You can find test files in the section [Recommended files for testing](##Recommended-files-for-testing)
+You can find test files in the section [Recommended files for testing](README.md#recommended-files-for-testing)
 
 ### Step 3 (alternative 2): Create a new conda environment and install the dependencies manually
 
@@ -129,7 +129,7 @@ Check the installation and options for the tool
 tectool --help
 ```
 
-You can find test files in the section [Recommended files for testing](##Recommended-files-for-testing)
+You can find test files in the section [Recommended files for testing](README.md#recommended-files-for-testing)
 
 ### Installation of TECtool without conda
 
@@ -192,7 +192,7 @@ tectool --help
 
 **Note:** TECtool will be available only when the virtual environment is active.
 
-You can find test files in the section [Recommended files for testing](##Recommended-files-for-testing)
+You can find test files in the section [Recommended files for testing](README.md#recommended-files-for-testing)
 
 ## TECtool options
 
