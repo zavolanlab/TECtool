@@ -28,7 +28,7 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import pandas as pd
 import pybedtools
-from progress.bar import ChargingBar
+from progress.bar import Bar
 
 # _____________________________________________________________________________
 # -----------------------------------------------------------------------------
@@ -337,7 +337,7 @@ class MachineLearningUnit(object):
         # and count
         # ---------------------------------------------------------------------
 
-        charging_bar = ChargingBar(
+        bar = Bar(
             'Counting reads for annotated terminal exons',
             max=len(list(aunits_terminal_exons_dict.items()))
         )
@@ -347,7 +347,7 @@ class MachineLearningUnit(object):
         for unit_id, unit_value in list(aunits_terminal_exons_dict.items()):
             unit_nr += 1
 
-            charging_bar.next()
+            bar.next()
 
             # give some feedback about the state of the script
             # (how many units have been analyzed so far?)
@@ -375,7 +375,7 @@ class MachineLearningUnit(object):
             except(KeyError):
                 pass
 
-        charging_bar.finish()
+        bar.finish()
 
     def create_intermediate_exon_training_set(
         self,
@@ -445,7 +445,7 @@ class MachineLearningUnit(object):
         # reads and count
         # -------------------------------------------------------------------------
 
-        charging_bar = ChargingBar(
+        bar = Bar(
             'Counting annotated intermediate exons',
             max=len(list(aunits_intermediate_exons_dict.items()))
         )
@@ -455,7 +455,7 @@ class MachineLearningUnit(object):
         for unit_id, unit_value in list(aunits_intermediate_exons_dict.items()
                                         ):
             unit_nr += 1
-            charging_bar.next()
+            bar.next()
 
             # give some feedback about the state of the script
             # (how many units have been analyzed so far?)
@@ -483,7 +483,7 @@ class MachineLearningUnit(object):
             except(KeyError):
                 pass
 
-        charging_bar.finish()
+        bar.finish()
 
     def create_terminal_exon_candidates_dataframe(
         self,

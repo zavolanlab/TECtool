@@ -38,7 +38,7 @@ import numpy as np
 import copy
 import csv
 import functools
-from progress.bar import ChargingBar
+from progress.bar import Bar
 
 # _____________________________________________________________________________
 # -----------------------------------------------------------------------------
@@ -136,7 +136,7 @@ def estimate_expression_of_selected_genes(
     # the reads and count
     # ---------------------------------------------------------------------
 
-    charging_bar = ChargingBar(
+    bar = Bar(
         'Estimating gene expression',
         max=len(list(aunits_genes_dict.items()))
     )
@@ -147,7 +147,7 @@ def estimate_expression_of_selected_genes(
 
         unit_nr += 1
 
-        charging_bar.next()
+        bar.next()
 
         # give some feedback about the state of the script
         # (how many units have been analyzed so far?)
@@ -168,7 +168,7 @@ def estimate_expression_of_selected_genes(
         annotation.genes[gene_id].total_reads = int(gene_reads)
         annotation.genes[gene_id].estimate_ExpressionPerKBApproximated()
 
-    charging_bar.finish()
+    bar.finish()
 
 # _____________________________________________________________________________
 # -----------------------------------------------------------------------------
@@ -984,7 +984,7 @@ def main():
 
     # sys.stdout.write("Counting feature regions..." + os.linesep)
 
-    charging_bar = ChargingBar(
+    bar = Bar(
         'Counting feature regions',
         max=len(list(aunits_dict.items()))
     )
@@ -994,7 +994,7 @@ def main():
     for unit_id, unit_value in list(aunits_dict.items()):
         unit_nr += 1
 
-        charging_bar.next()
+        bar.next()
 
         # give some feedback about the state of the script
         # (how many units have been analyzed so far?)
@@ -1023,7 +1023,7 @@ def main():
             del(aunits_dict[unit_id])
         except(KeyError):
             pass
-    charging_bar.finish()
+    bar.finish()
 
     # _________________________________________________________________________
     # -------------------------------------------------------------------------
