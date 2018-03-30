@@ -297,7 +297,7 @@ tectool \
 --output_dir results
 ```
 
-In order to test the vizualization script please first check the section "Plot novel exons" (for proper installation of R dependencies) and then run the following example:
+In order to test the vizualization script please first check the section [Plot novel exons](README.md#plot-novel-exons) (for proper installation of R dependencies) and then run the following example:
 ```
 plot_novel_exons.R \
 --gtf Homo_sapiens.GRCh38.87.chr.support_level_5.correct_gene_coordinates.chr1.14.22.X.16.gtf \
