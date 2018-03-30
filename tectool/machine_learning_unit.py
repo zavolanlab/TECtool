@@ -519,7 +519,7 @@ class MachineLearningUnit(object):
                 "No novel terminal exons could be identified. Exiting." +
                 os.linesep
             )
-            sys.exit(-1)
+            sys.exit(0)
 
         self.novel_terminal_exon_candidates_data.set_index(
             ["region",
@@ -870,7 +870,7 @@ class MachineLearningUnit(object):
 
                 # tell the user that we do not have the requested number
                 # of data sets available
-                sys.stderr.write("WARNING: The number of available training data sets (={}) is smaller than the number of data sets (={}) requested/recommended for determining feature weights. {} ".format(
+                sys.stderr.write("Warning: The number of available training data sets (={}) is smaller than the number of data sets (={}) requested/recommended for determining feature weights. {} ".format(
                     nr_available_data_sets,
                     nr_wanted_data_sets,
                     os.linesep)
@@ -991,8 +991,7 @@ class MachineLearningUnit(object):
 
         # check if we have features available
         if self.features is None or len(self.features) < 1:
-            sys.stderr.write("ERROR: no features have been calculated yet." +
-                             os.linesep)
+            sys.stderr.write("ERROR: no features have been calculated yet. " + os.linesep)
             sys.exit(-1)
 
         # determine how many data we have available
@@ -1027,11 +1026,7 @@ class MachineLearningUnit(object):
 
             else:
 
-                sys.stderr.write("WARNING: there are not {} data sets available for each training class! Thus, the maximum possible number ({}) will be used. {}".format(
-                                 str(nr_wanted_data),
-                                 str(nr_sets_available),
-                                 os.linesep
-                                )
+                sys.stderr.write("Warning: there are not {} data sets available for each training class! Thus, the maximum possible number ({}) will be used. {}".format(str(nr_wanted_data), str(nr_sets_available), os.linesep )
                 )
 
                 training_data_set_size = "max_equal_size"
@@ -1403,12 +1398,12 @@ class MachineLearningUnit(object):
         Method that calculates features for a given data set (row).
         """
 
-        # create results directory
-        if (
-            results_dir_path is not None and
-            not os.path.exists(results_dir_path)
-        ):
-            os.makedirs(results_dir_path)
+        # # create results directory
+        # if (
+        #     results_dir_path is not None and
+        #     not os.path.exists(results_dir_path)
+        # ):
+        #     os.makedirs(results_dir_path)
 
         # _____________________________________________________________________
         # ---------------------------------------------------------------------
@@ -1644,13 +1639,13 @@ class MachineLearningUnit(object):
         # overwrite the old version that lacks features
         self.terminal_exon_training_data = TE_feat.copy()
 
-        # write out to DEBUG
-        self.terminal_exon_training_data.to_csv(
-            os.path.join(output_files_dir,
-                         'DEBUG_terminal_training.tsv'),
-            sep='\t',
-            index=True
-        )
+        # # write out to DEBUG
+        # self.terminal_exon_training_data.to_csv(
+        #     os.path.join(output_files_dir,
+        #                  'DEBUG_terminal_training.tsv'),
+        #     sep='\t',
+        #     index=True
+        # )
 
         # clean up...
         del(TE_feat)
@@ -1700,12 +1695,12 @@ class MachineLearningUnit(object):
         self.intermediate_exon_training_data = IE_feat.copy()
 
         # write out to DEBUG
-        self.intermediate_exon_training_data.to_csv(
-            os.path.join(output_files_dir,
-                         'DEBUG_intermediate_training.tsv'),
-            sep='\t',
-            index=True
-        )
+        # self.intermediate_exon_training_data.to_csv(
+        #     os.path.join(output_files_dir,
+        #                  'DEBUG_intermediate_training.tsv'),
+        #     sep='\t',
+        #     index=True
+        # )
 
         # clean up...
         del(IE_feat)
@@ -1755,12 +1750,12 @@ class MachineLearningUnit(object):
         self.background_training_data = BG_feat.copy()
 
         # write out to DEBUG
-        self.background_training_data.to_csv(
-            os.path.join(output_files_dir,
-                         'DEBUG_background_training.tsv'),
-            sep='\t',
-            index=True
-        )
+        # self.background_training_data.to_csv(
+        #     os.path.join(output_files_dir,
+        #                  'DEBUG_background_training.tsv'),
+        #     sep='\t',
+        #     index=True
+        # )
 
         # clean up...
         del(BG_feat)
@@ -2650,8 +2645,7 @@ class MachineLearningUnit(object):
                 index=True
             )
         else:
-            sys.stderr.write(
-                "[WARNING] No novel terminal exons were detected")
+            sys.stderr.write("Warning: No novel terminal exons were detected")
             self.selected_novel_terminal_exons = pd.DataFrame(
                 columns=["region", "gene_id"])
             self.selected_novel_terminal_exons.to_csv(
@@ -2750,7 +2744,7 @@ class MachineLearningUnit(object):
             self.selected_novel_terminal_exons.set_index(["Region", "GeneId"], inplace=True)
             self.selected_novel_terminal_exons.to_csv(os.path.join(results_dir, 'classified_as_terminal_with_probabilities.tsv'), sep='\t', index=True)
         else:
-            sys.stderr.write("[WARNING] No novel terminal exons were detected\n")
+            sys.stderr.write("[Warning: No novel terminal exons were detected\n")
             self.selected_novel_terminal_exons = pd.DataFrame(columns=["Region","GeneId"])
             self.selected_novel_terminal_exons.to_csv(os.path.join(results_dir, 'classified_as_terminal_with_probabilities.tsv'), sep='\t', index=False)
 

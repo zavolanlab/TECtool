@@ -84,7 +84,23 @@ Check the installation and options for the tool
 tectool --help
 ```
 
-### Step 3 (alternative 1): Create a new conda environment and install the dependencies manually
+You can find test files in the section [Recommended files for testing](#Recommended-files-for-testing)
+
+### Step 3 (alternative 1): Install tectool in an existing environment or globally
+
+Install tectool in an existing conda environment or globally
+```
+conda install --channel bioconda --channel conda-forge --channel fgypas tectool
+```
+
+Check the installation and options for the tool
+```
+tectool --help
+```
+
+You can find test files in the section [Recommended files for testing](#Recommended-files-for-testing)
+
+### Step 3 (alternative 2): Create a new conda environment and install the dependencies manually
 
 Create a new conda environment that only contains python 3
 ```
@@ -104,7 +120,7 @@ conda install --channel bioconda pybedtools==0.7.10
 conda install --channel conda-forge bzip2
 conda install --channel bioconda pyfasta==0.5.2
 conda install --channel coda-forge scikit-learn==0.19.0
-conda install -c conda-forge progress==1.3
+conda install --channel conda-forge progress==1.3
 conda install --channel fgypas tectool
 ```
 
@@ -113,17 +129,7 @@ Check the installation and options for the tool
 tectool --help
 ```
 
-### Step 3 (alternative 2): Install tectool in an existing environment or globally
-
-Install tectool in an existing conda environment or globally
-```
-conda install --channel bioconda --channel conda-forge --channel fgypas tectool
-```
-
-Check the installation and options for the tool
-```
-tectool --help
-```
+You can find test files in the section [Recommended files for testing](#Recommended-files-for-testing)
 
 ### Installation of TECtool without conda
 
@@ -185,6 +191,8 @@ tectool --help
 ```
 
 **Note:** TECtool will be available only when the virtual environment is active.
+
+You can find test files in the section [Recommended files for testing](#Recommended-files-for-testing)
 
 ## TECtool options
 

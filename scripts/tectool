@@ -5,7 +5,7 @@
 # import needed (external) modules
 # -----------------------------------------------------------------------------
 
-__version__ = "0.3.1"
+__version__ = "0.3.2"
 
 import sys
 import HTSeq
@@ -391,10 +391,24 @@ def main():
     # Define directory for annotation files that are generated
     annotation_dir = os.path.join(options.output_dir, 'annotation')
 
+    # processed data directory
+    processed_data_dir = os.path.join(options.output_dir, 'processed_data')
+    
+    # training data direcoty
+    training_data_dir = os.path.join(options.output_dir, 'training_data')
+
     if not os.path.exists(options.output_dir):
         os.makedirs(options.output_dir)
+
     if not os.path.exists(annotation_dir):
         os.makedirs(annotation_dir)
+
+    if not os.path.exists(processed_data_dir):
+        os.makedirs(processed_data_dir)
+
+    if not options.use_precalculated_training_set:
+        if not os.path.exists(training_data_dir):
+            os.makedirs(training_data_dir)
 
     # _________________________________________________________________________
     # -------------------------------------------------------------------------
@@ -1147,7 +1161,7 @@ def main():
         # ---------------------------------------------------------------------
     
         pre_novel_terminal_output_file \
-            = os.path.join(options.output_dir, "pre_novel_terminal_exons.tsv")
+            = os.path.join(processed_data_dir, "pre_novel_terminal_exons.tsv")
     
         ml_train_unit.create_terminal_exon_candidates_dataframe(
             annotation=annotation,
@@ -1173,7 +1187,7 @@ def main():
         terminal_exons_file_core_name = "terminal_exons"
         terminal_exons_statistics_file_path = \
             os.path.join(
-                options.output_dir,
+                processed_data_dir,
                 terminal_exons_file_core_name + ".tsv"
             )
     
@@ -1181,7 +1195,7 @@ def main():
         intermediate_exons_file_core_name = "intermediate_exons"
         intermediate_exons_statistics_file_path = \
             os.path.join(
-                options.output_dir,
+                processed_data_dir,
                 intermediate_exons_file_core_name + ".tsv"
             )
     
@@ -1189,7 +1203,7 @@ def main():
         background_regions_file_core_name = "background_regions"
         background_regions_statistics_file_path = \
             os.path.join(
-                options.output_dir,
+                processed_data_dir,
                 background_regions_file_core_name + ".tsv"
             )
     
@@ -1218,7 +1232,7 @@ def main():
             # ---------------------------------------------------------------------
             ml_train_unit.add_features_to_training_dataframes(
                 nr_to_subsample=1100,  # "all",
-                output_files_dir=options.output_dir,
+                output_files_dir=training_data_dir,
                 verbose=options.verbose
             )
             if options.verbose:
@@ -1232,7 +1246,7 @@ def main():
             ml_train_unit.load_training_data(
                 training_data_set_size=1000,  # "max_equal_size",
                 validation_data_fraction=0.2,
-                output_files_dir=options.output_dir,
+                output_files_dir=training_data_dir,
                 run_number=run_number,
                 verbose=options.verbose
             )
@@ -1266,8 +1280,6 @@ def main():
             sys.stdout.write("After add_features_to_terminal_exon_" +
                              "candidates_dataframe..." + os.linesep)
     
-        # AJG: Go on from here!
-    
         # ---------------------------------------------------------------------
         # Train a classifier
         # ---------------------------------------------------------------------
@@ -1300,21 +1312,21 @@ def main():
             # -----------------------------------------------------------------
             # Create a results directory for the current classifier
             # -----------------------------------------------------------------
-            classifier_results_dir = os.path.join(
-                options.output_dir, ("RESULTS_" + classifier))
+            # classifier_results_dir = os.path.join(
+            #     options.output_dir, ("RESULTS_" + classifier))
     
-            # create the directory
-            if not os.path.exists(classifier_results_dir):
-                os.makedirs(classifier_results_dir)
+            # # create the directory
+            # if not os.path.exists(classifier_results_dir):
+            #     os.makedirs(classifier_results_dir)
     
-            if options.verbose:
-                # give user feedback
-                sys.stdout.write(
-                    " :: Used classifier: {} -> Results can be found in: {} {} \
-                    ".format(classifier,
-                             classifier_results_dir,
-                             os.linesep)
-                )
+            # if options.verbose:
+            #     # give user feedback
+            #     sys.stdout.write(
+            #         " :: Used classifier: {} -> Results can be found in: {} {} \
+            #         ".format(classifier,
+            #                  classifier_results_dir,
+            #                  os.linesep)
+            #     )
     
             # ---------------------------------------------------------------------
             # Create dataframes and supplement with gene expression information
@@ -1331,7 +1343,7 @@ def main():
             # ---------------------------------------------------------------------
             ml_train_unit.add_features_to_training_dataframes(
                 nr_to_subsample="all",  # "all",1100
-                output_files_dir=options.output_dir,
+                output_files_dir=training_data_dir,
                 verbose=options.verbose
             )
     
@@ -1341,7 +1353,7 @@ def main():
             ml_train_unit.load_training_data(
                 training_data_set_size="max_equal_size",  # "max_equal_size",1000
                 validation_data_fraction=0.2,
-                output_files_dir=options.output_dir,
+                output_files_dir=training_data_dir,
                 run_number=-1,
                 verbose=options.verbose
             )
@@ -1374,7 +1386,7 @@ def main():
                 # Train a classifier on the greedy selected features
                 # -----------------------------------------------------------------
                 ml_train_unit.train_classifier_on_selected_features(
-                    results_dir_path=options.output_dir,
+                    results_dir_path=training_data_dir,
                     classifier=classifier,
                     nr_of_train_vs_test_runs=25,
                     verbose=options.verbose
@@ -1385,7 +1397,7 @@ def main():
                 # -----------------------------------------------------------------
                 ml_train_unit.fill_probabilities_dictionary(
                     classifier=classifier,
-                    results_dir=options.output_dir,
+                    results_dir=training_data_dir,
                     verbose=options.verbose
                 )
     
@@ -1419,7 +1431,7 @@ def main():
         # Create a dataframe and supplement it with gene expression information
         # ---------------------------------------------------------------------
         pre_novel_terminal_output_file \
-            = os.path.join(options.output_dir, "pre_novel_terminal_exons.tsv")
+            = os.path.join(processed_data_dir, "pre_novel_terminal_exons.tsv")
     
         ml_train_unit.create_terminal_exon_candidates_dataframe(
             annotation=annotation,
