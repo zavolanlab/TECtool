@@ -203,12 +203,7 @@ def main():
     parser.add_argument(
         "--genome",
         dest="genome",
-        help="Genome in fasta format [REQUIRED]. Note for versions " +
-        "<0.3: The file should have the same chromosome names (header " +
-        "lines) as the ones specified in the gtf file. For example if " +
-        "the gtf file has chromosome 1 denoted by \"1\", then the sequence " +
-        "in the fasta file should have a description line of the form " +
-        "\">1\". No white spaces or trailing text should be included.",
+        help="Genome in fasta format [REQUIRED]."
         metavar="FILE",
         required=True
     )
@@ -295,17 +290,20 @@ def main():
         dest="use_precalculated_training_set",
         action="store_true",
         default=False,
-        help="Use precalculated training set (skips the generation of training " +
-        "and validation set). [default=False]",
+        help="Use precalculated training set (skips the generation of training" +
+        "and validation set) This option should be provided in combination with"
+        "the option: --training_set_directory. [default=False]",
         required=False
     )
 
     parser.add_argument(
         "--training_set_directory",
         dest="training_set_directory",
-        help="Training set directory. This option should be provided " +
-        "in combination with the option: --use_precalculated_training_set, " +
-        "otherwise it is ignored. [No default option provided]",
+        help="Training set directory created by another TECtool run using" +
+        " the same annotation files. This" +
+        " option should be provided in combination with the option: " +
+        " --use_precalculated_training_set," +
+        " otherwise it is ignored. [No default option provided]",
         metavar="DIRECTORY",
         required=False
     )
