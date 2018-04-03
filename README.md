@@ -313,7 +313,7 @@ plot_novel_exons.R \
 --output_dir plots
 ```
 
-In the output directory a pdf file is generated with the identified novel terminal exons. An example can be found here with two novel terminal exons: http://tectool.unibas.ch/data/example_plots.pdf
+In the output directory a pdf file is generated with the identified novel terminal exons. An example can be found here with two novel terminal exons: http://tectool.unibas.ch/data/example_plots.pdf . The novel exons are marked with red boxes. The closest upstream and downstream exons are shown in the plot.
 
 ## Annotation files
 
