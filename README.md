@@ -313,6 +313,8 @@ plot_novel_exons.R \
 --output_dir plots
 ```
 
+In the output directory a pdf file is generated with the identified novel terminal exons. An example can be found here with two novel terminal exons: http://tectool.unibas.ch/data/example_plots.pdf
+
 ## Annotation files
 
 In the following links you can find genome files for GRCh38 and GRCm38, their corresponding poly(A) sites and ENSEMBL annotation files wiht support level 1 and support level 5.
