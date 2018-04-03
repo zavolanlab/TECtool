@@ -244,6 +244,8 @@ Input files
 The output of TECtool:
 * An augmented annotation file in gtf format named enriched_annotation.gtf. The gtf file contains genes, transcripts, exons, CDS, START and STOP lines.
 * A file containing the novel terminal exons named classified_as_terminal_with_probabilities.tsv: The table contains the terminal exon region, the gene id, the features that were used, the probability that this region is terminal (terminal_probability), the probability that this region is intermediate (intermediate_probability), the probability that the region is background (background_probability), the type that was selected (terminal/intermediate/background) and the genomic coordinates of the region (chromosome, start, end, strand).
+* A file containing the root and the novel transcript ids
+* When TECtool is run without the options --use_precalculated_training_set --training_set_directory a directory called training_data is generated. This can be used as input when the options the options --use_precalculated_training_set --training_set_directory are provided.
 
 ## Plot novel exons
 
@@ -253,8 +255,10 @@ In order to run it users should have R installed (>=3.4) (tested with R 3.4.1) w
 *Note for users that installed tectool via conda*: The default environment for running tectool does not contain any R installation. In order to run the plotting script please create a new conda environment that contains both TECtool and the R dependencies. You can do this as following:
 
 ```
-conda create --name TECtool_plot_novel_exons --channel bioconda --channel conda-forge --channel r --channel fgypas r-base=3.4.1 bioconductor-gviz r-optparse tectool
+conda create --name TECtool_plot_novel_exons --channel bioconda --channel conda-forge --channel r --channel fgypas r-base=3.4.1 bioconductor-gviz r-optparse openblas tectool
 ```
+
+*Note that this is a time consuming step and many packages are installed.*
 
 Acivate the virtual environment
 ```
@@ -296,6 +300,8 @@ tectool \
 --genome Homo_sapiens.GRCh38.dna_sm.primary_assembly.fixed.fa \
 --output_dir results
 ```
+
+*Note:* Some warnings will appear because the dataset that we use is small.
 
 In order to test the vizualization script please first check the section [Plot novel exons](README.md#plot-novel-exons) (for proper installation of R dependencies) and then run the following example:
 ```
