@@ -218,9 +218,9 @@ The following options are available and should be set by the user:
 
 * *--drop_intronic_polya_sites_of_overlapping_genes*: Ignore intronic polya sites that occur in regions of overlap between genes. [default=False]
 
-* *--use_precalculated_training_set*: Use precalculated training set (skips the generation of training and validation set). [default=False]
+* *--use_precalculated_training_set*: Use precalculated training set (skips the generation of training and validation sets). This option should be provided in combination with the option: --training_set_directory. [default=False]
 
-* *--training_set_directory* DIRECTORY: This option should be provided in combination with the option: --use_precalculated_training_set, otherwise it is ignored. [No default option provided]
+* *--training_set_directory* DIRECTORY: Training set directory created by another TECtool run using the same annotation files. This option should be provided in combination with the option: --use_precalculated_training_set, otherwise it is ignored. [No default option provided]
 
 * *--output_dir* DIRECTORY: The path to the output directory. [default="." (current working directory)]
 

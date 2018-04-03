@@ -17,6 +17,9 @@
 #    HEADER END    #
 #==================#
 
+# suppress warnings
+options(warn=-1)
+
 #==========================#
 #   PRE-REQUISITES START   #
 #==========================#
@@ -52,6 +55,10 @@ if ( opt$gtf== "" || opt$polyasites=="" || opt$bam=="" || opt$tectool_exons=="" 
 #==========================#
 #    PRE-REQUISITES END    #
 #==========================#
+
+if ( opt$verbose ){
+	options(warn=0)
+}
 
 #================#
 #   MAIN START   #
@@ -148,11 +155,12 @@ plot_novel_exon <- function(x) {
 			   chromosome=chromosome,
 			   type=c("coverage","sashimi"),
 			   sashimiNumbers=FALSE,
-			   main=paste(x["chromosome"],
-			   	          x["min_start"],
-			   	          x["min_end"],
-			   	          x["terminal_probability"],
-			   	          sep=" ")
+			   main=paste(paste(paste("Region: ", x["chromosome"], ":", sep=""), paste(x["min_start"], x["min_end"], sep="-"), sep=""),
+			   			  paste(paste("Novel exon: ", x["chromosome"], ":", sep=""), paste(x["start"], x["end"], sep="-"), paste(" Strand:", x["strand"], sep=" "), sep=""),
+			   			  paste("Terminal probability: ", round(x["terminal_probability"], digits=4), sep=""),
+			   			  sep="\n"
+			   			 ),
+			   cex.main=1
 	)
 }
 

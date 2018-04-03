@@ -24,8 +24,8 @@ from sklearn.model_selection import train_test_split
 from sklearn import neighbors
 from scipy import stats
 from scipy.optimize import curve_fit
-import matplotlib as mpl
-import matplotlib.pyplot as plt
+# import matplotlib as mpl
+# import matplotlib.pyplot as plt
 import pandas as pd
 import pybedtools
 from progress.bar import Bar
@@ -39,7 +39,7 @@ from .analysis_unit import AnalysisUnit
 from .feature_counts import FeatureCounts
 from .bayes_classifier import BayesClassifier
 
-mpl.use('Agg')
+# mpl.use('Agg')
 
 # _____________________________________________________________________________
 # -----------------------------------------------------------------------------
@@ -1363,20 +1363,20 @@ class MachineLearningUnit(object):
                 file_name = "CDF_" + str(region_id) + ".png"
                 file_path = os.path.join(diagnostic_plots_dir_path, file_name)
 
-                plt.figure()
-                # plt.scatter(x_axis, y_axis, color='blue', alpha=0.5)
-                # plt.scatter(x_axis, est_y, color='red', alpha=0.5)
-                plt.plot(x_axis, y_axis, 'ob', alpha=0.5)
-                plt.plot(x_axis, est_y, 'or-', alpha=0.5)
-                plt.xlim((-0.01, 1.0))
-                plt.ylim((-0.01, 1.0))
-                plt.xlabel('Length normalized position')
-                plt.ylabel('Cumulative read density (distribution).')
+                # plt.figure()
+                # # plt.scatter(x_axis, y_axis, color='blue', alpha=0.5)
+                # # plt.scatter(x_axis, est_y, color='red', alpha=0.5)
+                # plt.plot(x_axis, y_axis, 'ob', alpha=0.5)
+                # plt.plot(x_axis, est_y, 'or-', alpha=0.5)
+                # plt.xlim((-0.01, 1.0))
+                # plt.ylim((-0.01, 1.0))
+                # plt.xlabel('Length normalized position')
+                # plt.ylabel('Cumulative read density (distribution).')
 
-                title = "R2=" + str(R_squared) + "; a=" + str(fitted_a_param_norm) + "; b=" + str(fitted_b_param_norm)
-                plt.title(title)
-                plt.savefig(file_path)
-                plt.close('all')
+                # title = "R2=" + str(R_squared) + "; a=" + str(fitted_a_param_norm) + "; b=" + str(fitted_b_param_norm)
+                # plt.title(title)
+                # plt.savefig(file_path)
+                # plt.close('all')
 
         except ValueError:
             fitted_a_param_norm = np.nan
@@ -1760,41 +1760,41 @@ class MachineLearningUnit(object):
         # clean up...
         del(BG_feat)
 
-    def plot_confusion_matrix(
-        self,
-        cm,
-        file_path,
-        normalize=False,
-        title='Confusion matrix',
-        cmap=plt.cm.Blues
-    ):
-        """
-        Method that plots a confusion matrix.
-        Normalization can be applied by setting "normalize=True".
-        """
+    # def plot_confusion_matrix(
+    #     self,
+    #     cm,
+    #     file_path,
+    #     normalize=False,
+    #     title='Confusion matrix',
+    #     cmap=plt.cm.Blues
+    # ):
+    #     """
+    #     Method that plots a confusion matrix.
+    #     Normalization can be applied by setting "normalize=True".
+    #     """
 
-        plt.figure()
-        plt.imshow(cm, interpolation='nearest', cmap=cmap)
-        plt.title(title)
-        plt.colorbar()
-        tick_marks = np.arange(len(self.region_classes))
-        plt.xticks(tick_marks, self.region_classes, rotation=45)
-        plt.yticks(tick_marks, self.region_classes)
+    #     plt.figure()
+    #     plt.imshow(cm, interpolation='nearest', cmap=cmap)
+    #     plt.title(title)
+    #     plt.colorbar()
+    #     tick_marks = np.arange(len(self.region_classes))
+    #     plt.xticks(tick_marks, self.region_classes, rotation=45)
+    #     plt.yticks(tick_marks, self.region_classes)
 
-        if normalize:
-            cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
+    #     if normalize:
+    #         cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
 
-        thresh = cm.max() / 2.0
-        for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
-            plt.text(j, i, str("%0.2f" % cm[i, j]),
-                     horizontalalignment="center",
-                     color="white" if cm[i, j] > thresh else "black")
+    #     thresh = cm.max() / 2.0
+    #     for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
+    #         plt.text(j, i, str("%0.2f" % cm[i, j]),
+    #                  horizontalalignment="center",
+    #                  color="white" if cm[i, j] > thresh else "black")
 
-        plt.tight_layout()
-        plt.ylabel('True label')
-        plt.xlabel('Predicted label')
-        plt.savefig(file_path)
-        plt.close('all')
+    #     plt.tight_layout()
+    #     plt.ylabel('True label')
+    #     plt.xlabel('Predicted label')
+    #     plt.savefig(file_path)
+    #     plt.close('all')
 
     def train_classifier(self, results_dir_path, nr_of_train_vs_test_runs = 25, verbose = False):
 
@@ -1889,10 +1889,10 @@ class MachineLearningUnit(object):
             # use .roc_auc_score
             # -----------------------------------------------------------------
             cm_file_name = ("normalized_confusion_matrix_RUN_%s.png" % str(i))
-            self.plot_confusion_matrix(cnf_matrix, 
-                                       file_path=os.path.join(results_dir, cm_file_name),
-                                       normalize=True,
-                                       title='Confusion matrix')
+            # self.plot_confusion_matrix(cnf_matrix, 
+            #                            file_path=os.path.join(results_dir, cm_file_name),
+            #                            normalize=True,
+            #                            title='Confusion matrix')
             
             # -----------------------------------------------------------------
             # create precission, recall and F1-scores
@@ -2253,11 +2253,11 @@ class MachineLearningUnit(object):
         #     title='Confusion matrix'
         # )
 
-        if verbose:
-            sys.stdout.write(
-                "Writing confusion matrix: {} {}".format(
-                    cm_file_path, os.linesep)
-            )
+        # if verbose:
+        #     sys.stdout.write(
+        #         "Writing confusion matrix: {} {}".format(
+        #             cm_file_path, os.linesep)
+        #     )
 
         # -----------------------------------------------------------------
         # Calculate validation scores

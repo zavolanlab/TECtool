@@ -238,8 +238,15 @@ class BayesClassifier(object):
                 curr_max_probability = current_probability
                 curr_max_class = current_class
 
+        # print("*"*40)
+        # print("list of probabilities")
+        # print(list_of_probabilities)
+
         normalized_probabilities = \
             [p / sum(list_of_probabilities) for p in list_of_probabilities]
+
+        # print("normalized_probabilities")
+        # print(normalized_probabilities)
 
         results = dict()
 

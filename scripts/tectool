@@ -5,7 +5,7 @@
 # import needed (external) modules
 # -----------------------------------------------------------------------------
 
-__version__ = "0.3.2"
+__version__ = "0.3.3"
 
 import sys
 import HTSeq
@@ -18,9 +18,9 @@ from collections import defaultdict
 import pybedtools
 from pyfasta import Fasta
 import pandas as pd
-import matplotlib as mpl
-mpl.use('Agg')
-import matplotlib.pyplot as plt
+#import matplotlib as mpl
+#mpl.use('Agg')
+#import matplotlib.pyplot as plt
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import classification_report
@@ -203,7 +203,7 @@ def main():
     parser.add_argument(
         "--genome",
         dest="genome",
-        help="Genome in fasta format [REQUIRED]."
+        help="Genome in fasta format [REQUIRED].",
         metavar="FILE",
         required=True
     )
@@ -291,7 +291,7 @@ def main():
         action="store_true",
         default=False,
         help="Use precalculated training set (skips the generation of training" +
-        "and validation set) This option should be provided in combination with"
+        "and validation sets). This option should be provided in combination with"
         "the option: --training_set_directory. [default=False]",
         required=False
     )
@@ -301,7 +301,7 @@ def main():
         dest="training_set_directory",
         help="Training set directory created by another TECtool run using" +
         " the same annotation files. This" +
-        " option should be provided in combination with the option: " +
+        " option should be provided in combination with the option:" +
         " --use_precalculated_training_set," +
         " otherwise it is ignored. [No default option provided]",
         metavar="DIRECTORY",
