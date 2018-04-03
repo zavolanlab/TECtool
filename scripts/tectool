@@ -39,6 +39,9 @@ import copy
 import csv
 import functools
 from progress.bar import Bar
+import warnings
+
+warnings.filterwarnings("ignore")
 
 # _____________________________________________________________________________
 # -----------------------------------------------------------------------------
@@ -345,6 +348,9 @@ def main():
     if len(sys.argv) == 1:
         parser.print_help()
         sys.exit(1)
+
+    if options.verbose:
+        warnings.resetwarnings()
 
     # initialize a file counter
     fc = FileCounter()
