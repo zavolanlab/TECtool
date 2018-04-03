@@ -258,7 +258,7 @@ In order to run it users should have R installed (>=3.4) (tested with R 3.4.1 on
 conda create --name TECtool_plot_novel_exons --channel bioconda --channel conda-forge --channel r --channel fgypas r-base=3.4.1 bioconductor-gviz r-optparse openblas tectool
 ```
 
-*Note that this is a time consuming step and many packages are installed.*
+**Note:** that this is a time consuming step and many packages are installed.
 
 Acivate the virtual environment
 ```
@@ -301,7 +301,7 @@ tectool \
 --output_dir results
 ```
 
-*Note:* Some warnings will appear because the dataset that we use is small.
+**Note:** Some warnings will appear because the dataset that we use is small.
 
 In order to test the vizualization script please first check the section [Plot novel exons](README.md#plot-novel-exons) (for proper installation of R dependencies) and then run the following example:
 ```
