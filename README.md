@@ -194,6 +194,22 @@ tectool --help
 
 You can find test files in the section [Recommended files for testing](README.md#recommended-files-for-testing)
 
+### Docker
+
+A docker images is also available with all dependencies already installed. Users should have docker installed in their system with root access.
+
+Pull the docker image
+```
+sudo docker pull fgypas/tectool:0.3.3
+```
+
+Start and enter the container
+```
+sudo docker run -it fgypas/tectool:0.3.3 bash
+```
+
+You can find test files in the section [Recommended files for testing](README.md#recommended-files-for-testing).
+
 ## TECtool options
 
 The following options are available and should be set by the user:
@@ -314,6 +330,12 @@ plot_novel_exons.R \
 ```
 
 In the output directory a pdf file is generated with the identified novel terminal exons. An example can be found here with two novel terminal exons: http://tectool.unibas.ch/data/example_plots.pdf . The novel exons are marked with red boxes. The closest upstream and downstream exons are shown in the plot.
+
+**Note for docker**: You can copy files from a docker container to your host OS using the command.
+
+```
+docker cp <container id>:/path/to/file/in/container /path/to/file/in/host/os
+```
 
 ## Annotation files
 
