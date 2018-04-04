@@ -196,7 +196,7 @@ You can find test files in the section [Recommended files for testing](README.md
 
 ### Docker
 
-A docker images is also available with all dependencies already installed. Users should have docker installed in their system with root access.
+A docker image is also available with all dependencies installed. Users should have docker installed in their system with root access.
 
 Pull the docker image
 ```
