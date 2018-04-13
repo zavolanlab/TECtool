@@ -214,7 +214,7 @@ If installation was sucessfull, you can start testing (see section [Recommended 
 
 The following options are available and should be set by the user:
 
-* *--annotation* FILE: Annotation file in ENSEMBL GTF format [REQUIRED] (tested with ENSEMBL v87). Other GTF formats are currently not supported.
+* *--annotation* FILE: Annotation file in ENSEMBL GTF format  (tested with ENSEMBL v87) [REQUIRED]. Other GTF formats are currently not supported.
 
 * *--polyasites* FILE: Bed file that contains polya sites [REQUIRED].
 
