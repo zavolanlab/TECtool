@@ -5,7 +5,7 @@
 # import needed (external) modules
 # -----------------------------------------------------------------------------
 
-__version__ = "0.3.3"
+__version__ = "0.3.4"
 
 import sys
 import HTSeq
@@ -190,7 +190,7 @@ def main():
     parser.add_argument(
         "--annotation",
         dest="annotation",
-        help="Annotation file gtf format [REQUIRED] (tested with ENSEMBL v87).",
+        help="Annotation file in ENSEMBL GTF format [REQUIRED] (tested with ENSEMBL v87). Other GTF formats are currently not supported.",
         metavar="FILE",
         required=True
     )
