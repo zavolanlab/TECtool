@@ -200,12 +200,12 @@ A docker image is also available with all dependencies installed. Users should h
 
 Pull the docker image
 ```
-sudo docker pull fgypas/tectool:0.3.3
+sudo docker pull fgypas/tectool:0.3.4
 ```
 
 Start and enter the container
 ```
-sudo docker run -it fgypas/tectool:0.3.3 bash
+sudo docker run -it fgypas/tectool:0.3.4 bash
 ```
 
 If installation was sucessfull, you can start testing (see section [Recommended files for testing](README.md#recommended-files-for-testing))
