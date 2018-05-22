@@ -292,6 +292,8 @@ The following options are available in the script:
 
 ## Recommended files for testing
 
+*Using the recommended files testing TECtool takes around 10 minutes run time on a desktop computer (using one core).*
+
 Download the test data
 ```
 wget http://tectool.unibas.ch/data/test_data.tar.gz
