@@ -1741,7 +1741,7 @@ class Annotation(object):
                                     bases_left,
                                     last_exon.start +
                                     first_stop_codon_position -
-                                    bases_left + 2,
+                                    bases_left + 3,
                                     last_exon.strand
                                 )
 
@@ -1768,7 +1768,7 @@ class Annotation(object):
                                     last_exon.chromosome,
                                     last_exon.end -
                                     first_stop_codon_position +
-                                    bases_left - 2,
+                                    bases_left - 3,
                                     last_exon.end -
                                     first_stop_codon_position +
                                     bases_left,
