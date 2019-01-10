@@ -5,14 +5,14 @@ RUN apt-get update && \
     apt-get install -y vim wget curl zlib1g-dev git software-properties-common libcurl4-gnutls-dev libxml2-dev libssl-dev apt-transport-https libmariadb-client-lgpl-dev && \
     apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 && \
     add-apt-repository 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu xenial/' && \
-    apt-get update 
+    apt-get update
 
 # install R
 RUN apt-get install -y r-base && \
     Rscript -e 'install.packages(c("devtools", "optparse"), repos = "http://cran.us.r-project.org")' && \
     Rscript -e 'source("https://bioconductor.org/biocLite.R"); biocLite(c("rtracklayer", "Gviz", "biomaRt", "GenomicFeatures"), ask=FALSE);'
 
-# install python 
+# install python
 RUN apt-get install -y build-essential python3 python3-dev python3-pip && \
     python3 -m pip install pip --upgrade && \
     python3 -m pip install wheel && \
@@ -35,7 +35,7 @@ RUN cd $HOME && \
 
 # install tectool
 RUN cd $HOME && \
-    git clone https://git.scicore.unibas.ch/zavolan_public/TECtool.git && \
+    git clone https://github.com/zavolanlab/TECtool.git && \
     cd TECtool && \
     pip install -r requirements.txt && \
     python3 setup.py install

@@ -22,7 +22,7 @@ setup(
     description="TECtool is a method that uses mRNA and 3’ end sequencing data to identify novel terminal exons.",
     author="Foivos Gypas",
     author_email='foivos.gypas@unibas.ch',
-    url='https://git.scicore.unibas.ch/zavolan_public/TECtool.git',
+    url='https://github.com/zavolanlab/TECtool.git',
     packages=['tectool'],
     package_dir={'tectool': 'tectool'},
     include_package_data=True,

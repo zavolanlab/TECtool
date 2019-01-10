@@ -13,7 +13,7 @@ TECtool is a method that uses mRNA and 3’ end sequencing data to identify nove
 
 TECtool as of version 0.2 is written in Python 3. Current instructions are written for Python 3 ONLY (>=3.4 should work, but extensively tested with Python 3.6). Installation with Python 2 will not work. The recommended way to install TECtool is via the conda package manager, because it can install non Python dependencies (for example bedtools).
 
-If you do not want to use conda to install TECtool, other options are described below. 
+If you do not want to use conda to install TECtool, other options are described below.
 
 ### Installation of TECtool using conda
 
@@ -31,7 +31,7 @@ for Mac OSX:
 ```
 https://repo.continuum.io/miniconda/Miniconda3-latest-MacOSX-x86_64.sh
 ```
-    
+
 * using **wget**:
 
 for Linux:
@@ -42,7 +42,7 @@ for Mac OSX:
 ```
 wget https://repo.continuum.io/miniconda/Miniconda3-latest-MacOSX-x86_64.sh
 ```
-   
+
 * using **curl**:
 
 for Linux:
@@ -155,7 +155,7 @@ pip install --upgrade pip
 
 Clone the TECtool repository
 ```
-git clone https://git.scicore.unibas.ch/zavolan_public/TECtool.git
+git clone https://github.com/zavolanlab/TECtool.git
 ```
 
 Now you should see a direcroty for the virtual environment (envTECtool) and one directory for the TECtool package (TECtool)
